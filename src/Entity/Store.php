@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,6 +52,22 @@ class Store
      * @ORM\Column(type="string", length=100)
      */
     private $name;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="store")
+     */
+    private $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="store")
+     */
+    private $card;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->card = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +154,65 @@ class Store
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeStore($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCard(): Collection
+    {
+        return $this->card;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->card->contains($card)) {
+            $this->card[] = $card;
+            $card->setStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->card->contains($card)) {
+            $this->card->removeElement($card);
+            // set the owning side to null (unless already changed)
+            if ($card->getStore() === $this) {
+                $card->setStore(null);
+            }
+        }
 
         return $this;
     }

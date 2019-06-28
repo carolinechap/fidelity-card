@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -70,6 +72,22 @@ class User
      * @ORM\Column(type="string", length=100)
      */
     private $firstname;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Store", inversedBy="users")
+     */
+    private $store;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="user")
+     */
+    private $card;
+
+    public function __construct()
+    {
+        $this->store = new ArrayCollection();
+        $this->card = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -204,6 +222,63 @@ class User
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Store[]
+     */
+    public function getStore(): Collection
+    {
+        return $this->store;
+    }
+
+    public function addStore(Store $store): self
+    {
+        if (!$this->store->contains($store)) {
+            $this->store[] = $store;
+        }
+
+        return $this;
+    }
+
+    public function removeStore(Store $store): self
+    {
+        if ($this->store->contains($store)) {
+            $this->store->removeElement($store);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCard(): Collection
+    {
+        return $this->card;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->card->contains($card)) {
+            $this->card[] = $card;
+            $card->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->card->contains($card)) {
+            $this->card->removeElement($card);
+            // set the owning side to null (unless already changed)
+            if ($card->getUser() === $this) {
+                $card->setUser(null);
+            }
+        }
 
         return $this;
     }
