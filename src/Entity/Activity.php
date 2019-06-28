@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,16 @@ class Activity
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isTheWinner;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Card", mappedBy="activity")
+     */
+    private $cards;
+
+    public function __construct()
+    {
+        $this->cards = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +97,34 @@ class Activity
     public function setIsTheWinner(?bool $isTheWinner): self
     {
         $this->isTheWinner = $isTheWinner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
+            $card->addActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->cards->contains($card)) {
+            $this->cards->removeElement($card);
+            $card->removeActivity($this);
+        }
 
         return $this;
     }
