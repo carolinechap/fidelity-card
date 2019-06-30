@@ -107,6 +107,11 @@ class User implements UserInterface
         $this->card = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

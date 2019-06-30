@@ -15,6 +15,15 @@ security:
         main:
             anonymous: true
 
+            form_login:
+                login_path: login_route
+                check_path: login_route
+            logout:
+                path: logout_route
+
+            provider: db
+            pattern: ^/
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
