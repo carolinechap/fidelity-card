@@ -3,4 +3,24 @@
 {% block title %}HomePage!{% endblock %}
 
 {% block body %}
+
+    <div class="container-fluid bg-img d-flex align-items-center justify-content-center">
+        
+
+{% if app.user %}
+
+        {% else %}
+            <div class="container ">
+            <div class="card bg-light mb-3 connection-card">
+                <div class="card-body">
+                    <a class="btn btn-dark btn-lg btn-block" href="{{ path('signup_route') }}">S'incrire</a>
+                    <a class="btn btn-secondary btn-lg btn-block" href="{{ path('login_route') }}">Se connecter</a>
+                </div>
+            </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+
 {% endblock %}

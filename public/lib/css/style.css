@@ -1,0 +1,13 @@
+/* Home page*/
+.bg-img{
+    background: url('../img/laser-dark.png') no-repeat top center;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    background-size: cover;
+}
+
+.connection-card {
+    position: relative;
+    z-index: 10;
+}
