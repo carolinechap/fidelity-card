@@ -22,6 +22,7 @@ class SecurityController extends AbstractController
                              EntityManagerInterface $entityManager)
     {
         $user = new User();
+
         $user->setRoles(['ROLE_USER']);
 
         $form = $this->createForm(UserType::class, $user);
@@ -35,6 +36,8 @@ class SecurityController extends AbstractController
                     $user->getPlainPassword()
                 );
                 $user->setPassword($password);
+
+
                 $entityManager->persist($user);
                 $entityManager->flush();
 
