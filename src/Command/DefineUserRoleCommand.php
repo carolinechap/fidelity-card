@@ -51,6 +51,7 @@ class DefineUserRoleCommand extends Command
                 [
                     'Afficher la liste des utilisateurs',
                     'Ajouter un rôle (Nécessite un ID Utilisateur)',
+                    'Retirer un rôle (Nécessite un ID Utilisateur)',
                     'Quitter'
                 ]
             );
@@ -61,6 +62,9 @@ class DefineUserRoleCommand extends Command
                     break;
                 case 'Ajouter un rôle (Nécessite un ID Utilisateur)':
                     $this->addUserRole();
+                    break;
+                case 'Retirer un rôle (Nécessite un ID Utilisateur)':
+                    $this->removeUserRole();
                     break;
                 case 'Quitter':
                     exit();
@@ -125,4 +129,39 @@ class DefineUserRoleCommand extends Command
             $this->io->success("Le rôle $role a bien été attribué à " . $user->getEmail());
         }
     }
+
+        /**
+         * Find a user identification and allows to add a user's role
+         */
+        private function removeUserRole()
+    {
+        // Récuperation de l'id user
+        $id = $this->io->ask('Saisissez un Utilisateur id');
+        $user = $this->em->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            $this->io->error("L'id $id n'existe pas !");
+            return;
+        }
+
+        // Définition des rôles
+        $roles = [
+            'ROLE_USER',
+            'ROLE_ADMIN',
+            'ROLE_SUPERADMIN'
+        ];
+
+        // Attribution des rôles
+        $role = $this->io->choice(
+            'Quel rôle souhaitez-vous retirer ?',
+            array_intersect($roles, $user->getRoles()));
+
+        // Retirer en db le rôle lié à l'user
+            $user->removeRole($role);
+            $this->em->flush();
+
+            $this->io->success("Le rôle $role a bien été retiré à " . $user->getEmail());
+        //}
+    }
+
 }
