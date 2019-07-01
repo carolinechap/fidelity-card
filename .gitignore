@@ -7,6 +7,10 @@
 /var/
 /vendor/
 /.idea/
+.DS_Store
+public/.DS_Store
+public/*/.DS_Store
+public/*/*/.DS_Store
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
