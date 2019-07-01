@@ -39,23 +39,38 @@ class UserType extends AbstractType
             )
             ->add('numberStreet',
                 TextType::class,
-                ['label' => 'Numéro de la rue']
+                [
+                    'label' => 'Numéro de la rue',
+                    'required' => false
+                    ]
                 )
             ->add('nameStreet',
                 TextType::class,
-                ['label' => 'Nom de la rue']
+                [
+                    'label' => 'Nom de la rue',
+                    'required' => false
+                ]
             )
             ->add('zipCode',
                 TextType::class,
-                ['label' => 'Code postal']
+                [
+                    'label' => 'Code postal',
+                    'required' => false
+                ]
             )
             ->add('city',
                 TextType::class,
-                ['label' => 'Ville']
+                [
+                    'label' => 'Ville',
+                    'required' => false
+                ]
             )
             ->add('country',
                 TextType::class,
-                ['label' => 'Pays']
+                [
+                    'label' => 'Pays',
+                    'required' => false
+                ]
             )
            // ->add('has_card',
              //   CheckboxType::class,
