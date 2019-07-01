@@ -22,6 +22,8 @@ class SecurityController extends AbstractController
                              EntityManagerInterface $entityManager)
     {
         $user = new User();
+        $user->setRoles(['ROLE_USER']);
+
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
@@ -60,12 +62,12 @@ class SecurityController extends AbstractController
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-
-        //dd($lastUsername);
+        //dd($this);
         if (!empty($error)){
             $this->addFlash('error', 'Identifiants incorrects');
 
         }
+
 
         return $this->render('security/login.html.twig',[
                 'last_username' => $lastUsername,
