@@ -22,6 +22,7 @@ class SecurityController extends AbstractController
                              EntityManagerInterface $entityManager)
     {
         $user = new User();
+
         $user->setRoles(['ROLE_USER']);
 
         $form = $this->createForm(UserType::class, $user);
@@ -35,6 +36,8 @@ class SecurityController extends AbstractController
                     $user->getPlainPassword()
                 );
                 $user->setPassword($password);
+
+
                 $entityManager->persist($user);
                 $entityManager->flush();
 
@@ -62,17 +65,17 @@ class SecurityController extends AbstractController
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-        //dd($this);
-        if (!empty($error)){
-            $this->addFlash('error', 'Identifiants incorrects');
 
-        }
-
+        // TODO:Faire une condition pour savoir si l'utilisateur est déjà connecté
+        // TODO: Voir pour un event qui écoutera le role -> permet de faire la redirection pour l'admin sur une page après connexion
 
         return $this->render('security/login.html.twig',[
                 'last_username' => $lastUsername,
+                'error' => $error
             ]
         );
+
+
     }
 
     /**
@@ -81,5 +84,6 @@ class SecurityController extends AbstractController
     public function logout()
     {
 
+        //return $this->redirectToRoute('home');
     }
 }
