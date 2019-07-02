@@ -14,46 +14,56 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-        <a class="navbar-brand" href="{{ path('home') }}">Shinigami Laser</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Lien1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Lien2</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Lien3</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark shadow">
+            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('home') }}">Shinigami Laser</a>
+            <input class="form-control form-control-dark w-100" type="text" placeholder="Recherche" aria-label="Recherche">
+            <ul class="navbar-nav px-3">
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="{{ path('logout_route') }}">Deconnexion</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto">
-                {% if app.user is not null %}
-                    <li class="nav-item">
-                    <span class="nav-link">
-                        {{ app.user }}
-                    </span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('logout_route') }}">
-                            Déconnexion
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Recherche</button>
-            </form>
+        </nav>
+    {% else %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+            <a class="navbar-brand" href="{{ path('home') }}">Shinigami Laser</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        </div>
-    </nav>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Lien1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Lien2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Lien3</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    {% if app.user is not null %}
+                        <li class="nav-item">
+                        <span class="nav-link">
+                            {{ app.user }}
+                        </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('logout_route') }}">
+                                Déconnexion
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
+                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Recherche</button>
+                </form>
+            </div>
+        </nav>
+    {% endif %}
 
         {% for type, messages in app.session.flashBag.all %}
             {% for message in messages %}
