@@ -48,7 +48,6 @@ class CustomerFixtures extends Fixture
 
         $manager->flush();
 
-        $manager->flush();
     }
 
 
