@@ -112,6 +112,11 @@ class User implements UserInterface
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    public function getFullname()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -182,7 +187,7 @@ class User implements UserInterface
         return $this->zipCode;
     }
 
-    public function setZipCode(?int $zipCode): self
+    public function setZipCode(?string $zipCode): self
     {
         $this->zipCode = $zipCode;
 

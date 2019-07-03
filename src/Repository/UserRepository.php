@@ -19,6 +19,14 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function getLastCustomerCode()
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb ->select('MAX(u.customerCode) as lastCode');
+
+        return $qb->getQuery()->getSingleResult();
+
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
