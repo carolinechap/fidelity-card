@@ -5,7 +5,7 @@
 {% block body %}
 
 
-{% if is_granted('ROLE_ADMIN') %}
+{% if is_granted('ROLE_ADMIN') and is_granted('ROLE_SUPERADMIN')%}
     <div class="container-fluid dashboard">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
