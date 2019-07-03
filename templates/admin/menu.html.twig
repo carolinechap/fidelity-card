@@ -1,5 +1,5 @@
 
-    {% if is_granted('ROLE_ADMIN') and is_granted('ROLE_SUPERADMIN')%}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')%}
                 <nav class="col-md-2 d-none d-md-block bg-light sidebar ">
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
