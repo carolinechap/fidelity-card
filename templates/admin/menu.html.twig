@@ -1,0 +1,77 @@
+
+    {% if is_granted('ROLE_ADMIN') and is_granted('ROLE_SUPERADMIN')%}
+                <nav class="col-md-2 d-none d-md-block bg-light sidebar ">
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.attributes.get('_route') == 'admin_dashboard' ? 'active' }}" href="{{ path('admin_dashboard') }}">
+                                    <span data-feather="home"></span>
+                                    Dashboard <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                    <span data-feather="credit-card"></span>
+                                    Cartes de fidélité
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                    <span data-feather="shopping-cart"></span>
+                                    Offres
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                    <span data-feather="users"></span>
+                                    Clients
+                                </a>
+                            </li>
+                        </ul>
+                        {% if is_granted('ROLE_SUPERADMIN') %}
+                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                <span>Gérant</span>
+                            </h6>
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ app.request.attributes.get('_route') == 'superAdmin_indexEmployees' ? 'active' }}" href="{{ path('superAdmin_indexEmployees') }}">
+                                        <span data-feather="users"></span>
+                                        Employés
+                                    </a>
+                                    <ul class="nav flex-column nested-list">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ app.request.attributes.get('_route') == 'superAdmin_createEmployee' ? 'active' }}" href="{{ path('superAdmin_createEmployee') }}">
+                                                <span data-feather="plus-circle"></span>
+                                                Ajouter un employé
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                        <span data-feather="map"></span>
+                                        Magasins
+                                    </a>
+                                    <ul class="nav flex-column nested-list">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                                <span data-feather="plus-circle"></span>
+                                                Ajouter un magasin
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </nav>
+
+    {% endif %}
+
+
+{% block javascripts %}
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+{% endblock %}

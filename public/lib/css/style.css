@@ -17,6 +17,10 @@
     position: relative;
     top : 150px;
 }
+.container-admin{
+    position: relative;
+    top:150px;
+}
 /*
  * Sidebar
  */
@@ -38,6 +42,10 @@
     padding-top: .5rem;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.nested-list{
+    padding-left: 30px;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
@@ -120,6 +128,9 @@
     }
     .sidebar{
         top:inherit;
+    }
+    .container-admin{
+        top:70px;
     }
 }
 

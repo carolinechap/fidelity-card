@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -18,6 +19,20 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function searchByRoles($roles = []) : Query
+    {
+        $roles = serialize($roles);
+
+        $qb = $this->createQueryBuilder('u');
+        $qb->orderBy('u.lastname', 'ASC');
+        $qb->andWhere('u.roles = :roles')
+            ->setParameter(':roles', $roles);
+        $query = $qb->getQuery();
+        return $query;
+    }
+
+
 
     // /**
     //  * @return User[] Returns an array of User objects
