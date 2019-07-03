@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\User\UserRequest;
+use App\User\UserRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,15 +17,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/inscription", name="signup_route")
+     * @Route("/inscription", name="signup_route", methods={"GET", "POST"})
      */
     public function register(Request $request,
                              UserPasswordEncoderInterface $passwordEncoder,
-                             EntityManagerInterface $entityManager)
+                             EntityManagerInterface $entityManager,
+                            UserRequestHandler $userRequestHandler)
     {
-        $user = new User();
 
-        $user->setRoles(['ROLE_USER']);
+        $user = new UserRequest();
 
         $form = $this->createForm(UserType::class, $user);
 
@@ -31,24 +33,14 @@ class SecurityController extends AbstractController
 
         if($form->isSubmitted()) {
             if ($form->isValid()) {
-                $password = $passwordEncoder->encodePassword(
-                    $user,
-                    $user->getPlainPassword()
-                );
-                $user->setPassword($password);
-
-
-                $entityManager->persist($user);
-                $entityManager->flush();
-
+                $user = $userRequestHandler->registerAsUser($user);
                 $this->addFlash('success', 'Votre compte est créé');
                 return $this->redirectToRoute('login_route');
-
             } else {
                 $this->addFlash('error', 'Le formulaire contient des erreurs');
             }
-        }
 
+        }
         return $this->render(
             'security/register.html.twig',
             [
