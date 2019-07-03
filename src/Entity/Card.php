@@ -48,6 +48,36 @@ class Card
      */
     private $deal;
 
+    /**
+     * @var integer
+     */
+    private $cardCode;
+
+    /**
+     * @return int
+     */
+    public function getCardCode(Card $card): int
+    {
+        $centerCode =$card->getStore()->getCenterCode();
+        $customerCode = $card->getUser()->getCustomerCode();
+        $checkSum = $card->getCheckSum();
+        $cardCode = $centerCode . $customerCode . $checkSum;
+        $this->cardCode =(int)$cardCode;
+
+        return $this->cardCode;
+    }
+
+    /**
+     * @param int $cardCode
+     * @return Card
+     */
+    public function setCardCode(int $cardCode): Card
+    {
+        $this->cardCode = $cardCode;
+
+        return $this;
+    }
+
     public function __construct()
     {
         $this->activity = new ArrayCollection();
@@ -88,7 +118,7 @@ class Card
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

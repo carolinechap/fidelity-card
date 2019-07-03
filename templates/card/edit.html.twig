@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition carte{% endblock %}
+
+{% block body %}
+    <h1>Edition carte</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.checkSum) }}
+    {{ form_row(form.store) }}
+    {{ form_row(form.user) }}
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">
+            Enregistrer
+        </button>
+        <a href="{{ path('card') }}"
+           class="btn btn-outline-secondary">
+            Retour
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

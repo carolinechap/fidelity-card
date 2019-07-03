@@ -1,20 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CardController!{% endblock %}
+    {% block title %}Cartes de fidélité{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    {% block body %}
+        <h1>Cartes de fidélité</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        <a href="{{ path('app_card_edit') }}"
+           class="btn btn-outline-primary mb-3">
+            Ajouter une carte
+        </a>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/fidelity-card/src/Controller/CardController.php'|file_link(0) }}">src/Controller/CardController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/fidelity-card/templates/card/index.html.twig'|file_link(0) }}">templates/card/index.html.twig</a></code></li>
-    </ul>
-</div>
-{% endblock %}
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Numéro de carte</th>
+                <th>Centre Laser game</th>
+                <th>Client</th>
+                <th width="250px"></th>
+            </tr>
+            {% for card in cards %}
+                <tr>
+                    <td>{{ card.id }}</td>
+                    <td>{{ card.cardCode(card) }}</td>
+                    <td>{{ card.store }}</td>
+                    <td >{{ card.user }}</td>
+                    <td>
+                        <a href="{{ path('app_card_edit', {'id': card.id}) }}"
+                           class="btn btn-primary">
+                            Modifier
+                        </a>
+                        <a href="{{ path('app_card_delete', {'id': card.id}) }}"
+                           class="btn btn-danger">
+                            Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">
+                        Aucun résultat
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endblock %}
