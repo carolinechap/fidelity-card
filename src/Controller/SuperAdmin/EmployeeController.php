@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\User\UserRequest;
 use App\User\UserRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,17 +17,20 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * Class EmployeeController
  * @package App\Controller\SuperAdmin
- * @Route("/employes")
+ * @Route("/gerant/employes")
  */
 class EmployeeController extends AbstractController
 {
-    public function index(UserRepository $userRepository)
+    /**
+     * @param UserRepository $userRepository
+     * @Route("/" , name="superAdmin_indexEmployees")
+     */
+    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator)
     {
-        $employees = $userRepository->findBy([], ['roles' => 'ROLE_ADMIN']
-        );
+        $employees = $paginator->paginate($userRepository->searchByRoles((array)['ROLE_ADMIN']), $request->query->getInt('page', 1),5);
 
         return $this->render('superadmin/employees/index.html.twig', [
-            $employees => 'employees'
+            'employees' => $employees,
         ]);
     }
 
@@ -48,8 +52,9 @@ class EmployeeController extends AbstractController
         if($form->isSubmitted()) {
             if ($form->isValid()) {
                 $user = $userRequestHandler->registerAsAdmin($user);
-                $this->addFlash('success', 'Le compte de votre employé' . $user->getLastname() . ' ' . $user->getFirstname() . 'est créé');
-                return $this->redirectToRoute('login_route');
+                $fullName = $user->getLastname() . ' ' . $user->getFirstname() ;
+                $this->addFlash('success', "Le compte de votre employé $fullName est créé");
+                return $this->redirectToRoute('admin_dashboard');
             } else {
                 $this->addFlash('error', 'Le formulaire contient des erreurs');
             }
