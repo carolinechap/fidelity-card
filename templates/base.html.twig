@@ -14,7 +14,7 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-    {% if is_granted('ROLE_ADMIN') and is_granted('ROLE_SUPERADMIN') %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN') %}
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark shadow">
             <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('home') }}">Shinigami Laser</a>
             <input class="form-control form-control-dark w-100" type="text" placeholder="Recherche" aria-label="Recherche">
