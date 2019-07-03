@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StoreRepository")
@@ -25,36 +26,43 @@ class Store
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Length(max="6", maxMessage="Le numéro de rue ne doit pas dépasser {{ limit }} caractères")
      */
     private $numberStreet;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="150", maxMessage="Le nom de la rue ne doit pas dépasser {{ limit }} caractères")
      */
     private $nameStreet;
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Length(max="20", maxMessage="Le code postal ne doit pas dépasser {{ limit }} caractères")
      */
     private $zipCode;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="La ville ne doit pas dépasser {{ limit }} caractères")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="Le pays ne doit pas dépasser {{ limit }} caractères")
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="Le nom ne doit pas dépasser {{ limit }} caractères")
      */
     private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="store")
+     *
      */
     private $users;
 
@@ -67,6 +75,11 @@ class Store
     {
         $this->users = new ArrayCollection();
         $this->card = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int

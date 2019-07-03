@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition centre{% endblock %}
+
+{% block body %}
+    <h1>Edition centre</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.centerCode) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.numberStreet) }}
+    {{ form_row(form.nameStreet) }}
+    {{ form_row(form.zipCode) }}
+    {{ form_row(form.city) }}
+    {{ form_row(form.country) }}
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">
+            Enregistrer
+        </button>
+        <a href="{{ path('store') }}"
+           class="btn btn-outline-secondary">
+            Retour
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
