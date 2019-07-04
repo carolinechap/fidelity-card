@@ -5,7 +5,7 @@
     {% block body %}
         <h1>Cartes de fidélité</h1>
 
-        <a href="{{ path('app_card_edit') }}"
+        <a href="{{ path('card_edit') }}"
            class="btn btn-outline-primary mb-3">
             Ajouter une carte
         </a>
@@ -21,26 +21,26 @@
             {% for card in cards %}
                 <tr>
                     <td>{{ card.id }}</td>
-                    <td>{{ card.cardCode(card) }}</td>
+                    {#{{ card.cardCode(card) }}</td> #}<td>
                     <td>{{ card.store }}</td>
-                    <td >{{ card.user }}</td>
-                    <td>
-                        <a href="{{ path('app_card_edit', {'id': card.id}) }}"
-                           class="btn btn-primary">
-                            Modifier
-                        </a>
-                        <a href="{{ path('app_card_delete', {'id': card.id}) }}"
-                           class="btn btn-danger">
-                            Supprimer
-                        </a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4" class="text-center">
-                        Aucun résultat
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endblock %}
+                    {#<td >{{ card.user }}</td>#}
+<td>
+    <a href="{{ path('card_delete', {'id': card.id}) }}"
+       class="btn btn-primary">
+        Modifier
+    </a>
+    <a href="{{ path('card_delete', {'id': card.id}) }}"
+       class="btn btn-danger">
+        Supprimer
+    </a>
+</td>
+</tr>
+{% else %}
+<tr>
+<td colspan="4" class="text-center">
+    Aucun résultat
+</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

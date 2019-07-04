@@ -13,10 +13,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CardController
+ * @package App\Controller
+ * @Route("/carte")
+ */
 class CardController extends AbstractController
 {
     /**
-     * @Route("/card", name="card")
+     * @Route("/", name="card_index")
      */
     public function index(
         CardRepository $cardRepository
@@ -36,13 +41,9 @@ class CardController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("card/edition/{id}",
+     * @Route("/edition/{id}",
      *     defaults={"id": null},
-     *     requirements={"id": "\d+"})
+     *     requirements={"id": "\d+"}, name="card_edit")
      */
     public function edit(
         Request $request,
@@ -67,16 +68,19 @@ class CardController extends AbstractController
         // avec l'entité s'il a été soumis
         $form->handleRequest($request);
 
-        dump($card);
-
         // si le formulaire a été soumis
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $centerCode =$card->getStore()->getCenterCode();
-                $customerCode = $card->getUser()->getCustomerCode();
-                $cardCode = (($centerCode+$customerCode)%9);
-                $cardCode = (int)$cardCode;
-                $card->setCheckSum($cardCode);
+
+                $checkSum = $card->defineCheckSum();
+                $card->setCheckSum($checkSum);
+
+                $cardCode = $card->defineCardCode();
+                $card->setCardCode($cardCode);
+
+                dd($card);
+
+
                 // enregistrement en bdd
                 $em->persist($card);
                 $em->flush();
@@ -84,7 +88,7 @@ class CardController extends AbstractController
                 $this->addFlash('success', 'La carte est enregistrée');
 
                 // redirection vers la liste
-                return $this->redirectToRoute('card');
+                return $this->redirectToRoute('card_index');
             } else {
                 $this->addFlash('error', 'Le formulaire contient des erreurs');
             }
@@ -100,22 +104,19 @@ class CardController extends AbstractController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param Card $card
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * /**
-     * @Route("card/suppression/{id}")
+     * @Route("/suppression/{id}", name="card_delete")
      */
-    public function delete(Card $card
+    public function delete(Card $card, EntityManagerInterface $entityManager
     ) {
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($card);
         $entityManager->flush();
 
         $this->addFlash('success', "La carte est supprimée");
 
-        return $this->redirectToRoute('card');
+        return $this->redirectToRoute('card_index');
     }
+
+
 }
 
 //centerCode =$card->getStore()->getCenterCode();
