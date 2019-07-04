@@ -35,6 +35,7 @@ class Card
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Store", inversedBy="card")
+     * @ORM\JoinColumn(name="store_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $store;
 
@@ -53,35 +54,13 @@ class Card
      */
     private $cardCode;
 
-    /**
-     * @return int
-     */
-    public function getCardCode(Card $card): int
-    {
-        $centerCode =$card->getStore()->getCenterCode();
-        $customerCode = $card->getUser()->getCustomerCode();
-        $checkSum = $card->getCheckSum();
-        $cardCode = $centerCode . $customerCode . $checkSum;
-        $this->cardCode =(int)$cardCode;
-
-        return $this->cardCode;
-    }
-
-    /**
-     * @param int $cardCode
-     * @return Card
-     */
-    public function setCardCode(int $cardCode): Card
-    {
-        $this->cardCode = $cardCode;
-
-        return $this;
-    }
-
     public function __construct()
     {
         $this->activity = new ArrayCollection();
         $this->deal = new ArrayCollection();
+        //$this->store
+        //$this->checkSum = $this->defineCheckSum();
+        //$this->cardCode = $this->defineCardCode();
     }
 
     public function getId(): ?int
@@ -101,17 +80,42 @@ class Card
         return $this;
     }
 
-    public function getCheckSum(): ?int
+    /**
+     * @return mixed
+     */
+    public function getCheckSum()
     {
         return $this->checkSum;
     }
 
-    public function setCheckSum(int $checkSum): self
+    /**
+     * @param mixed $checkSum
+     * @return Card
+     */
+    public function setCheckSum($checkSum)
     {
         $this->checkSum = $checkSum;
-
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getCardCode(): int
+    {
+        return $this->cardCode;
+    }
+
+    /**
+     * @param int $cardCode
+     * @return Card
+     */
+    public function setCardCode(int $cardCode): Card
+    {
+        $this->cardCode = $cardCode;
+        return $this;
+    }
+
 
     public function getUser(): ?User
     {
@@ -187,5 +191,26 @@ class Card
         }
 
         return $this;
+    }
+
+    public function defineCheckSum(){
+        $centerCode =$this->getStore()->getCenterCode();
+        $customerCode = $this->getUser()->getCustomerCode();
+
+        $checkSum = ($centerCode+$customerCode)%9;
+
+
+        return $checkSum;
+    }
+    public function defineCardCode()
+    {
+        $centerCode = $this->getStore()->getCenterCode();
+        $customerCode = $this->getUser()->getCustomerCode();
+        $checkSum = $this->checkSum;
+        $cardCode = $centerCode . $customerCode . $checkSum;
+
+        $cardCode = (int)$cardCode;
+
+        return $cardCode;
     }
 }

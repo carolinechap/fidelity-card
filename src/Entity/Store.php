@@ -62,12 +62,11 @@ class Store
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="store")
-     *
      */
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="store")
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="store", cascade={"persist"})
      */
     private $card;
 
@@ -75,6 +74,7 @@ class Store
     {
         $this->users = new ArrayCollection();
         $this->card = new ArrayCollection();
+        $this->centerCode = $this->defineCenterCode();
     }
 
     public function __toString()
@@ -85,18 +85,6 @@ class Store
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCenterCode(): ?int
-    {
-        return $this->centerCode;
-    }
-
-    public function setCenterCode(int $centerCode): self
-    {
-        $this->centerCode = $centerCode;
-
-        return $this;
     }
 
     public function getNumberStreet(): ?int
@@ -172,6 +160,24 @@ class Store
     }
 
     /**
+     * @return mixed
+     */
+    public function getCenterCode()
+    {
+        return $this->centerCode;
+    }
+
+    /**
+     * @param mixed $centerCode
+     * @return Store
+     */
+    public function setCenterCode($centerCode)
+    {
+        $this->centerCode = $centerCode;
+        return $this;
+    }
+
+    /**
      * @return Collection|User[]
      */
     public function getUsers(): Collection
@@ -228,5 +234,12 @@ class Store
         }
 
         return $this;
+    }
+
+    public function defineCenterCode(){
+        $randCode = mt_rand(1,999);
+        $centerCode = sprintf("%03s\n",$randCode);
+
+        return $centerCode;
     }
 }

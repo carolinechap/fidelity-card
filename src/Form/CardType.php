@@ -16,19 +16,19 @@ class CardType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'user',
-                EntityType::class,
-                [
-                    'class' => User::class,
-                    'label' => 'Client',
-                    'choice_label' => function (User $user) {
-                        return $user->getFullname();
-                    },
-                    'expanded' => false,
-                    'multiple' => false,
-                ]
-            )
+            //->add(
+             //   'user',
+             //   EntityType::class,
+             //   [
+              //      'class' => User::class,
+               //     'label' => 'Client',
+              //      'choice_label' => function (User $user) {
+                //        return $user->getFullname();
+               //     },
+                //    'expanded' => false,
+                 //   'multiple' => false,
+               // ]
+           // )
 
             ->add(
                 'store',

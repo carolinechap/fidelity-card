@@ -101,10 +101,11 @@ class User implements UserInterface
      */
     private $card;
 
-    public function __construct()
+    public function __construct($customerCode)
     {
         $this->store = new ArrayCollection();
         $this->card = new ArrayCollection();
+        $this->customerCode = $customerCode;
     }
 
     public function __toString()
@@ -218,17 +219,25 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCustomerCode(): ?int
+    /**
+     * @return mixed
+     */
+    public function getCustomerCode()
     {
         return $this->customerCode;
     }
 
-    public function setCustomerCode(?int $customerCode): self
+    /**
+     * @param mixed $customerCode
+     * @return User
+     */
+    public function setCustomerCode($customerCode)
     {
         $this->customerCode = $customerCode;
-
         return $this;
     }
+
+
 
     public function getLastname(): ?string
     {
@@ -327,6 +336,14 @@ class User implements UserInterface
     {
         $this->plainPassword = $plainPassword;
         return $this;
+    }
+
+    public function defineCustomerCode()
+    {
+        $randCode = mt_rand(1,999999);
+        $customerCode = sprintf("%06s\n",$randCode);
+
+        return $customerCode;
     }
 
 

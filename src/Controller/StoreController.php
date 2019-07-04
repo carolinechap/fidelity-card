@@ -48,11 +48,9 @@ class StoreController extends AbstractController
         $id
     ) {
         if (is_null($id)) { // création
-            $maxCenterCode = $this->getDoctrine()
-                ->getRepository(Store::class)
-                ->getLastCenterCode();
-            $centerCode = (int)$maxCenterCode['lastCode'] +1;
+
             $store = new Store();
+            $centerCode = $store->defineCenterCode();
             $store->setCenterCode($centerCode);
         } else { // modification
             $store = $em->find(Store::class, $id);
@@ -105,18 +103,11 @@ class StoreController extends AbstractController
      */
     public function delete(Store $store
     ) {
-        if (!$store->getCard()->isEmpty()) {
-            $this->addFlash(
-                'error',
-                'Le magasin ne peut pas être supprimé car il contient des clients'
-            );
-        } else {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($store);
             $entityManager->flush();
 
             $this->addFlash('success', "Le magasin est supprimée");
-        }
 
         return $this->redirectToRoute('store');
     }
