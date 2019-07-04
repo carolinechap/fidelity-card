@@ -27,8 +27,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Assert\NotBlank(message="L'email est obligatoire")
-     * @Assert\Email(message="L'email n'est pas valide")
      */
     private $email;
 
@@ -39,38 +37,31 @@ class User implements UserInterface
 
     /**
      * @var string
-     * @Assert\NotBlank(message="Le mot de passe est obligatoire")
-     * @Assert\Length(min="6", minMessage="Le mot de passe doit faire au moins {{ limit }} caractères")
      */
     private $plainPassword;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\Length(max="6", maxMessage="Le numéro de rue ne doit pas dépasser {{ limit }} caractères")
      */
     private $numberStreet;
 
     /**
      * @ORM\Column(type="string", length=150, nullable=true)
-     * @Assert\Length(max="150", maxMessage="Le nom de la rue ne doit pas dépasser {{ limit }} caractères")
      */
     private $nameStreet;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=20)
-     * @Assert\Length(max="20", maxMessage="Le code postal ne doit pas dépasser {{ limit }} caractères")
      */
     private $zipCode;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Assert\Length(max="100", maxMessage="La ville ne doit pas dépasser {{ limit }} caractères")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Assert\Length(max="100", maxMessage="Le pays ne doit pas dépasser {{ limit }} caractères")
      */
     private $country;
 
@@ -81,13 +72,11 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Length(max="100", maxMessage="Le prénom ne doit pas dépasser {{ limit }} caractères")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Length(max="100", maxMessage="Le nom ne doit pas dépasser {{ limit }} caractères")
      */
     private $firstname;
 
@@ -134,6 +123,27 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function addRole(string $role): bool
+    {
+        if(!in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function removeRole(string $role): bool
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public function getEmail(): ?string
     {

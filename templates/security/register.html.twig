@@ -1,8 +1,23 @@
 {% extends 'base.html.twig' %}
 {% block title %} Inscription - {{ parent() }}{% endblock %}
 {% block body %}
-    <div class="container mt-5">
-        <h3>S'inscrire</h3>
+    {% if is_granted('ROLE_SUPERADMIN')  %}
+            <div class="container-fluid dashboard">
+                <div class="row">
+                    {% include('admin/menu.html.twig') %}
+
+                </div>
+            </div>
+    {% endif %}
+    <div class="container container-admin {% if is_granted('ROLE_SUPERADMIN') %} ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4 {% endif %}">
+        {% if is_granted('ROLE_SUPERADMIN') %}
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Création d'un compte employé</h1>
+            </div>
+
+            {% else %}
+                <h3>S'inscrire</h3>
+        {% endif %}
         {{ form_start(form) }}
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -21,6 +36,9 @@
                     {{ form_row(form.plainPassword) }}
                 </div>
             </div>
+        {% if is_granted('ROLE_SUPERADMIN') %}
+            <p class="text-muted font-weight-lighter font-italic mt-5">Ce complément d'informations est optionnel pour un employé</p>
+        {% endif %}
             <div class="form-row">
                 <div class="form-group col-md-3">
                     {{ form_row(form.numberStreet) }}
