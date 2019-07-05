@@ -3,9 +3,18 @@
     {% block title %}Magasins{% endblock %}
 
     {% block body %}
-        <h1>Magasins</h1>
-
-        <a href="{{ path('app_store_edit') }}"
+        {% include('admin/menu.html.twig') %}
+<div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Cartes de fidélités</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary">Partager</button>
+                <button class="btn btn-sm btn-outline-secondary">Exporter</button>
+            </div>
+        </div>
+    </div>
+        <a href="{{ path('store_edition') }}"
            class="btn btn-outline-primary mb-3">
             Ajouter un magasin
         </a>
@@ -32,11 +41,11 @@
                     <td >{{ store.city }}</td>
                     <td >{{ store.country }}</td>
                     <td>
-                        <a href="{{ path('app_store_edit', {'id': store.id}) }}"
+                        <a href="{{ path('store_edition', {'id': store.id}) }}"
                            class="btn btn-primary">
                             Modifier
                         </a>
-                        <a href="{{ path('app_store_delete', {'id': store.id}) }}"
+                        <a href="{{ path('store_edition', {'id': store.id}) }}"
                            class="btn btn-danger">
                             Supprimer
                         </a>
