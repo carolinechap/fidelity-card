@@ -11,10 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class StoreController
+ * @package App\Controller
+ * @Route("/centre")
+ */
 class StoreController extends AbstractController
 {
     /**
-     * @Route("/store", name="store")
+     * @Route("/", name="store_index")
      */
     public function index(
         StoreRepository $storeRepository
@@ -38,7 +43,7 @@ class StoreController extends AbstractController
      * @param EntityManagerInterface $em
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("store/edition/{id}",
+     * @Route("/edition/{id}", name="store_edition",
      *     defaults={"id": null},
      *     requirements={"id": "\d+"})
      */
@@ -80,7 +85,7 @@ class StoreController extends AbstractController
                 $this->addFlash('success', 'Le centre est enregistré');
 
                 // redirection vers la liste
-                return $this->redirectToRoute('store');
+                return $this->redirectToRoute('store_index');
             } else {
                 $this->addFlash('error', 'Le formulaire contient des erreurs');
             }
@@ -96,10 +101,7 @@ class StoreController extends AbstractController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param Store $store
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("store/suppression/{id}")
+     * @Route("/suppression/{id}", name="store_delete")
      */
     public function delete(Store $store
     ) {
@@ -109,7 +111,7 @@ class StoreController extends AbstractController
 
             $this->addFlash('success', "Le magasin est supprimée");
 
-        return $this->redirectToRoute('store');
+        return $this->redirectToRoute('store_index');
     }
 }
 
