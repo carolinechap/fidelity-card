@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Card\CardGenerator;
 use App\Entity\User;
 use App\Form\CardType;
 use App\Repository\CardRepository;
@@ -10,6 +11,7 @@ use App\Entity\Store;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -41,67 +43,41 @@ class CardController extends AbstractController
     }
 
     /**
-     * @Route("/edition/{id}",
-     *     defaults={"id": null},
-     *     requirements={"id": "\d+"}, name="card_edit")
+     * @param Request $request
+     * @param CardGenerator $cardGenerator
+     * @return Response
+     * @Route("/creation", name="card_new", methods={"GET", "POST"})
      */
-    public function edit(
-        Request $request,
-        EntityManagerInterface $em,
-        $id
-    ) {
-        if (is_null($id)) { // création
-            $card = new Card();
-        } else { // modification
-            $card = $em->find(Card::class, $id);
+    public function new(Request $request, CardGenerator $cardGenerator): Response
+    {
+        $card = new Card();
 
-            // 404 si l'id n'est pas en bdd
-            if (is_null($card)) {
-                throw new NotFoundHttpException();
-            }
-        }
-
-        // création du formulaire relié à la catégorie
         $form = $this->createForm(CardType::class, $card);
 
-        // le formulaire analyse la requête et fait le mapping
-        // avec l'entité s'il a été soumis
         $form->handleRequest($request);
 
-        // si le formulaire a été soumis
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                $checkSum = $card->defineCheckSum();
-                $card->setCheckSum($checkSum);
+            $entityManager = $this->getDoctrine()->getManager();
 
-                $cardCode = $card->defineCardCode();
-                $card->setCardCode($cardCode);
+            $card->setCardCode($cardGenerator->generateCard($card->getStore()->getCenterCode()));
+            //$card->setCheckSum()
 
-                dd($card);
+            //dd($card);
 
 
-                // enregistrement en bdd
-                $em->persist($card);
-                $em->flush();
+            $entityManager->persist($card);
+            $entityManager->flush();
 
-                $this->addFlash('success', 'La carte est enregistrée');
-
-                // redirection vers la liste
-                return $this->redirectToRoute('card_index');
-            } else {
-                $this->addFlash('error', 'Le formulaire contient des erreurs');
-            }
+            return $this->redirectToRoute('card_index');
         }
-
-        return $this->render(
-            'card/edit.html.twig',
-            [
-                // passage du formulaire au template
-                'form' => $form->createView()
-            ]
-        );
+        return $this->render('card/edit.html.twig', [
+            'card' => $card,
+            'form' => $form->createView()
+        ]);
     }
+
+
 
     /**
      * @Route("/suppression/{id}", name="card_delete")
