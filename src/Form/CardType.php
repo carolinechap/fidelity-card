@@ -49,9 +49,9 @@ class CardType extends AbstractType
                     'readonly' => true,
                     'required' => false,
                     'mapped' => false,
-                    'placeholder' => 'code carte'
-                ]
-            ])
+                    //'hidden' => true
+            ]
+                ])
         ;
     }
 

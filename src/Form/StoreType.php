@@ -50,7 +50,7 @@ class StoreType extends AbstractType
             ->add('name',
                 TextType::class,
                 [
-                    'label' => 'Nom centre laser game'
+                    'label' => 'Nom du centre'
                 ])
         ;
     }
