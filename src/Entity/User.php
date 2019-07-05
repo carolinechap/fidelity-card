@@ -90,11 +90,11 @@ class User implements UserInterface
      */
     private $card;
 
-    public function __construct($customerCode)
+    public function __construct()
     {
         $this->store = new ArrayCollection();
         $this->card = new ArrayCollection();
-        $this->customerCode = $customerCode;
+        $this->customerCode = null;
     }
 
     public function __toString()
@@ -348,13 +348,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function defineCustomerCode()
-    {
-        $randCode = mt_rand(1,999999);
-        $customerCode = sprintf("%06s\n",$randCode);
-
-        return $customerCode;
-    }
 
 
     /**

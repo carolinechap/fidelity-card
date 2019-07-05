@@ -238,7 +238,7 @@ class Store
 
     public function defineCenterCode(){
         $randCode = mt_rand(1,999);
-        $centerCode = sprintf("%03s\n",$randCode);
+        $centerCode = sprintf("%03s",$randCode);
 
         return $centerCode;
     }

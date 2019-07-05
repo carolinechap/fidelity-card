@@ -54,13 +54,24 @@ class Card
      */
     private $cardCode;
 
+    private $customerCodeWithoutCard;
+
     public function __construct()
     {
         $this->activity = new ArrayCollection();
         $this->deal = new ArrayCollection();
-        //$this->store
         //$this->checkSum = $this->defineCheckSum();
         //$this->cardCode = $this->defineCardCode();
+        //$this->customerCodeWithoutCard = $this->defineCustomerCode();
+    }
+
+    public static function createCard(string $status, int $checksum): self
+    {
+        $card = new self();
+        $card->setStatut([$status])
+            ->setCheckSum($checksum);
+
+        return $card;
     }
 
     public function getId(): ?int
@@ -193,24 +204,4 @@ class Card
         return $this;
     }
 
-    public function defineCheckSum(){
-        $centerCode =$this->getStore()->getCenterCode();
-        $customerCode = $this->getUser()->getCustomerCode();
-
-        $checkSum = ($centerCode+$customerCode)%9;
-
-
-        return $checkSum;
-    }
-    public function defineCardCode()
-    {
-        $centerCode = $this->getStore()->getCenterCode();
-        $customerCode = $this->getUser()->getCustomerCode();
-        $checkSum = $this->checkSum;
-        $cardCode = $centerCode . $customerCode . $checkSum;
-
-        $cardCode = (int)$cardCode;
-
-        return $cardCode;
-    }
 }
