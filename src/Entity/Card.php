@@ -50,28 +50,14 @@ class Card
     private $deal;
 
     /**
-     * @var integer
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $cardCode;
-
-    private $customerCodeWithoutCard;
+    private $customerCode;
 
     public function __construct()
     {
         $this->activity = new ArrayCollection();
         $this->deal = new ArrayCollection();
-        //$this->checkSum = $this->defineCheckSum();
-        //$this->cardCode = $this->defineCardCode();
-        //$this->customerCodeWithoutCard = $this->defineCustomerCode();
-    }
-
-    public static function createCard(string $status, int $checksum): self
-    {
-        $card = new self();
-        $card->setStatut([$status])
-            ->setCheckSum($checksum);
-
-        return $card;
     }
 
     public function getId(): ?int
@@ -108,25 +94,6 @@ class Card
         $this->checkSum = $checkSum;
         return $this;
     }
-
-    /**
-     * @return int
-     */
-    public function getCardCode(): int
-    {
-        return $this->cardCode;
-    }
-
-    /**
-     * @param int $cardCode
-     * @return Card
-     */
-    public function setCardCode(int $cardCode): Card
-    {
-        $this->cardCode = $cardCode;
-        return $this;
-    }
-
 
     public function getUser(): ?User
     {
@@ -202,6 +169,30 @@ class Card
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerCode()
+    {
+        return $this->customerCode;
+    }
+
+    /**
+     * @param mixed $customerCode
+     * @return Card
+     */
+    public function setCustomerCode($customerCode): self
+    {
+        $this->customerCode = $customerCode;
+        return $this;
+    }
+
+    public function getCode(): int
+    {
+        return $this->getStore()->getCenterCode() .
+            $this->getCustomerCode() . $this->getCheckSum();
     }
 
 }

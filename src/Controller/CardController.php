@@ -50,22 +50,19 @@ class CardController extends AbstractController
      */
     public function new(Request $request, CardGenerator $cardGenerator): Response
     {
+        # Création d'une nouvelle carte
         $card = new Card();
 
-        $form = $this->createForm(CardType::class, $card);
-
-        $form->handleRequest($request);
+        $form = $this->createForm(CardType::class, $card)
+            ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            # Process de création d'une carte ...
+            $card = $cardGenerator->generateCard($card);
+
+            # Sauvegarde de la carte
             $entityManager = $this->getDoctrine()->getManager();
-
-            $card->setCardCode($cardGenerator->generateCard($card->getStore()->getCenterCode()));
-            //$card->setCheckSum()
-
-            //dd($card);
-
-
             $entityManager->persist($card);
             $entityManager->flush();
 

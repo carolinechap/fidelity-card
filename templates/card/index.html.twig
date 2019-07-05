@@ -25,13 +25,15 @@
                 <tr>
                     <th scope="col">Numéro de carte</th>
                     <th scope="col">Centre</th>
+                    <th scope="col">Statut</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for card in cards %}
                     <tr>
-                        <th scope="row">{{ card.cardCode }}</th>
+                        <th scope="row">{{ card.code }}</th>
                         <td>{{ card.store }}</td>
+                        <td>{{ card.statut.0 }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
