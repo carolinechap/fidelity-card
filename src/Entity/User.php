@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -66,11 +65,6 @@ class User implements UserInterface
     private $country;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $customerCode;
-
-    /**
      * @ORM\Column(type="string", length=100)
      */
     private $lastname;
@@ -94,9 +88,15 @@ class User implements UserInterface
     {
         $this->store = new ArrayCollection();
         $this->card = new ArrayCollection();
+        $this->customerCode = null;
     }
 
     public function __toString()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function getFullname()
     {
         return $this->firstname . ' ' . $this->lastname;
     }
@@ -223,18 +223,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCustomerCode(): ?int
-    {
-        return $this->customerCode;
-    }
-
-    public function setCustomerCode(?int $customerCode): self
-    {
-        $this->customerCode = $customerCode;
-
-        return $this;
-    }
-
     public function getLastname(): ?string
     {
         return $this->lastname;
@@ -333,6 +321,7 @@ class User implements UserInterface
         $this->plainPassword = $plainPassword;
         return $this;
     }
+
 
 
     /**

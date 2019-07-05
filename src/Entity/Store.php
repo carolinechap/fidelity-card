@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StoreRepository")
@@ -25,31 +26,37 @@ class Store
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Length(max="6", maxMessage="Le numéro de rue ne doit pas dépasser {{ limit }} caractères")
      */
     private $numberStreet;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="150", maxMessage="Le nom de la rue ne doit pas dépasser {{ limit }} caractères")
      */
     private $nameStreet;
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Length(max="20", maxMessage="Le code postal ne doit pas dépasser {{ limit }} caractères")
      */
     private $zipCode;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="La ville ne doit pas dépasser {{ limit }} caractères")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="Le pays ne doit pas dépasser {{ limit }} caractères")
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="Le nom ne doit pas dépasser {{ limit }} caractères")
      */
     private $name;
 
@@ -59,7 +66,7 @@ class Store
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="store")
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="store", cascade={"persist"})
      */
     private $card;
 
@@ -67,23 +74,17 @@ class Store
     {
         $this->users = new ArrayCollection();
         $this->card = new ArrayCollection();
+        $this->centerCode = $this->defineCenterCode();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCenterCode(): ?int
-    {
-        return $this->centerCode;
-    }
-
-    public function setCenterCode(int $centerCode): self
-    {
-        $this->centerCode = $centerCode;
-
-        return $this;
     }
 
     public function getNumberStreet(): ?int
@@ -159,6 +160,24 @@ class Store
     }
 
     /**
+     * @return mixed
+     */
+    public function getCenterCode()
+    {
+        return $this->centerCode;
+    }
+
+    /**
+     * @param mixed $centerCode
+     * @return Store
+     */
+    public function setCenterCode($centerCode)
+    {
+        $this->centerCode = $centerCode;
+        return $this;
+    }
+
+    /**
      * @return Collection|User[]
      */
     public function getUsers(): Collection
@@ -215,5 +234,12 @@ class Store
         }
 
         return $this;
+    }
+
+    public function defineCenterCode(){
+        $randCode = mt_rand(1,999);
+        $centerCode = sprintf("%03s",$randCode);
+
+        return $centerCode;
     }
 }

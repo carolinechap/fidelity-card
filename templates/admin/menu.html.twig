@@ -10,7 +10,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                <a class="nav-link {{app.request.attributes.get('_route') == 'card_index' ? 'active' }}" href="{{ path('card_index') }}">
                                     <span data-feather="credit-card"></span>
                                     Cartes de fidélité
                                 </a>
@@ -48,13 +48,13 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                    <a class="nav-link {{ app.request.attributes.get('_route') == 'store_index' ? 'active' }}" href="{{ path('store_index') }}">
                                         <span data-feather="map"></span>
                                         Magasins
                                     </a>
                                     <ul class="nav flex-column nested-list">
                                         <li class="nav-item">
-                                            <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
+                                            <a class="nav-link {{ app.request.attributes.get('_route') == 'store_edition' ? 'active' }}" href="{{ path('store_edition') }}">
                                                 <span data-feather="plus-circle"></span>
                                                 Ajouter un magasin
                                             </a>

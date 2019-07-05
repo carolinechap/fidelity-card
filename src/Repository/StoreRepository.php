@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Store;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,15 @@ class StoreRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Store::class);
+    }
+
+    public function getLastCenterCode()
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb ->select('MAX(s.centerCode) as lastCode');
+
+        return $qb->getQuery()->getSingleResult();
+
     }
 
     // /**

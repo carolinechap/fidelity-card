@@ -35,6 +35,7 @@ class Card
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Store", inversedBy="card")
+     * @ORM\JoinColumn(name="store_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $store;
 
@@ -47,6 +48,11 @@ class Card
      * @ORM\ManyToMany(targetEntity="App\Entity\Deal", inversedBy="cards")
      */
     private $deal;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $customerCode;
 
     public function __construct()
     {
@@ -71,15 +77,21 @@ class Card
         return $this;
     }
 
-    public function getCheckSum(): ?int
+    /**
+     * @return mixed
+     */
+    public function getCheckSum()
     {
         return $this->checkSum;
     }
 
-    public function setCheckSum(int $checkSum): self
+    /**
+     * @param mixed $checkSum
+     * @return Card
+     */
+    public function setCheckSum($checkSum)
     {
         $this->checkSum = $checkSum;
-
         return $this;
     }
 
@@ -88,7 +100,7 @@ class Card
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
@@ -158,4 +170,29 @@ class Card
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerCode()
+    {
+        return $this->customerCode;
+    }
+
+    /**
+     * @param mixed $customerCode
+     * @return Card
+     */
+    public function setCustomerCode($customerCode): self
+    {
+        $this->customerCode = $customerCode;
+        return $this;
+    }
+
+    public function getCode(): int
+    {
+        return $this->getStore()->getCenterCode() .
+            $this->getCustomerCode() . $this->getCheckSum();
+    }
+
 }
