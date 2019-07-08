@@ -12,13 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CardActivity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
 
     /**
      * @ORM\Column(type="string", length=150, nullable=true)
@@ -31,12 +24,16 @@ class CardActivity
     private $personalScore;
 
     /**
+     * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Entity\Card", inversedBy="activities")
+     * @ORM\JoinColumn(name="card_id", referencedColumnName="id", nullable=false)
      */
     private $card;
 
     /**
+     * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="cards")
+     * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      */
     private $activity;
 
