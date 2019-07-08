@@ -36,14 +36,7 @@ class CardActivity
      * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      */
     private $activity;
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+    
 
     /**
      * @return mixed
