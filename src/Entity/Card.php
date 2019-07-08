@@ -39,10 +39,6 @@ class Card
      */
     private $store;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Activity", inversedBy="cards")
-     */
-    private $activity;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Deal", inversedBy="cards")
@@ -54,9 +50,14 @@ class Card
      */
     private $customerCode;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CardActivity", mappedBy="card")
+     */
+    private $activities;
+
     public function __construct()
     {
-        $this->activity = new ArrayCollection();
+        $this->activities = new ArrayCollection();
         $this->deal = new ArrayCollection();
     }
 
@@ -120,30 +121,35 @@ class Card
     }
 
     /**
-     * @return Collection|Activity[]
+     * @return mixed
      */
-    public function getActivity(): Collection
+    public function getActivities()
     {
-        return $this->activity;
+        return $this->activities;
     }
 
-    public function addActivity(Activity $activity): self
+    public function addActivity(CardActivity $activity): self
     {
-        if (!$this->activity->contains($activity)) {
-            $this->activity[] = $activity;
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->setCard($this);
         }
 
         return $this;
     }
 
-    public function removeActivity(Activity $activity): self
+    public function removeActivity(CardActivity $activity): self
     {
-        if ($this->activity->contains($activity)) {
-            $this->activity->removeElement($activity);
-        }
+        if($this->activities->contains($activity)){
+            $this->activities->remove($activity);
 
+            if($activity->getCard() === $this){
+                $activity->setCard(null);
+            }
+        }
         return $this;
     }
+
 
     /**
      * @return Collection|Deal[]
@@ -194,5 +200,7 @@ class Card
         return $this->getStore()->getCenterCode() .
             $this->getCustomerCode() . $this->getCheckSum();
     }
+
+
 
 }
