@@ -29,6 +29,8 @@ class CardGenerator
     private function generateCustomerCode(): int {
         $randCode = mt_rand(1,999999);
         return sprintf("%06s",$randCode);
+        //TODO: Rendre le numéro unique
+
     }
 
 }
