@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Deal{% endblock %}
+
+{% block body %}
+    <h1>Create new Deal</h1>
+
+    {{ include('deal/_form.html.twig') }}
+
+    {% if id is defined and id is not null %}
+        {{ include('deal/_delete_form.html.twig') }}
+    {% endif %}
+
+    <a href="{{ path('deal_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,10 @@
+deal:
+  name:
+    blank: Le nom ne doit pas être vide
+  startdate:
+    valid: La date de début n'est pas valide
+  enddate:
+    valid: La date de fin n'est pas valide
+  description:
+    max: La description ne peut pas dépasser {{ max }} caractères.
+    min: La description doit être au minimu de {{ min }} caractères.

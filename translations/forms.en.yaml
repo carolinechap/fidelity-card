@@ -1,0 +1,8 @@
+deal:
+  form:
+    label:
+      name: Name
+      startdate: Start date
+      enddate: End date
+      description: Description
+      costpoint: Cost
