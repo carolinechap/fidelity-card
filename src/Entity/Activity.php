@@ -39,9 +39,10 @@ class Activity
     private $isTheWinner;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Card", mappedBy="activity")
+     * @ORM\OneToMany(targetEntity="App\Entity\CardActivity", mappedBy="activity")
      */
     private $cards;
+
 
     public function __construct()
     {
@@ -102,30 +103,37 @@ class Activity
     }
 
     /**
-     * @return Collection|Card[]
+     * @return mixed
      */
-    public function getCards(): Collection
+    public function getCards()
     {
         return $this->cards;
     }
 
-    public function addCard(Card $card): self
+    public function addCard(CardActivity $card): self
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
-            $card->addActivity($this);
+            $card->setActivity($this);
         }
 
         return $this;
     }
 
-    public function removeCard(Card $card): self
+    public function removeActivity(CardActivity $card): self
     {
-        if ($this->cards->contains($card)) {
-            $this->cards->removeElement($card);
-            $card->removeActivity($this);
-        }
+        if($this->cards->contains($card)){
+            $this->cards->remove($card);
 
+            if($card->getActivity() === $this){
+                $card->setActivity(null);
+            }
+        }
         return $this;
     }
+
+
+
+
+
 }
