@@ -1,0 +1,7 @@
+activity:
+  personalscore:
+    positive: Points can not be negative
+  fidelitypoint:
+    positive: Fidelity points can not be negative
+  gamedate:
+    valid: The activity date is not a valid date
