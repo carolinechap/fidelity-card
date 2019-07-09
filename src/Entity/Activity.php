@@ -34,6 +34,7 @@ class Activity
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime(message="activity.gamedate.valid")
+     * @Assert\LessThan("tomorrow")
      */
     private $gameDate;
 

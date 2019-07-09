@@ -5,3 +5,4 @@ activity:
     positive: Les points de fidélités ne doivent pas être négatif
   gamedate:
     valid: La date de l'activité n'est pas valide
+    greaterthan: La date ne peut pas être supérieur à {{ value }}
