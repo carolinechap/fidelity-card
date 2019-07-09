@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
@@ -20,16 +21,19 @@ class Activity
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Positive(message="activity.personalscore.positive")
      */
     private $personalScore;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Positive(message="activity.fidelitypoint.positive")
      */
     private $fidelityPoint;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime(message="activity.gamedate.valid")
      */
     private $gameDate;
 
