@@ -65,6 +65,9 @@
             </div>
         </nav>
     {% endif %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN') %}
+<div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+        {% endif %}
 
         {% for type, messages in app.session.flashBag.all %}
             {% for message in messages %}
@@ -76,6 +79,11 @@
                 </div>
             {% endfor %}
         {% endfor %}
+
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN') %}
+</div>
+    {% endif %}
+
 
     {% block body %}{% endblock %}
 
