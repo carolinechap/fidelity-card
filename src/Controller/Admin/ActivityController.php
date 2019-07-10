@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Activity\FidelityPointGenerator;
 use App\Entity\Activity;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class ActivityController
  * @package App\Controller
- * @Route("/activite")
+ * @Route("/admin/activite")
  */
 class ActivityController extends AbstractController
 {
@@ -26,7 +26,7 @@ class ActivityController extends AbstractController
     {
         $activities = $activityRepository->findAll();
 
-        return $this->render('activity/index.html.twig', [
+        return $this->render('admin/activity/index.html.twig', [
             'activities' => $activities,
         ]);
     }
@@ -43,7 +43,7 @@ class ActivityController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
 
-            $activity = $fidelityPointGenerator->generateFidelityPoint($activity);
+            //$activity = $fidelityPointGenerator->generateFidelityPoint($activity);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($activity);
@@ -52,7 +52,7 @@ class ActivityController extends AbstractController
             return $this->redirectToRoute('activity_index');
         }
 
-        return $this->render('activity/new.html.twig', [
+        return $this->render('admin/activity/new.html.twig', [
             'activity' => $activity,
             'form' => $form->createView()
         ]);
@@ -76,7 +76,7 @@ class ActivityController extends AbstractController
             ]);
         }
 
-        return $this->render('activity/new.html.twig', [
+        return $this->render('admin/activity/new.html.twig', [
             'activity' => $activity,
             'form' => $form->createView()
         ]);
