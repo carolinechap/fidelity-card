@@ -88,7 +88,7 @@ class User implements UserInterface
     {
         $this->store = new ArrayCollection();
         $this->card = new ArrayCollection();
-        $this->customerCode = null;
+        //$this->customerCode = null;
     }
 
     public function __toString()

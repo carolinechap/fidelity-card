@@ -55,6 +55,17 @@ class Card
      */
     private $activities;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $fidelityPoint;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $personalScore;
+
+
     public function __construct()
     {
         $this->activities = new ArrayCollection();
@@ -202,5 +213,33 @@ class Card
     }
 
 
+    public function getCardOwnerName()
+    {
+        return $this->customerCode . ' - ' . $this->getUser()->getFullName();
+    }
+
+    public function getFidelityPoint(): ?int
+    {
+        return $this->fidelityPoint;
+    }
+
+    public function setFidelityPoint(?int $fidelityPoint): self
+    {
+        $this->fidelityPoint = $fidelityPoint;
+
+        return $this;
+    }
+
+    public function getPersonalScore(): ?int
+    {
+        return $this->personalScore;
+    }
+
+    public function setPersonalScore(?int $personalScore): self
+    {
+        $this->personalScore = $personalScore;
+
+        return $this;
+    }
 
 }

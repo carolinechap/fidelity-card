@@ -6,9 +6,18 @@
     <div class="container-fluid dashboard">
         <div class="row">
 {% include('admin/menu.html.twig') %}
-
-        </div>
-    </div>
+            <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Apercu rapide</h1>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Ajouter un jeu sur une carte</h5>
+                        <p>Un client présente sa carte et fait une activité</p>
+                        <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="{{ path('card_activity_new') }}">Ajouter</a>
+                    </div>
+                </div>
+            </div>
 {% endblock %}
 
 {% block javascripts %}

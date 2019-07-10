@@ -16,7 +16,10 @@ class CardGenerator
         # Génération de la carte
         $card->setCustomerCode($this->generateCustomerCode())
             ->setCheckSum(($card->getStore()->getCenterCode() + $card->getCustomerCode()) % 9)
-            ->setStatut(['PRE_ACTIVATED']);
+            ->setStatut(['PRE_ACTIVATED'])
+            ->setFidelityPoint(0)
+            ->setPersonalScore(0);
+
 
         # Retour de la carte mise à jour
         return $card;

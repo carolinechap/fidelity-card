@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190703122107 extends AbstractMigration
+final class Version20190710095508 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,8 @@ final class Version20190703122107 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D3B092A811');
-        $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D3B092A811 FOREIGN KEY (store_id) REFERENCES store (id)');
+        $this->addSql('ALTER TABLE activity DROP game_date');
+        $this->addSql('ALTER TABLE card_activity ADD game_date DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +31,7 @@ final class Version20190703122107 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D3B092A811');
-        $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D3B092A811 FOREIGN KEY (store_id) REFERENCES store (id) ON DELETE SET NULL');
+        $this->addSql('ALTER TABLE activity ADD game_date DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE card_activity DROP game_date');
     }
 }

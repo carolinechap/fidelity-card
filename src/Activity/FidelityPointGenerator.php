@@ -4,22 +4,32 @@
 namespace App\Activity;
 
 
-use App\Entity\Activity;
+use App\Entity\CardActivity;
 
 class FidelityPointGenerator
 {
 
-    public function generateFidelityPoint(Activity $activity) : Activity
+    public function generateFidelityPoint(CardActivity $cardActivity) : int
     {
 
-        if($activity->getIsTheWinner() == 1){
+        if($cardActivity->getIsTheWinner() == 1){
+            $cardActivity->getCard()->setFidelityPoint($cardActivity->getActivity()->getFidelityPoint() + 50);
 
-            $activity->setFidelityPoint(150);
         }
-        if ($activity->getIsTheWinner() == 0){
-            $activity->setFidelityPoint(50);
+        if ($cardActivity->getIsTheWinner() == 0){
+            $cardActivity->getCard()->setFidelityPoint($cardActivity->getActivity()->getFidelityPoint());
         }
-        return $activity;
+        return $cardActivity->getCard()->getFidelityPoint();
+    }
+
+    public function sumFidelityPoint(CardActivity $cardActivity) : int
+    {
+        $fidelityPointOnCard = $cardActivity->getCard()->getFidelityPoint();
+
+            $result = $fidelityPointOnCard + $this->generateFidelityPoint($cardActivity);
+
+            return $result;
+
     }
 
 }

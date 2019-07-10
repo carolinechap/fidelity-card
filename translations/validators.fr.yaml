@@ -1,7 +1,14 @@
 activity:
-  personalscore:
-    positive: Le nombre de point ne doit pas être négatif
   fidelitypoint:
     positive: Les points de fidélités ne doivent pas être négatif
+  gamename:
+    blank: Le nom de l'activité ne peut pas être vide
+    maxlength: Le nom de l'activité ne peut pas dépasser {{ max }} caractères
+cardActivity:
+  personalscore:
+    positive: Le nombre de point ne doit pas être négatif
+  isthewinner:
+    type: La valeur {{ value }} n'est pas valide
   gamedate:
     valid: La date de l'activité n'est pas valide
+    lessthan: La date ne peut pas être supérieure à aujourd'hui
