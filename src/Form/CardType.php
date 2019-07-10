@@ -42,16 +42,7 @@ class CardType extends AbstractType
                 ]
             )
 
-            ->add('checkSum',
-                TextType::class, [
-                'label' => 'Code carte',
-                'attr' => [
-                    'readonly' => true,
-                    'required' => false,
-                    'mapped' => false,
-                    //'hidden' => true
-            ]
-                ])
+
         ;
     }
 
