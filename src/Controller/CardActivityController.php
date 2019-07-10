@@ -7,6 +7,7 @@ use App\Activity\SumPersonalScore;
 use App\Entity\Activity;
 use App\Entity\Card;
 use App\Entity\CardActivity;
+use App\Entity\User;
 use App\Form\ActivityType;
 use App\Form\CardActivityType;
 use App\Repository\ActivityRepository;
@@ -92,6 +93,7 @@ class CardActivityController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/suppression/{id}", name="card_activity_delete", methods={"GET"})
      */
     public function delete(CardActivity $cardActivity) {
@@ -108,16 +110,22 @@ class CardActivityController extends AbstractController
     }
 
     /**
-     * @Route("/historique/{id}", name="card_activity_historical", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     * @Route("/historique", name="card_activity_historical", methods={"GET"})
      */
-    public function displayHistorical(CardActivityRepository $cardActivityRepository, ActivityRepository $activityRepository, Card $id){
+    public function displayHistorical(CardActivityRepository $cardActivityRepository, CardRepository $cardRepository){
 
-        $personalGames = $cardActivityRepository->findBy(['card_id' => $id]);
-        $activity = $activityRepository->findAll();
+        // Récupération de l'id du User
+        $user = $this->getUser();
+
+        $activities = $cardActivityRepository->findActivityByUser($user);
+        //TODO:Recuperer seulement 1 fois sans boucle les points
+        //$card = $cardRepository->findCardByUser($user);
+        //dd($card);
 
         return $this->render('card_activity/historical.html.twig', [
-            'personalGames' => $personalGames,
-            'activity' => $activity
+            'activities' => $activities,
+            //'card' => $card
         ]);
 
     }

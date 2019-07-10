@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Card;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -18,6 +19,18 @@ class CardRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Card::class);
     }
+
+    public function findCardByUser(User $user){
+        $qb = $this->createQueryBuilder('c')
+            ->join('c.user', 'cu')
+            ->andWhere('c.user = :user')
+            ->setParameter(':user', $user);
+
+        return $qb->getQuery()->getResult();
+
+
+    }
+
 
 
     // /**
