@@ -16,6 +16,18 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link {{app.request.attributes.get('_route') == 'activity_index' ? 'active' }}" href="{{ path('activity_index') }}">
+                                    <span data-feather="box"></span>
+                                    Activités du laser game
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.attributes.get('_route') == 'card_activity_index' ? 'active' }}" href="{{ path('card_activity_index') }}">
+                                    <span data-feather="users"></span>
+                                    Activités client
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
                                     <span data-feather="shopping-cart"></span>
                                     Offres
