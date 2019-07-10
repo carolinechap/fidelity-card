@@ -21,32 +21,22 @@ class Activity
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\Positive(message="activity.personalscore.positive")
-     */
-    private $personalScore;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
      * @Assert\Positive(message="activity.fidelitypoint.positive")
      */
     private $fidelityPoint;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime(message="activity.gamedate.valid")
-     * @Assert\LessThan("tomorrow")
-     */
-    private $gameDate;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isTheWinner;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CardActivity", mappedBy="activity")
      */
     private $cards;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="activity.gamename.blank")
+     * @Assert\Length(max="100", maxMessage="activity.gamename.maxlength")
+     */
+    private $gameName;
 
 
     public function __construct()
@@ -54,22 +44,16 @@ class Activity
         $this->cards = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->gameName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPersonalScore(): ?int
-    {
-        return $this->personalScore;
-    }
-
-    public function setPersonalScore(?int $personalScore): self
-    {
-        $this->personalScore = $personalScore;
-
-        return $this;
-    }
 
     public function getFidelityPoint(): ?int
     {
@@ -79,30 +63,6 @@ class Activity
     public function setFidelityPoint(?int $fidelityPoint): self
     {
         $this->fidelityPoint = $fidelityPoint;
-
-        return $this;
-    }
-
-    public function getGameDate(): ?\DateTimeInterface
-    {
-        return $this->gameDate;
-    }
-
-    public function setGameDate(?\DateTimeInterface $gameDate): self
-    {
-        $this->gameDate = $gameDate;
-
-        return $this;
-    }
-
-    public function getIsTheWinner(): ?bool
-    {
-        return $this->isTheWinner;
-    }
-
-    public function setIsTheWinner(?bool $isTheWinner): self
-    {
-        $this->isTheWinner = $isTheWinner;
 
         return $this;
     }
@@ -134,6 +94,18 @@ class Activity
                 $card->setActivity(null);
             }
         }
+        return $this;
+    }
+
+    public function getGameName(): ?string
+    {
+        return $this->gameName;
+    }
+
+    public function setGameName(string $gameName): self
+    {
+        $this->gameName = $gameName;
+
         return $this;
     }
 

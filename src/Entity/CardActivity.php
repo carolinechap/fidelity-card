@@ -4,6 +4,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class CardActivity
@@ -12,31 +13,50 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CardActivity
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
     /**
-     * @ORM\Column(type="string", length=150, nullable=true)
+     * @ORM\Column(type="boolean", length=150, nullable=true)
      */
     private $isTheWinner;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Positive(message="cardActivity.personalscore.positive")
      */
     private $personalScore;
 
     /**
-     * @ORM\Id()
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime(message="cardActivity.gamedate.valid")
+     * @Assert\LessThan("tomorrow", message="cardActivity.gamedate.lessthan")
+     */
+    private $gameDate;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Card", inversedBy="activities")
      * @ORM\JoinColumn(name="card_id", referencedColumnName="id", nullable=false)
      */
     private $card;
 
     /**
-     * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="cards")
      * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      */
     private $activity;
-    
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @return mixed
@@ -110,6 +130,26 @@ class CardActivity
         $this->personalScore = $personalScore;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGameDate()
+    {
+        return $this->gameDate;
+    }
+
+    /**
+     * @param mixed $gameDate
+     * @return CardActivity
+     */
+    public function setGameDate($gameDate)
+    {
+        $this->gameDate = $gameDate;
+        return $this;
+    }
+
+
 
 
 
