@@ -1,7 +1,14 @@
 activity:
-  personalscore:
-    positive: Points can not be negative
   fidelitypoint:
     positive: Fidelity points can not be negative
+  gamename:
+    blank: The activity can not be null
+    maxlength: The activity name can not be more than {{ max }} characters
+cardActivity:
+  personalscore:
+    positive: Points can not be negative
+  isthewinner:
+    type: La valeur {{ value }} n'est pas valide
   gamedate:
     valid: The activity date is not a valid date
+    lessthan: The activity date can not be superior of today
