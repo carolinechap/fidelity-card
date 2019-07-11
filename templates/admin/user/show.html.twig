@@ -28,6 +28,7 @@
 
                     {% for card in cards %}
                     <p class="card-text"><span class="font-weight-bold">Points de fidélité :</span> {{ card.fidelityPoint }}</p>
+                    <p class="card-text"><span class="font-weight-bold">Numéro de la carte :</span> {{ card.code }}</p>
                     <p class="card-text"><span class="font-weight-bold">Score personnel :</span> {{ card.personalScore }}</p>
                     {% endfor %}
                     <div class="d-flex justify-content-end">
