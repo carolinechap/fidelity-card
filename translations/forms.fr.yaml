@@ -1,8 +1,8 @@
 deal:
   form:
     label:
-      name: Nom
+      name: Nom de l'offre
       startdate: Date de début
       enddate: Date de fin
       description: Description
-      costpoint: Coût
+      costpoint: Coût (en points de fidélité)
