@@ -6,5 +6,5 @@ deal:
   enddate:
     valid: La date de fin n'est pas valide
   description:
-    max: La description ne peut pas dépasser {{ max }} caractères.
-    min: La description doit être au minimun de {{ min }} caractères.
+    max: La description ne peut pas dépasser {{ limit }} caractères.
+    min: La description doit être au minimun de {{ limit }} caractères.

@@ -6,5 +6,5 @@ deal:
   enddate:
     valid: The start date is not a valid date
   description:
-    max: Description cannot be more than {{ max }} characters.
-    min: Description must be {{ min }} characters minimum.
+    max: Description cannot be more than {{ limit }} characters.
+    min: Description must be {{ limit }} characters minimum.
