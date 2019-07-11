@@ -39,7 +39,7 @@ class Deal
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(maxMessage="deal.description.max", max="255", minMessage="deal.description.min", min="3")
+     * @Assert\Length(maxMessage="deal.description.max", max="255", min="3", minMessage="deal.description.min")
      */
     private $description;
 

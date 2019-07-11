@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\SuperAdmin;
 
 use App\Entity\Deal;
 use App\Form\DealType;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/deal")
+ * @Route("/gerant/offre")
  */
 class DealController extends AbstractController
 {
@@ -20,13 +20,13 @@ class DealController extends AbstractController
      */
     public function index(DealRepository $dealRepository): Response
     {
-        return $this->render('deal/index.html.twig', [
+        return $this->render('superadmin/deal/index.html.twig', [
             'deals' => $dealRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="deal_new", methods={"GET","POST"})
+     * @Route("/creation", name="deal_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -42,7 +42,7 @@ class DealController extends AbstractController
             return $this->redirectToRoute('deal_index');
         }
 
-        return $this->render('deal/form.html.twig', [
+        return $this->render('superadmin/deal/new.html.twig', [
             'deal' => $deal,
             'form' => $form->createView(),
         ]);
@@ -53,13 +53,13 @@ class DealController extends AbstractController
      */
     public function show(Deal $deal): Response
     {
-        return $this->render('deal/show.html.twig', [
+        return $this->render('superadmin/deal/show.html.twig', [
             'deal' => $deal,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="deal_edit", methods={"GET","POST"})
+     * @Route("/{id}/edition", name="deal_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Deal $deal): Response
     {
@@ -74,22 +74,21 @@ class DealController extends AbstractController
             ]);
         }
 
-        return $this->render('deal/form.html.twig', [
+        return $this->render('superadmin/deal/new.html.twig', [
             'deal' => $deal,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="deal_delete", methods={"DELETE"})
+     * @Route("/suppression/{id}", name="deal_delete", methods={"GET"})
      */
-    public function delete(Request $request, Deal $deal): Response
+    public function delete(Deal $deal): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$deal->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($deal);
             $entityManager->flush();
-        }
+            $this->addFlash('success', 'L\'offre a été supprimée');
 
         return $this->redirectToRoute('deal_index');
     }
