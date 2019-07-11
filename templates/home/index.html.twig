@@ -4,18 +4,36 @@
 
 {% block body %}
 
-    <div class="container-fluid bg-img d-flex align-items-center justify-content-center">
+    <div class="container-fluid bg-img">
 {% if app.user %}
     {% if is_granted('ROLE_USER') %}
-    <div class="jumbotron">
-        <h1 class="display-4"> Bonjour {{ app.user }}!</h1>
-        <p class="lead">Ici tu accederas à toutes tes informations concernant tes parties au Laser Game!</p>
-        <hr class="my-4">
-        <a class="btn btn-danger btn-lg" href="{{ path('card_activity_historical') }}" >Voir mon historique</a>
-    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title">Mon historique de jeu</h5>
+                            <p class="card-text">Ici tu accederas à toutes tes informations concernant tes parties au Laser Game!</p>
+                            <a href="{{ path('card_activity_historical') }}" class="card-link btn btn-secondary">Voir</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title">Mes deals</h5>
+                            <p class="card-text"></p>
+                            <a href="#" class="card-link btn btn-secondary">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         {% endif %}
         {% else %}
-            <div class="container ">
+            <div class="container">
             <div class="card bg-light mb-3 connection-card">
                 <div class="card-body">
                     <a class="btn btn-dark btn-lg btn-block" href="{{ path('signup_route') }}">S'incrire</a>
