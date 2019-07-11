@@ -27,9 +27,12 @@ class CardRepository extends ServiceEntityRepository
             ->setParameter(':user', $user);
 
         return $qb->getQuery()->getResult();
-
-
     }
+
+
+
+
+
 
 
 
