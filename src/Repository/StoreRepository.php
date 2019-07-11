@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Store;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -20,13 +21,14 @@ class StoreRepository extends ServiceEntityRepository
         parent::__construct($registry, Store::class);
     }
 
-    public function getLastCenterCode()
+    public function findStoreByUser(User $user)
     {
         $qb = $this->createQueryBuilder('s');
-        $qb ->select('MAX(s.centerCode) as lastCode');
+        $qb->join('s.card', 'sc')
+            ->andWhere('sc.user = :user')
+            ->setParameter(':user', $user);
 
-        return $qb->getQuery()->getSingleResult();
-
+        return $qb->getQuery()->getResult();
     }
 
     // /**

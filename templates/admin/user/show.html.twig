@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Offres{% endblock %}
+
+    {% block body %}
+        {% include('admin/menu.html.twig') %}
+        <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Client</h1>
+            </div>
+
+            <a href="{{ path('admin_user_index') }}"
+               class="btn btn-outline-primary mb-3">
+                Retour vers la liste
+            </a>
+
+            <div class="card">
+                <h5 class="card-header text-center">{{ user.fullname }}</h5>
+                <div class="card-body">
+                    <p class="card-text"><span class="font-weight-bold">Adresse :</span> <br>
+                        {{ user.numberStreet }} {{ user.nameStreet }} <br>
+                        {{ user.zipCode }}  {{ user.city }}<br> {{ user.country }}</p>
+                    <p class="card-text"> <span class="font-weight-bold">Adresse email :</span> {{ user.email }}</p>
+
+                    {% for store in stores %}
+                    <p class="card-text"><span class="font-weight-bold"> Magasin préféré :</span> {{ store.name }}</p>
+                    {% endfor %}
+
+                    {% for card in cards %}
+                    <p class="card-text"><span class="font-weight-bold">Points de fidélité :</span> {{ card.fidelityPoint }}</p>
+                    <p class="card-text"><span class="font-weight-bold">Score personnel :</span> {{ card.personalScore }}</p>
+                    {% endfor %}
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ path('admin_user_index', {'id' : user.id}) }}" class="btn btn-danger">
+                            Supprimer
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    {% endblock %}
+
