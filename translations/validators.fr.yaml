@@ -1,3 +1,13 @@
+deal:
+  name:
+    blank: Le nom ne doit pas être vide
+  startdate:
+    valid: La date de début n'est pas valide
+  enddate:
+    valid: La date de fin n'est pas valide
+  description:
+    max: La description ne peut pas dépasser {{ limit }} caractères.
+    min: La description doit être au minimun de {{ limit }} caractères.
 activity:
   fidelitypoint:
     positive: Les points de fidélités ne doivent pas être négatif

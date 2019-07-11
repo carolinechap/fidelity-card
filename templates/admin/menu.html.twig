@@ -29,12 +29,6 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
-                                    <span data-feather="shopping-cart"></span>
-                                    Offres
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ app.request.attributes.get('_route') == '#' ? 'active' }}" href="#">
                                     <span data-feather="users"></span>
                                     Clients
                                 </a>
@@ -69,6 +63,20 @@
                                             <a class="nav-link {{ app.request.attributes.get('_route') == 'store_edition' ? 'active' }}" href="{{ path('store_edition') }}">
                                                 <span data-feather="plus-circle"></span>
                                                 Ajouter un magasin
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_index' ? 'active' }}" href="{{ path('deal_index') }}">
+                                        <span data-feather="shopping-cart"></span>
+                                        Offres
+                                    </a>
+                                    <ul class="nav flex-column nested-list">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_new' ? 'active' }}" href="{{ path('deal_new') }}">
+                                                <span data-feather="plus-circle"></span>
+                                                Ajouter un offre
                                             </a>
                                         </li>
                                     </ul>

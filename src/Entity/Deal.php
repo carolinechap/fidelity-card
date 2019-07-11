@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DealRepository")
@@ -20,26 +21,31 @@ class Deal
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="deal.name.blank")
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime(message="deal.startdate.valid")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime(message="deal.enddate.valid")
      */
     private $endDate;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(maxMessage="deal.description.max", max="255", min="3", minMessage="deal.description.min")
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer")
+     * @todo assert for costPoint range ?
      */
     private $costPoint;
 
