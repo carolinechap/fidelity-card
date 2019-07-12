@@ -32,15 +32,29 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
+
+        //This card is for test and demo purposes
+        $oneCard = new Card();
+        $oneCard->setUser($this->getReference('mycustomer'));
+        $oneCard->setCustomerCode($this->cardGenerator->generateCustomerCode());
+        $oneCard->setCheckSum($faker->randomNumber(5));
+        $oneCard->setFidelityPoint($faker->numberBetween(200, 500));
+        $oneCard->setStore($this->getReference('mystore'));
+        
+        $manager->persist($oneCard);
+
         for ($x = 1; $x < self::NB_CARDS; $x ++) {
             $card = new Card();
-            $card->setStore($this->getReference('store_'.$x));
+            for ($y = 1; $y <= StoreFixtures::NB_STORES; $y ++) {
+                $card->setStore($this->getReference('store_'.$y));
+            }
             $card->setUser($this->getReference('customer_'.$x));
             $card->setCustomerCode($this->cardGenerator->generateCustomerCode());
             $card->setCheckSum($faker->randomNumber(5));
-            $card->setFidelityPoint(rand($x *10, $x * 100));
+            $card->setFidelityPoint($faker->numberBetween(200, 500));
 
             $manager->persist($card);
+            $this->addReference('card_'.$x, $card);
         }
 
         $manager->flush();
@@ -56,7 +70,8 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            CustomerFixtures::class
+            CustomerFixtures::class,
+            StoreFixtures::class
         ];
     }
 

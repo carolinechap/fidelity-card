@@ -22,7 +22,8 @@ class CustomerFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
-        
+
+        //This customer is for test and demo purposes, login with email 'customer@email.com' and password customer
         $oneCustomer = new User();
         $oneCustomer->setFirstname("Customer");
         $oneCustomer->setLastname("Customer");
@@ -38,6 +39,8 @@ class CustomerFixtures extends Fixture
         $oneCustomer->setRoles(['ROLE_USER']);
 
         $manager->persist($oneCustomer);
+        $this->addReference('mycustomer', $oneCustomer);
+        //end of customer demo
 
         for($c = 0; $c<self::COUNT; $c++){
             $customer = new User();

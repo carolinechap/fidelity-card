@@ -24,15 +24,35 @@ class StoreFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
-        for ($x = 1; $x < self::NB_STORES; $x ++)
+        //This store is for test and demo purposes
+        $myStore = new Store();
+        $myStore->setName('LaserGame myStore');
+        $myStore->setCenterCode($faker->numberBetween(100, 999));
+        $myStore->setCity($faker->city);
+        $myStore->setCountry($faker->country);
+        $myStore->setNumberStreet($faker->numberBetween(1,30));
+        $myStore->setNameStreet($faker->streetName);
+        $myStore->setZipCode($faker->postcode);
+        $manager->persist($myStore);
+        $this->addReference('mystore', $myStore);
+
+        for ($x = 1; $x < self::NB_STORES + 1; $x ++)
         {
             $store = new Store();
             $store->setName("LaserGame ".$faker->lastName);
             for ($y = 1; $y < CustomerFixtures::COUNT; $y ++) {
                 $store->addUser($this->getReference('customer_'.$y));
             }
-
+            $store->setCenterCode($faker->numberBetween(100, 999));
+            $store->setCity($faker->city);
+            $store->setCountry($faker->country);
+            $store->setNumberStreet($faker->numberBetween(1,30));
+            $store->setNameStreet($faker->streetName);
+            $store->setZipCode($faker->postcode);
+            $manager->persist($store);
+            $this->addReference('store_'.$x, $store);
         }
+        $manager->flush();
     }
 
     /**

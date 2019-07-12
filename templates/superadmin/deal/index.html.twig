@@ -51,9 +51,11 @@
                                     <a href="{{ path('deal_show', {'id' : deal.id}) }}" class="btn btn-danger">
                                         Voir
                                     </a>
-                                    <a href="{{ path('deal_add_card', {'deal' : deal.id}) }}" class="btn btn-primary">
-                                        Ajouter
-                                    </a>
+                                    {% if (app.request.get('_route') != "deal_display_user") %}
+                                        <a href="{{ path('deal_add_card', {'deal' : deal.id}) }}" class="btn btn-primary">
+                                            Ajouter
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>

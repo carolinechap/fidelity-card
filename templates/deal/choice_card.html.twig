@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deals !{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1>Choisir la carte sur laquelle vous souhaitez ajouter ce deal</h1>
+        <form method="post" action="{{ path('deal_add_card', {'deal' : deal.id}) }}">
+            <select name="cards">
+                {% for card in cards %}
+                    <option value="{{ card.id }}">{{ card.customerCode }} - {{ card.store.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-primary">Enregistrer</button>
+        </form>
+    </div>
+{% endblock %}

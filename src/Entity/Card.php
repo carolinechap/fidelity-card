@@ -157,6 +157,7 @@ class Card
                 $activity->setCard(null);
             }
         }
+
         return $this;
     }
 
