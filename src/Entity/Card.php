@@ -21,7 +21,7 @@ class Card
     /**
      * @ORM\Column(type="array")
      */
-    private $statut = [];
+    private $status = [];
 
     /**
      * @ORM\Column(type="integer")
@@ -76,14 +76,14 @@ class Card
         return $this->id;
     }
 
-    public function getStatut(): ?array
+    public function getStatus(): ?array
     {
-        return $this->statut;
+        return $this->status;
     }
 
-    public function setStatut(array $statut): self
+    public function setStatus(array $status): self
     {
-        $this->statut = $statut;
+        $this->status = $status;
 
         return $this;
     }
