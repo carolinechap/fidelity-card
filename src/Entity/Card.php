@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
@@ -15,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     normalizationContext={"groups"={"card_listening:read"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
+ * @ApiFilter(OrderFilter::class, properties={"personalScore": "ASC", "countVictory": "ASC"})
  */
 class Card
 {
@@ -86,8 +89,6 @@ class Card
      * @var integer
      */
     private $countGames;
-
-
 
 
     public function __construct()
@@ -234,8 +235,8 @@ class Card
     {
         return $this->getStore()->getCenterCode() .
             $this->getCustomerCode() . $this->getCheckSum();
-    }
 
+    }
 
     public function getCardOwnerName()
     {
