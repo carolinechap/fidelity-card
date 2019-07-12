@@ -29,13 +29,6 @@ class CardRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-
-
-
-
-
-
-
     // /**
     //  * @return Card[] Returns an array of Card objects
     //  */

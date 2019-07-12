@@ -50,7 +50,7 @@ class Deal
     private $costPoint;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Card", mappedBy="deal")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Card", mappedBy="deals")
      */
     private $cards;
 
