@@ -77,6 +77,18 @@ class Card
      */
     private $personalScore;
 
+    /**
+     * @var integer
+     */
+    private $countVictory;
+
+    /**
+     * @var integer
+     */
+    private $countGames;
+
+
+
 
     public function __construct()
     {
@@ -253,5 +265,57 @@ class Card
 
         return $this;
     }
+
+
+    /**
+     * @return int
+     */
+    public function getCountGamePlayed(){
+        $game = 0;
+
+        $games = $this->getActivities();
+
+        foreach ($games as $g){
+            $game += 1;
+        }
+        return $game;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getCountWonGame(){
+        $activities = $this->getActivities();
+        $victories = 0;
+
+        foreach ($activities as $activity){
+            if($activity->getIsTheWinner() ==  true ){
+                $victories += 1;
+            }
+        }
+            return $victories;
+        }
+
+    /**
+     * @return int
+     * @Groups({"card_listening:read"})
+     */
+    public function getCountVictory(): int
+    {
+        return $this->getCountWonGame();
+    }
+
+    /**
+     * @return int
+     * @Groups({"card_listening:read"})
+     */
+    public function getCountGames(): int
+    {
+        return $this->getCountGamePlayed();
+    }
+
+
+
 
 }

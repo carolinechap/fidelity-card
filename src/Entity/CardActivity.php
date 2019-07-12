@@ -27,8 +27,6 @@ class CardActivity
 
     /**
      * @ORM\Column(type="boolean", length=150, nullable=true)
-     * @Groups({"card_listening:read"})
-
      */
     private $isTheWinner;
 
@@ -54,6 +52,8 @@ class CardActivity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="cards")
      * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
+     * @Groups({"card_listening:read"})
+
      */
     private $activity;
 
@@ -109,6 +109,8 @@ class CardActivity
     {
         return $this->isTheWinner;
     }
+
+
 
     /**
      * @param mixed $isTheWinner
