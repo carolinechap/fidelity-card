@@ -5,11 +5,14 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class CardActivity
- * @ApiResource()
+ * @ApiResource(
+ *     shortName="cardactivity"
+ * )
  * @ORM\Entity
  * @ORM\Table(name="card_activity")
  */
@@ -24,6 +27,8 @@ class CardActivity
 
     /**
      * @ORM\Column(type="boolean", length=150, nullable=true)
+     * @Groups({"card_listening:read"})
+
      */
     private $isTheWinner;
 
@@ -42,7 +47,7 @@ class CardActivity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Card", inversedBy="activities")
-     * @ORM\JoinColumn(name="card_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="card_id", referencedColumnName="id", nullable=false)})
      */
     private $card;
 

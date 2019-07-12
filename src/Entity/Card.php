@@ -6,9 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ *     normalizationContext={"groups"={"card_listening:read"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
  */
 class Card
@@ -17,6 +22,7 @@ class Card
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"card_listening:read"})
      */
     private $id;
 
@@ -32,12 +38,14 @@ class Card
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="card")
+     * @Groups({"card_listening:read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Store", inversedBy="card")
      * @ORM\JoinColumn(name="store_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Groups({"card_listening:read"})
      */
     private $store;
 
@@ -54,6 +62,7 @@ class Card
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CardActivity", mappedBy="card")
+     * @Groups({"card_listening:read"})
      */
     private $activities;
 
@@ -64,6 +73,7 @@ class Card
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"card_listening:read"})
      */
     private $personalScore;
 
