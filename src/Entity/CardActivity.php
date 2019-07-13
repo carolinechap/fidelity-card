@@ -11,7 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class CardActivity
  * @ApiResource(
- *     shortName="cardactivity"
+ *     shortName="cardactivity",
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
  * )
  * @ORM\Entity
  * @ORM\Table(name="card_activity")
