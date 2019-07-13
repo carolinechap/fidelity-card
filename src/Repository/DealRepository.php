@@ -19,22 +19,22 @@ class DealRepository extends ServiceEntityRepository
         parent::__construct($registry, Deal::class);
     }
 
-    // /**
-    //  * @return Deal[] Returns an array of Deal objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Deal[] Returns an array of Deal objects
+     */
+
+    public function getByCard($card)
     {
         return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
+            ->innerjoin('d.cards', 'dca')
+            ->andWhere('dca.id = :card')
+            ->setParameter(':card', $card)
+            ->orderBy('dca.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Deal

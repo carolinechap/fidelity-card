@@ -43,10 +43,12 @@ class DealController extends AbstractController
      */
     public function displayAllDeals()
     {
+        $cards = $this->getUserCards();
         $deals = $this->dealRepository->findAll();
 
-        return $this->render('superadmin/deal/index.html.twig', [
-            'deals' => $deals
+        return $this->render('deal/deals_with_cards.html.twig', [
+            'deals' => $deals,
+            'cards' => $cards
         ]);
     }
 
@@ -56,7 +58,7 @@ class DealController extends AbstractController
      */
     public function addDeal(Deal $deal, Request $request)
     {
-            $cards = $this->checkUserCards();
+            $cards = $this->getUserCards();
 
             if ($card = $this->checkIfOnlyOneCard($cards, $deal)) {
                 return $this->redirectToRoute('deal_display_card', [
@@ -80,48 +82,6 @@ class DealController extends AbstractController
             }
     }
 
-    private function checkIfOnlyOneCard($cards, Deal $deal):Card
-    {
-        if (count($cards) === 1){
-            $card = $cards[0];
-            $this->addMyDeal($card, $deal);
-            return $card;
-        }
-        return null;
-    }
-
-    private function addMyDeal(Card $card, Deal $deal)
-    {
-        $card->addDeal($deal);
-
-        $costPoint = $deal->getCostPoint();
-        $fidelityPoint = $card->getFidelityPoint();
-        $updatedFidelityPoint = $this->updatefidelityPoint($fidelityPoint, $costPoint);
-        $card->setFidelityPoint($updatedFidelityPoint);
-
-        $this->objectManager->flush();
-
-        $this->addFlash('success', $this->translator->trans('addeal.success', [], 'forms'));
-    }
-
-    private function updatefidelityPoint($fidelityPoint, $dealCost)
-    {
-        return $fidelityPoint - $dealCost;
-    }
-
-    private function checkUserCards()
-    {
-        $user = $this->getUser();
-
-        if (!$cards = $this->cardRepository->findBy(['user' => $user])) {
-            $this->addFlash('danger', $this->translator->trans('deal.user.nocard', [], 'messages'));
-
-            //todo question : est-ce que le client sans carte a accès aux deals, pour la redirection
-            return $this->redirectToRoute('deal_display_user');
-        }
-        return $cards;
-    }
-
     /**
      * @Route("/client/{id}", name="deal_display_user", methods={"GET"})
      */
@@ -133,8 +93,9 @@ class DealController extends AbstractController
             $deals[] = $card->getDeals();
         }
 
-        return $this->render('superadmin/deal/index.html.twig', [
-            'deals' => $deals[0]
+        return $this->render('deal/deals_with_cards.html.twig', [
+            'deals' => $deals[0],
+            'cards' => $cards
         ]);
     }
 
@@ -146,8 +107,9 @@ class DealController extends AbstractController
     {
         $deals = $card->getDeals();
 
-        return $this->render('superadmin/deal/index.html.twig', [
-            'deals' => $deals
+        return $this->render('deal/deals_with_cards.html.twig', [
+            'deals' => $deals,
+            'card' => $card
         ]);
     }
 
@@ -161,5 +123,43 @@ class DealController extends AbstractController
         ]);
     }
 
+    private function checkIfOnlyOneCard($cards, Deal $deal):Card {
+        if (count($cards) === 1){
+            $card = $cards[0];
+            $this->addMyDeal($card, $deal);
+            return $card;
+        }
+        return null;
+    }
 
+    private function addMyDeal(Card $card, Deal $deal) {
+        $costPoint = $deal->getCostPoint();
+        $fidelityPoint = $card->getFidelityPoint();
+        if ( $fidelityPoint > $costPoint ) {
+            $updatedFidelityPoint = $this->updatefidelityPoint($fidelityPoint, $costPoint);
+
+            $card->addDeal($deal);
+            $card->setFidelityPoint($updatedFidelityPoint);
+
+            $this->objectManager->flush();
+            $this->addFlash('success', $this->translator->trans('addeal.success', [], 'forms'));
+        } else {
+            $this->addFlash('error', $this->translator->trans('addeal.error', [], 'forms'));
+        }
+    }
+
+    private function updatefidelityPoint($fidelityPoint, $dealCost){
+        return $fidelityPoint - $dealCost < 0 ? 0 : $fidelityPoint - $dealCost;
+    }
+
+    private function getUserCards(){
+        $user = $this->getUser();
+
+        if (!$cards = $this->cardRepository->findBy(['user' => $user])) {
+            $this->addFlash('danger', $this->translator->trans('deal.user.nocard', [], 'messages'));
+
+            return $this->redirectToRoute('deal_display_user');
+        }
+        return $cards;
+    }
 }
