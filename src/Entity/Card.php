@@ -17,7 +17,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
  *     itemOperations={"get"},
  *     normalizationContext={"groups"={"card_listening:read"}},
  *     attributes={
- *          "pagination_items_per_page"=5
+ *          "pagination_items_per_page"=5,
+ *          "formats"={"jsonld", "json", "html", "jsonhal", "csv"={"text/csv"}}
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
