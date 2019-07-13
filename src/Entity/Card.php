@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 
 /**
  * @ApiResource(
@@ -18,6 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
  * @ApiFilter(OrderFilter::class, properties={"personalScore": "ASC", "countVictory": "ASC"})
+ * @ApiFilter(RangeFilter::class, properties={"personalScore"})
  */
 class Card
 {
