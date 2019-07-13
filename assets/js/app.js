@@ -17,7 +17,7 @@ console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 
 $(function() {
     $.ajax({
-        url : '/api/cards.json?order%5BpersonalScore%5D=dsc', // La ressource ciblée
+        url : '/api/cards.json?order%5BpersonalScore%5D=desc', // La ressource ciblée
         type : 'GET', // Le type de la requête HTTP
 
         success : function(result) {

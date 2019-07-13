@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use App\Card\CardGenerator;
-use App\Entity\User;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
-use App\Entity\Store;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
