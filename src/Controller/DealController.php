@@ -118,7 +118,7 @@ class DealController extends AbstractController
      */
     public function show(Deal $deal): Response
     {
-        return $this->render('superadmin/deal/show.html.twig', [
+        return $this->render('deal/show.html.twig', [
             'deal' => $deal,
         ]);
     }
