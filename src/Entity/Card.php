@@ -15,7 +15,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
  * @ApiResource(
  *     collectionOperations={"get"},
  *     itemOperations={"get"},
- *     normalizationContext={"groups"={"card_listening:read"}}
+ *     normalizationContext={"groups"={"card_listening:read"}},
+ *     attributes={
+ *          "pagination_items_per_page"=5
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
  * @ApiFilter(OrderFilter::class, properties={"personalScore": "ASC", "countVictory": "ASC"})
