@@ -7,29 +7,35 @@
     <div class="container-fluid bg-img  {% if app.user is null %}d-flex justify-content-center align-items-center {% endif %}">
 {% if app.user %}
     {% if is_granted('ROLE_USER') %}
-        <div class="container">
+
+        <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="text-white">{{ app.user }}</h1>
+            </div>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h5 class="card-title">Mon historique de jeu</h5>
-                            <p class="card-text">Ici tu accederas à toutes tes informations concernant tes parties au Laser Game!</p>
-                            <a href="{{ path('card_activity_historical') }}" class="card-link btn btn-secondary">Voir</a>
-                        </div>
-                    </div>
+                <div class="col-md-4">
+                    <h5 class="text-white">Mon historique de jeu</h5>
+                    <p class="text-white">Toutes les informations concernant mes activités</p>
+                    <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="{{ path('card_activity_historical') }}">Voir</a>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h5 class="card-title">Mes deals</h5>
-                            <p class="card-text"></p>
-                            <a href="#" class="card-link btn btn-secondary">Voir</a>
-                        </div>
-                    </div>
+                <div class="col-md-4">
+                    <h5 class="text-white">Mes offres</h5>
+                    <p class="text-white">Toutes les offres ajoutées à ma carte</p>
+                    <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="#">Voir</a>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-white">##</h5>
+                    <p class="text-white">###</p>
+                    <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="#">Voir</a>
                 </div>
             </div>
-
         </div>
+        <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="text-white">Classement</h1>
+            </div>
+        </div>
+
 
         {% endif %}
         {% else %}
