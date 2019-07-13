@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - Super Admin{% endblock %}
+
+{% block body %}
+    <div class="container-fluid dashboard">
+        <div class="row">
+            {% include('admin/menu.html.twig') %}
+            <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Tableau de bord (Super administrateur)</h1>
+                </div>
+                <div class="row">
+                    <div class="alert alert-info"><b>Pour personnaliser le dashboard :</b>
+                        <ul class="list-unstyled">
+                            <li class="m-2">
+                                1 - Pour personnaliser une vue en particulier, créer un <u>répertoire portant le nom de l'entité (exemple:
+                                    deal ou snake case pour les entityCamelCase, minuscules)</u> dans le répertoire <b>templates/superadmin</b>, si le fichier existe dans ce répertoire, c'est celui
+                                    là qui sera affiché. <b>Dans ce cas IMPORTANT, le nom du ou des objets est toujours entity (objet seul pour show par
+                                    exemple) ou entities pour les collections (index par exemple)</b>
+                            </li>
+                            <li class="m-2">
+                                2 - Tous les titres sont stockés sous forme de clés,
+                                donc personnalisables et traductibles (dans les fichiers translations/crud.en.yaml...
+                            </li>
+                            <li class="m-2">
+                                3 - Tous les noms des attributs des entités (dans les headers des tableaux) sont également
+                                stockés sous forme de clés, donc personnalisables et traductibles (dans les fichiers translations/crud.en.yaml...
+                            </li>
+                            <li class="m-2">
+                                4 - Bien importer le formulaire de suppression à l'intérieur de l'action supprimer (méthode DELETE)
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-danger">
+                        <p>Important, respecter le nom des variables et ne pas toucher au controller générique CrudController</p>
+                        <p>Bien respecter les path du crud génériques notamment en indiquant la classe (simple, camelCase ou kebab-case), sans majuscule au début</p>
+                    </div>
+                    <div class="col-md-5 m-2 border">
+                        <h5>Deals</h5>
+                        <p>Voir, gérer les deals</p>
+                        <ul class="list-inline">
+                            <li>
+                                <a class="btn btn-primary my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_index', {'class': 'deal' }) }}">{{ 'list'|trans({}, 'crud') }}</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_new', { 'class': 'deal' }) }}">{{ 'add'|trans({}, 'crud') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5 m-2 border">
+                        <h5>Stores</h5>
+                        <p>Voir, gérer les boutiques</p>
+                        <ul class="list-inline">
+                            <li>
+                                <a class="btn btn-primary my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_index', {'class': 'store' }) }}">{{ 'list'|trans({}, 'crud') }}</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_new', { 'class': 'store' }) }}">{{ 'add'|trans({}, 'crud') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 m-2 border">
+                        <h5>Cartes</h5>
+                        <p>Voir, gérer les cartes</p>
+                        <ul class="list-inline">
+                            <li>
+                                <a class="btn btn-primary my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_index', {'class': 'card' }) }}">{{ 'list'|trans({}, 'crud') }}</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_new', { 'class': 'card' }) }}">{{ 'add'|trans({}, 'crud') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5 m-2 border">
+                        <h5>Activities</h5>
+                        <p>Voir, gérer les activités</p>
+                        <ul class="list-inline">
+                            <li>
+                                <a class="btn btn-primary my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_index', {'class': 'activity' }) }}">{{ 'list'|trans({}, 'crud') }}</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_new', { 'class': 'activity' }) }}">{{ 'add'|trans({}, 'crud') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 m-2 border">
+                        <h5>Utilisateurs</h5>
+                        <p>Voir, gérer les utilisateurs</p>
+                        <ul class="list-inline">
+                            <li>
+                                <a class="btn btn-primary my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_index', {'class': 'user' }) }}">{{ 'list'|trans({}, 'crud') }}</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-success my-5 btn-lg d-flex justify-content-center"  href="{{ path('crud_new', { 'class': 'user' }) }}">{{ 'add'|trans({}, 'crud') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+{% endblock %}

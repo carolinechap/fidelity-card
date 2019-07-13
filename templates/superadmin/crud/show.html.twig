@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ (class|trans({}, 'crud'))|capitalize }}{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_SUPERADMIN') %}
+        {% include('admin/menu.html.twig') %}
+    {% endif %}
+    <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">{{ (class|trans({}, 'crud'))|capitalize }}</h1>
+            {% if is_granted('ROLE_SUPERADMIN') %}
+                <a href="{{ path('crud_index', {'class': class }) }}"
+                   class="btn btn-outline-primary mb-3">
+                    {{ 'link.back'|trans({}, 'crud') }}
+                </a>
+            {% else %}
+                <div class="card">
+                    <h5 class="card-header text-center">{{ deal.name }}</h5>
+                    <div class="card-body">
+                        {% for property_key in tab_properties_keys %}
+                            <h1>{{ property_key[1]|trans({}, 'crud') }}</h1>
+                            {% if property_key[0] is not iterable %}
+                                <p>{{ attribute(entity, property_key[0]) }}</p>
+                            {% else %}
+                                <ul>
+                                    {% for attr in attribute(entity, property_key[0])  %}
+                                        <li>{{ attr }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="d-flex justify-content-end">
+                            {% if is_granted('ROLE_SUPERADMIN') %}
+                                {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
+                                <a class="btn btn-warning"
+                                   href="{{ path('crud_edit', {'class' : class, 'id': entity.id}) }}">{{ 'link.edit'|trans({}, 'crud') }}</a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

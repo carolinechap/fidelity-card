@@ -34,7 +34,7 @@ class Card
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Store", inversedBy="card")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Store", inversedBy="cards")
      * @ORM\JoinColumn(name="store_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $store;
