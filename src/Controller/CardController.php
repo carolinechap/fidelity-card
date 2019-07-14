@@ -3,17 +3,17 @@
 namespace App\Controller;
 
 use App\Card\CardGenerator;
-use App\Entity\User;
+use App\Form\AddCardType;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
-use App\Entity\Store;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class CardController
@@ -89,7 +89,27 @@ class CardController extends AbstractController
         return $this->redirectToRoute('card_index');
     }
 
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
+     */
+    public function addCardToUser()
+    {
+        if (!$user = $this->getUser()) {
+            throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à afficher cette page.");
+        }
 
+        $form = $this->createForm(AddCardType::class);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // data is an array with "name", "email", and "message" keys
+            $data = $form->getData();
+            var_dump($data);
+        }
+
+        return $this->render('card/add_card.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 }
 
 //centerCode =$card->getStore()->getCenterCode();
