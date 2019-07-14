@@ -135,7 +135,7 @@ class CrudController extends AbstractController
 
         $templateDir = $this->evalTemplateDir($class);
         $template = $this->get('twig')->getLoader()->exists('superadmin/'.$templateDir.'/new.html.twig')
-            ? 'superadmin/'.$templateDir.'/index.html.twig'
+            ? 'superadmin/'.$templateDir.'/new.html.twig'
             : 'superadmin/crud/new.html.twig';
 
         return $this->render($template, [
