@@ -1,0 +1,8 @@
+<form class="p-2" method="post" action="#">
+    <select class="form-control" name="cards">
+        {% for card in cards %}
+            <option value="{{ card.id }}">{{ card.customerCode }} - {{ card.store.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary mt-1">Choisir</button>
+</form>
