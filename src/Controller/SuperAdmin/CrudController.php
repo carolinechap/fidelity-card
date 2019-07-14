@@ -228,7 +228,7 @@ class CrudController extends AbstractController
      */
     private function checkIfCrudClassExist($className):void {
         if (!class_exists($className)) {
-            throw new FileException($this->translator->trans('notfound.class', [], 'crud'));
+            throw new FileException($this->translator->trans('class.not_found', [], 'crud'));
         }
         return ;
     }
