@@ -13,7 +13,7 @@ const $ = require('jquery');
 import 'bootstrap';
 //import '../js/api.js';
 
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+//console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 
 $(function() {
     $.ajax({
@@ -24,10 +24,10 @@ $(function() {
             $.each(result, function (i, card) {
                 console.log(result);
                 let classementDatas =
-                    '<tr><td scope="row" class="text-white">' + card.user.firstname + ' ' + card.user.lastname +  '</td> ' +
-                    '<td scope="row" class="text-white text-center">' + card.personalScore + '</td>' +
-                    '<td scope="row" class="text-white text-center">' + card.countVictory  + '/' + card.countGames + '</td>' +
-                    '<td scope="row" class="text-white text-center">' + card.store.name + '</td></tr>';
+                    '<tr><td scope="row">' + card.user.firstname + ' ' + card.user.lastname +  '</td> ' +
+                    '<td scope="row" class="text-center">' + card.personalScore + '</td>' +
+                    '<td scope="row" class="text-center">' + card.countVictory  + '/' + card.countGames + '</td>' +
+                    '<td scope="row" class="text-center">' + card.store.name + '</td></tr>';
                 $("#results").append(classementDatas);
                 console.log(classementDatas);
             })
