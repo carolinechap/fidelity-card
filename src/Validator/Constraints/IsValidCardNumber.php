@@ -8,8 +8,17 @@
 
 namespace App\Validator\Constraints;
 
+use Symfony\Component\Validator\Constraint;
 
-class IsValidCardNumber
+/**
+ * Class IsValidCardNumber
+ * @package App\Validator\Constraints
+ */
+class IsValidCardNumber extends Constraint
 {
-
+    /**
+     * @var string
+     */
+    public $message =
+        'The card number "{{ cardnumber }}" is not a valid card number.';
 }
