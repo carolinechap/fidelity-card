@@ -36,20 +36,18 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
 //        This card is for test and demo purposes
         $oneCard = new Card();
         $oneCard->setUser($this->getReference('mycustomer'));
-        $oneCard->setCustomerCode($this->cardGenerator->generateCustomerCode());
-        $oneCard->setCheckSum($faker->randomNumber(5));
         $oneCard->setFidelityPoint(500);
         $oneCard->setStore($this->getReference('mystore'));
+        $oneCard = $this->cardGenerator->generateCard($oneCard);
 
         $manager->persist($oneCard);
 
         //This card is for test and demo purposes
         $secondCard = new Card();
         $secondCard->setUser($this->getReference('mycustomer'));
-        $secondCard->setCustomerCode($this->cardGenerator->generateCustomerCode());
-        $secondCard->setCheckSum($faker->randomNumber(5));
         $secondCard->setFidelityPoint(300);
         $secondCard->setStore($this->getReference('store_1'));
+        $secondCard = $this->cardGenerator->generateCard($secondCard);
 
         $manager->persist($secondCard);
 
@@ -59,10 +57,8 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
                 $card->setStore($this->getReference('store_'.$y));
             }
             $card->setUser($this->getReference('customer_'.$x));
-            $card->setCustomerCode($this->cardGenerator->generateCustomerCode());
-            $card->setCheckSum($faker->randomNumber(5));
+            $card = $this->cardGenerator->generateCard($card);
             $card->setFidelityPoint($faker->numberBetween(200, 500));
-
             $manager->persist($card);
             $this->addReference('card_'.$x, $card);
         }
