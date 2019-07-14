@@ -38,7 +38,7 @@ class Card
     /**
      * @ORM\Column(type="array")
      */
-    private $statut = [];
+    private $status = [];
 
     /**
      * @ORM\Column(type="integer")
@@ -58,11 +58,10 @@ class Card
      */
     private $store;
 
-
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Deal", inversedBy="cards")
      */
-    private $deal;
+    private $deals;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -100,7 +99,7 @@ class Card
     public function __construct()
     {
         $this->activities = new ArrayCollection();
-        $this->deal = new ArrayCollection();
+        $this->deals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,14 +107,14 @@ class Card
         return $this->id;
     }
 
-    public function getStatut(): ?array
+    public function getStatus(): ?array
     {
-        return $this->statut;
+        return $this->status;
     }
 
-    public function setStatut(array $statut): self
+    public function setStatus(array $status): self
     {
-        $this->statut = $statut;
+        $this->status = $status;
 
         return $this;
     }
@@ -189,6 +188,7 @@ class Card
                 $activity->setCard(null);
             }
         }
+
         return $this;
     }
 
@@ -196,15 +196,15 @@ class Card
     /**
      * @return Collection|Deal[]
      */
-    public function getDeal(): Collection
+    public function getDeals(): Collection
     {
-        return $this->deal;
+        return $this->deals;
     }
 
     public function addDeal(Deal $deal): self
     {
-        if (!$this->deal->contains($deal)) {
-            $this->deal[] = $deal;
+        if (!$this->deals->contains($deal)) {
+            $this->deals[] = $deal;
         }
 
         return $this;
@@ -212,8 +212,8 @@ class Card
 
     public function removeDeal(Deal $deal): self
     {
-        if ($this->deal->contains($deal)) {
-            $this->deal->removeElement($deal);
+        if ($this->deals->contains($deal)) {
+            $this->deals->removeElement($deal);
         }
 
         return $this;

@@ -23,7 +23,10 @@ class UserController extends AbstractController
 {
 
     /**
+     * @param Request $request
      * @param UserRepository $userRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
      * @Route("/" , name="admin_user_index")
      */
     public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator)
@@ -42,8 +45,6 @@ class UserController extends AbstractController
     {
         $cards = $cardRepository->findCardByUser($user);
         $stores = $storeRepository->findStoreByUser($user);
-
-
 
         return $this->render('admin/user/show.html.twig', [
             'user' => $user,
