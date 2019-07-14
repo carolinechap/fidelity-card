@@ -21,7 +21,11 @@
                         {% for property_key in tab_properties_keys %}
                             <h1>{{ property_key[1]|trans({}, 'crud') }}</h1>
                             {% if property_key[0] is not iterable %}
-                                <p>{{ attribute(entity, property_key[0]) }}</p>
+                                {% if attribute(entity, property_key[0]).timestamp is defined %}
+                                    {{ attribute(entity, property_key[0])|date('d/m/Y') }}
+                                {% else %}
+                                    <p>{{ attribute(entity, property_key[0]) }}</p>
+                                {% endif %}
                             {% else %}
                                 <ul>
                                     {% for attr in attribute(entity, property_key[0])  %}

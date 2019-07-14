@@ -57,7 +57,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="{{ property_keys|length }}">{{ 'notfound.list'|trans({}, 'crud') }}</td>
+                        <td colspan="{{ property_keys|length }}">{{ 'empty.list'|trans({}, 'crud') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
