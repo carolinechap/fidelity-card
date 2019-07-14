@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             {% set enabled = 0 %}
             {# le customer n'a pas de carte rattachée #}
-            {% if cards|length is empty %}
+            {% if cards is empty %}
                 {% set enabled = 0 %}
                 <div class="alert alert-warning">Pas de carte rattachée</div>
                 <a href="#" class="btn btn-outline-primary mb-3">
@@ -37,7 +37,7 @@
                     Carte <br>{{ card.customerCode }}<br><b>{{ card.fidelityPoint }} points</b>
                 </div>
             {% endif %}
-            {% if cards|length is not empty %}
+            {% if cards is not empty %}
                 <p><a class="btn btn-primary m-2" href="{{path('deal_display_user')}}">Voir tous vos deals</a></p>
             {% endif %}
         </div>

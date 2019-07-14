@@ -27,6 +27,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class DealController extends AbstractController
 {
+    /**
+     * DealController constructor.
+     * @param TranslatorInterface $translator
+     * @param CardRepository $cardRepository
+     * @param ObjectManager $objectManager
+     * @param DealRepository $dealRepository
+     */
     public function __construct(TranslatorInterface $translator,
                                 CardRepository $cardRepository,
                                 ObjectManager $objectManager,
@@ -111,17 +118,22 @@ class DealController extends AbstractController
         ]);
     }
 
+    /**
+     * @param $fidelityPoint
+     * @param $dealCost
+     * @return int
+     */
     private function updatefidelityPoint($fidelityPoint, $dealCost){
         return $fidelityPoint - $dealCost < 0 ? 0 : $fidelityPoint - $dealCost;
     }
 
+    /**
+     * @return Card[]
+     */
     private function getUserCards(){
         $user = $this->getUser();
+        $cards = $this->cardRepository->findBy(['user' => $user]);
 
-        if (!$cards = $this->cardRepository->findBy(['user' => $user])) {
-            $this->addFlash('danger', $this->translator->trans('add_deal.nocard', [], 'messages'));
-            return $this->redirectToRoute('deal_display_user');
-        }
         return $cards;
     }
 }
