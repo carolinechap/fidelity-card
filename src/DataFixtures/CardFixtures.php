@@ -33,14 +33,14 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
-        //This card is for test and demo purposes
+//        This card is for test and demo purposes
         $oneCard = new Card();
         $oneCard->setUser($this->getReference('mycustomer'));
         $oneCard->setCustomerCode($this->cardGenerator->generateCustomerCode());
         $oneCard->setCheckSum($faker->randomNumber(5));
         $oneCard->setFidelityPoint(500);
         $oneCard->setStore($this->getReference('mystore'));
-        
+
         $manager->persist($oneCard);
 
         //This card is for test and demo purposes
