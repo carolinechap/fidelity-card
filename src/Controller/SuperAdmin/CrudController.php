@@ -13,11 +13,12 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Provider\ListDatabaseProvider;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 /**
  * @author Corinne Poullette
  * @version 1.01
- * @example your routes : /crud/your-entity or /crud/yourEntity  ...
+ * @example your routes : /superadmin/your-entity or /superadmin/yourEntity  ...
  * @Route("/crud")
  */
 class CrudController extends AbstractController
@@ -43,6 +44,11 @@ class CrudController extends AbstractController
     private $listProvider;
 
     /**
+     * @var
+     */
+    private $crudAuthorizedClasses;
+
+    /**
      * CrudController constructor.
      * @param RegistryInterface $registry
      * @param CaseString $caseString
@@ -50,7 +56,8 @@ class CrudController extends AbstractController
     public function __construct(RegistryInterface $registry,
                                 CaseString $caseString,
                                 TranslatorInterface $translator,
-                                ListDatabaseProvider $listProvider)
+                                ListDatabaseProvider $listProvider,
+                                $crudAuthorizedClasses)
     {
         $this->entityNamespace = 'App\\Entity\\';
         $this->formNamespace = 'App\\Form\\';
@@ -62,6 +69,7 @@ class CrudController extends AbstractController
             [$reflectionExtractor]
         );
         $this->listProvider = $listProvider;
+        $this->crudAuthorizedClasses = $crudAuthorizedClasses;
     }
 
     /**
@@ -77,15 +85,17 @@ class CrudController extends AbstractController
      */
     public function index(string $class, ?array $params): Response
     {
+        $this->checkIfCrudClassAuthorized($class);
         $className = $this->getClassName($class);
+        $this->checkIfCrudClassExist($className);
+
+        $entities = $this->listProvider->getListForClass($className);
 
         $templateDir = $this->evalTemplateDir($class);
         $template = $this->get('twig')->getLoader()->exists('superadmin/'.$templateDir.'/index.html.twig')
             ? 'superadmin/'.$templateDir.'/index.html.twig'
             : 'superadmin/crud/index.html.twig';
 
-        $this->checkIfCrudClassExist($className);
-        $entities = $this->listProvider->getListForClass($className);
 
         return $this->render($template, [
             'entities' => $entities,
@@ -101,6 +111,7 @@ class CrudController extends AbstractController
      */
     public function new(Request $request, $class): Response
     {
+        $this->checkIfCrudClassAuthorized($class);
         $className = $this->getClassName($class);
         $this->checkIfCrudClassExist($className);
         $this->checkIfCrudClassExist($this->formNamespace.ucfirst($class).'Type');
@@ -115,14 +126,16 @@ class CrudController extends AbstractController
                 $this->registry->getEntityManager()->flush();
 
                 $this->addFlash('success', $this->translator->trans('new.success', [], 'crud'));
-            return $this->redirectToRoute('crud_index');
+                return $this->redirectToRoute('crud_index', [
+                    'class' => $class,
+                ]);
             }
             $this->addFlash('error', $this->translator->trans('new.error', [], 'crud'));
         }
 
         $templateDir = $this->evalTemplateDir($class);
         $template = $this->get('twig')->getLoader()->exists('superadmin/'.$templateDir.'/new.html.twig')
-            ? 'superadmin/'.$templateDir.'/new.html.twig'
+            ? 'superadmin/'.$templateDir.'/index.html.twig'
             : 'superadmin/crud/new.html.twig';
 
         return $this->render($template, [
@@ -137,9 +150,9 @@ class CrudController extends AbstractController
      */
     public function show($class, $id): Response
     {
+        $this->checkIfCrudClassAuthorized($class);
         $className = $this->getClassName($class);
         $this->checkIfCrudClassExist($className);
-        $this->checkIfCrudClassExist($this->formNamespace.ucfirst($class).'Type');
 
         $repository = $this->registry->getRepository($className);
 
@@ -162,8 +175,10 @@ class CrudController extends AbstractController
      */
     public function edit(Request $request, $class, $id): Response
     {
+        $this->checkIfCrudClassAuthorized($class);
         $className = $this->getClassName($class);
         $this->checkIfCrudClassExist($className);
+        $this->checkIfCrudClassExist($this->formNamespace.ucfirst($class).'Type');
 
         $entity = $this->getEntity($className, $id);
         $form = $this->createForm($this->formNamespace.ucfirst($class).'Type', $entity);
@@ -173,9 +188,9 @@ class CrudController extends AbstractController
             if ($form->isValid()) {
                 $this->registry->getEntityManager()->flush();
                 $this->addFlash('success', $this->translator->trans('edit.success', [], 'crud'));
-            return $this->redirectToRoute('crud_index', [
-                'class' => $class,
-            ]);
+                return $this->redirectToRoute('crud_index', [
+                    'class' => $class,
+                ]);
             }
             $this->addFlash('error', $this->translator->trans('edit.error', [], 'crud'));
         }
@@ -197,6 +212,7 @@ class CrudController extends AbstractController
      */
     public function delete(Request $request, $class, $id): Response
     {
+        $this->checkIfCrudClassAuthorized($class);
         $className = $this->getClassName($class);
         $this->checkIfCrudClassExist($className);
 
@@ -234,6 +250,16 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @param $class
+     */
+    private function checkIfCrudClassAuthorized($class)
+    {
+        if (!in_array($class, $this->crudAuthorizedClasses)) {
+            throw new UnauthorizedHttpException($this->translator->trans('class.unauthorized', [], 'crud'));
+        }
+    }
+
+    /**
      * @param $className
      * @param $id
      * @return null|object
@@ -255,6 +281,15 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @param $className
+     * @return array
+     */
+    private function getClassProperties($className):array
+    {
+        return $this->propertyInfo->getProperties($className);
+    }
+
+    /**
      * @param $class
      * @return string
      */
@@ -265,15 +300,6 @@ class CrudController extends AbstractController
             $class = $this->caseString::camel($class)->snake();
         }
         return $class;
-    }
-
-    /**
-     * @param $className
-     * @return array
-     */
-    private function getClassProperties($className):array
-    {
-        return $this->propertyInfo->getProperties($className);
     }
 
     /**
