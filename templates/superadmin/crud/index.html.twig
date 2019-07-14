@@ -36,10 +36,14 @@
                                 {% if attribute(entity, property).timestamp is defined %}
                                      {{ attribute(entity, property)|date('d/m/Y') }}
                                 {% else %}
-                                    {% if attribute(entity, property) is iterable or property == "password"%}
+                                    {% if (attribute(entity, property) is defined and
+                                        attribute(entity, property) is iterable)
+                                        or property == "password"%}
                                         ~
                                     {% else %}
-                                        {{ attribute(entity, property) }}
+                                        {% if (attribute(entity, property)) is defined %}
+                                            {{ attribute(entity, property) }}
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             </td>
