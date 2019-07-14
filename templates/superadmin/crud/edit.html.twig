@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.edit'|trans({}, 'crud') }} {{ (class|trans({}, 'crud'))|capitalize }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.edit'|trans({}, 'crud') }} {{ (class|trans({}, 'crud'))|capitalize }}</h1>
+
+    {{ include('superadmin/crud/_form.html.twig', {'button_label': 'update.button'|trans({}, 'crud') }) }}
+
+    <a href="{{ path('crud_index', {'class': class}) }}">{{ 'link.back'|trans({}, 'crud') }}</a>
+
+    {{ include('superadmin/crud/_delete_form.html.twig') }}
+{% endblock %}

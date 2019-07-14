@@ -5,3 +5,7 @@ controllers:
 admin:
     resource: ../../src/Controller/Admin
     type: annotation
+
+crud:
+    resource: ../../src/Controller/SuperAdmin/
+    type: annotation
