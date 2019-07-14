@@ -12,6 +12,7 @@ use phpDocumentor\Reflection\Types\Void_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -39,77 +40,64 @@ class DealController extends AbstractController
 
     /**
      * @return Response
-     * @Route("/", name="deal_display_all")
+     * @Route("/", name="deal_display_all", methods={"GET", "POST"})
      */
-    public function displayAllDeals()
+    public function displayAllDeals(Request $request)
     {
+        $card = null;
         $cards = $this->getUserCards();
-        $deals = $this->dealRepository->findAll();
 
-        return $this->render('deal/deals_with_cards.html.twig', [
-            'deals' => $deals,
-            'cards' => $cards
-        ]);
-    }
-
-    /**
-     * @Route("/offre/{deal}", name="deal_add_card", methods={"GET", "POST"})
-     * @ParamConverter("deal", options={"mapping": {"deal": "id"}})
-     */
-    public function addDeal(Deal $deal, Request $request)
-    {
-            $cards = $this->getUserCards();
-
-            if ($card = $this->checkIfOnlyOneCard($cards, $deal)) {
-                return $this->redirectToRoute('deal_display_card', [
-                    'card' => $card->getId()
-                ]);
+        if ($request->request->get('cards') !== null) {
+            $card = $this->cardRepository->find($request->request->get('cards'));
+            if ($this->getUser()->getEmail() !== $card->getUser()->getEmail()) {
+                throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à effectuer cette action.");
             }
-
-            if ($request->isMethod("POST")) {
-                $cardId = $request->request->get('cards');
-                $card = $this->cardRepository->find($cardId);
-
-                $this->addMyDeal($card, $deal);
-                return $this->redirectToRoute('deal_display_card', [
-                    'card' => $card->getId()
-                ]);
-            } else {
-                return $this->render('deal/choice_card.html.twig', [
-                    'cards' => $cards,
-                    'deal' => $deal
-                ]);
-            }
-    }
-
-    /**
-     * @Route("/client/{id}", name="deal_display_user", methods={"GET"})
-     */
-    public function displayDeals(User $user)
-    {
-        $cards = $this->cardRepository->findCardByUser($user);
-
-        foreach ($cards as $card) {
-            $deals[] = $card->getDeals();
         }
 
-        return $this->render('deal/deals_with_cards.html.twig', [
-            'deals' => $deals[0],
-            'cards' => $cards
+        $deals = $this->dealRepository->findAll();
+
+        return $this->render('deal/all_deals_list.html.twig', [
+            'deals' => $deals,
+            'cards' => $cards,
+            'card' => $card
         ]);
     }
 
     /**
-     * @Route("/client/card/{card}", name="deal_display_card", methods={"GET"})
+     * @Route("/offre/{deal}/{card}", name="deal_add_card", methods={"GET"})
+     * @ParamConverter("deal", options={"mapping": {"deal": "id"}})
      * @ParamConverter("card", options={"mapping": {"card": "id"}})
      */
-    public function displayCardDeals(Card $card)
+    public function addDeal(Deal $deal, Card $card)
     {
-        $deals = $card->getDeals();
+        $costPoint = $deal->getCostPoint();
+        $fidelityPoint = $card->getFidelityPoint();
 
-        return $this->render('deal/deals_with_cards.html.twig', [
-            'deals' => $deals,
-            'card' => $card
+        if ( $fidelityPoint >= $costPoint ) {
+            $updatedFidelityPoint = $this->updatefidelityPoint($fidelityPoint, $costPoint);
+
+            $card->addDeal($deal);
+            $card->setFidelityPoint($updatedFidelityPoint);
+
+            $this->objectManager->flush();
+            $this->addFlash('success', $this->translator->trans('add_deal.success', [], 'messages'));
+        } else {
+            $this->addFlash('error', $this->translator->trans('add_deal.error', [], 'messages'));
+        }
+
+        return $this->redirectToRoute('deal_display_all');
+    }
+
+    /**
+     * @Route("/client", name="deal_display_user", methods={"GET"})
+     */
+    public function displayDeals()
+    {
+        $user = $this->getUser();
+        $cards = $this->cardRepository->findCardByUser($user);
+
+        return $this->render('deal/user_deals_list.html.twig', [
+            'cards' => $cards
         ]);
     }
 
@@ -123,31 +111,6 @@ class DealController extends AbstractController
         ]);
     }
 
-    private function checkIfOnlyOneCard($cards, Deal $deal):Card {
-        if (count($cards) === 1){
-            $card = $cards[0];
-            $this->addMyDeal($card, $deal);
-            return $card;
-        }
-        return null;
-    }
-
-    private function addMyDeal(Card $card, Deal $deal) {
-        $costPoint = $deal->getCostPoint();
-        $fidelityPoint = $card->getFidelityPoint();
-        if ( $fidelityPoint >= $costPoint ) {
-            $updatedFidelityPoint = $this->updatefidelityPoint($fidelityPoint, $costPoint);
-
-            $card->addDeal($deal);
-            $card->setFidelityPoint($updatedFidelityPoint);
-
-            $this->objectManager->flush();
-            $this->addFlash('success', $this->translator->trans('addeal.success', [], 'forms'));
-        } else {
-            $this->addFlash('error', $this->translator->trans('addeal.error', [], 'forms'));
-        }
-    }
-
     private function updatefidelityPoint($fidelityPoint, $dealCost){
         return $fidelityPoint - $dealCost < 0 ? 0 : $fidelityPoint - $dealCost;
     }
@@ -156,8 +119,7 @@ class DealController extends AbstractController
         $user = $this->getUser();
 
         if (!$cards = $this->cardRepository->findBy(['user' => $user])) {
-            $this->addFlash('danger', $this->translator->trans('deal.user.nocard', [], 'messages'));
-
+            $this->addFlash('danger', $this->translator->trans('add_deal.nocard', [], 'messages'));
             return $this->redirectToRoute('deal_display_user');
         }
         return $cards;
