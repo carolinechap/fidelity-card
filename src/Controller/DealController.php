@@ -135,7 +135,7 @@ class DealController extends AbstractController
     private function addMyDeal(Card $card, Deal $deal) {
         $costPoint = $deal->getCostPoint();
         $fidelityPoint = $card->getFidelityPoint();
-        if ( $fidelityPoint > $costPoint ) {
+        if ( $fidelityPoint >= $costPoint ) {
             $updatedFidelityPoint = $this->updatefidelityPoint($fidelityPoint, $costPoint);
 
             $card->addDeal($deal);
