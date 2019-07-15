@@ -16,14 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
 
-
-    public function __invoke(Request $request, CardRepository $cardRepository) : Paginator
-    {
-        $page = (int) $request->query->get('page', 1);
-        return $cardRepository->getCardByUserActivity($page);
-    }
-
-
     /**
      * @Route("/", name="home")
      */

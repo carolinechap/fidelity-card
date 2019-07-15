@@ -14,3 +14,8 @@ api_platform:
         jsonhal:
             mime_types:
                 - application/hal+json
+    collection:
+        pagination:
+            client_enabled: true
+            enabled_parameter_name: pagination
+            items_per_page: 5

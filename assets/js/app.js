@@ -17,19 +17,21 @@ import 'bootstrap';
 
 $(function() {
     $.ajax({
-        url : '/api/cards.json?order%5BpersonalScore%5D=desc', // La ressource ciblée
+        paging: true,
+        pageLength: 5,
+        url : '/api/cards.json?order%5BpersonalScore%5D=desc&pagination=true', // La ressource ciblée
         type : 'GET', // Le type de la requête HTTP
 
         success : function(result) {
             $.each(result, function (i, card) {
-                console.log(result);
+                //console.log(result);
                 let classementDatas =
                     '<tr><td scope="row">' + card.user.firstname + ' ' + card.user.lastname +  '</td> ' +
                     '<td scope="row" class="text-center">' + card.personalScore + '</td>' +
                     '<td scope="row" class="text-center">' + card.countVictory  + '/' + card.countGames + '</td>' +
                     '<td scope="row" class="text-center">' + card.store.name + '</td></tr>';
                 $("#results").append(classementDatas);
-                console.log(classementDatas);
+                //console.log(classementDatas);
             })
         },
         error : function(result) {
@@ -39,4 +41,20 @@ $(function() {
             console.log('erreur réseau');
         }
     });
+    $('#pagination').pagination({
+        dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
+        locator: 'items',
+        totalNumber: 120,
+        pageSize: 20,
+        ajax: {
+            beforeSend: function() {
+                dataContainer.html('Loading data from flickr.com ...');
+            }
+        },
+        callback: function(data, pagination) {
+            // template method of yourself
+            var html = template(data);
+            dataContainer.html(html);
+        }
+    })
 });

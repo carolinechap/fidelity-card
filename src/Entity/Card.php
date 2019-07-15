@@ -17,7 +17,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
  *     itemOperations={"get"},
  *     normalizationContext={"groups"={"card_listening:read"}},
  *     attributes={
+ *          "pagination_client_enabled"=true,
  *          "pagination_items_per_page"=5,
+ *          "pagination_fetch_join_collection"=true,
  *          "formats"={"jsonld", "json", "html", "jsonhal", "csv"={"text/csv"}}
  *     }
  * )
