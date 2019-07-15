@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="container-fluid bg-img {% if app.user is null %}d-flex justify-content-center align-items-center {% endif %}">
+    <div class="container-fluid bg-img {% if app.user is null %} bg-img-full d-flex justify-content-center align-items-center {% endif %}">
 {% if app.user %}
     {% if is_granted('ROLE_USER') %}
 
