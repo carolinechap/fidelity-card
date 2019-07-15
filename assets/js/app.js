@@ -41,8 +41,8 @@ $(function() {
             console.log('erreur réseau');
         }
     });
-    $('#pagination').pagination({
-        dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
+    $('#demo').pagination({
+        dataSource: '/api/cards.json?order%5BpersonalScore%5D=desc&pagination=true',
         locator: 'items',
         totalNumber: 120,
         pageSize: 20,
