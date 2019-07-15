@@ -29,6 +29,11 @@
     color:black;
 }
 
+.public-ranking{
+    position: relative;
+    top: 160px;
+}
+
 /* Dashboard admin */
 .dashboard{
     position: relative;
