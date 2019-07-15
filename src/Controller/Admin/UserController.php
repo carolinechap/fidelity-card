@@ -46,6 +46,9 @@ class UserController extends AbstractController
         $cards = $cardRepository->findCardByUser($user);
         $stores = $storeRepository->findStoreByUser($user);
 
+
+
+
         return $this->render('admin/user/show.html.twig', [
             'user' => $user,
             'cards' => $cards,

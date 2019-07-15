@@ -1,50 +1,43 @@
 {% extends 'base.html.twig' %}
 
-    {% block title %}Offres{% endblock %}
+{% block title %}Offres{% endblock %}
 
-    {% block body %}
+{% block body %}
+    {% if is_granted('ROLE_SUPERADMIN') %}
+        {% include('admin/menu.html.twig') %}
+    {% endif %}
+
+    <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Offre {{ entity.name }}</h1>
+        </div>
         {% if is_granted('ROLE_SUPERADMIN') %}
-            {% include('admin/menu.html.twig') %}
+            <a href="{{ path('crud_index', {'class' : class}) }}"
+               class="btn btn-outline-primary mb-3">
+                Retour vers la liste
+            </a>
         {% endif %}
+        <div class="card">
+            <h5 class="card-header text-center">{{ entity.name }}</h5>
+            <div class="card-body">
+                <p class="card-title text-muted">Valide {{ entity.startDate ? entity.startDate|date('d/m/Y') : '' }} au {{ entity.endDate ? entity.endDate|date('d/m/Y') : '' }}</p>
+                <p class="card-text">{{ entity.description }}</p>
+                <p class="card-text">Points de fidélité nécessaires : <span class="font-weight-bold">{{ entity.costPoint }}</span> pts </p>
 
-        <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Offres commerciales</h1>
-            </div>
-            {% if is_granted('ROLE_SUPERADMIN') %}
-                <a href="{{ path('deal_index') }}"
-                   class="btn btn-outline-primary mb-3">
-                    Retour vers la liste
-                </a>
-            {% else %}
-                <a href="{{ path('deal_display_all') }}"
-                   class="btn btn-outline-primary mb-3">
-                    Retour vers la liste
-                </a>
-            {% endif %}
-
-            <div class="card">
-                <h5 class="card-header text-center">{{ deal.name }}</h5>
-                <div class="card-body">
-                    <p class="card-title text-muted">Valide {{ deal.startDate ? deal.startDate|date('d/m/Y') : '' }} au {{ deal.endDate ? deal.endDate|date('d/m/Y') : '' }}</p>
-                    <p class="card-text">{{ deal.description }}</p>
-                    <p class="card-text">Points de fidélité nécessaires : <span class="font-weight-bold">{{ deal.costPoint }}</span> pts </p>
-
-                    <div class="d-flex justify-content-end">
-                        {% if is_granted('ROLE_SUPERADMIN') %}
-                            <a href="{{ path('deal_delete', {'id' : deal.id}) }}" class="btn btn-danger">
-                                Supprimer
-                            </a>
-                        {% else %}
-                            <a href="{{ path('deal_add_card', {'deal' : deal.id}) }}" class="btn btn-success">
-                                Ajouter
-                            </a>
-                        {% endif %}
-                    </div>
+                <div class="d-flex justify-content-end">
+                    {% if is_granted('ROLE_SUPERADMIN') %}
+                        <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}" class="btn btn-warning">
+                            Modifier
+                        </a>
+                        {{ include('crud/_delete_form.html.twig', {'class': class }) }}
+                        <a href="{{ path('crud_new', { 'class': class }) }}"
+                           class="btn btn-outline-primary mb-3">
+                            Créer une offre
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
-
-
-    {% endblock %}
+    </div>
+{% endblock %}
 

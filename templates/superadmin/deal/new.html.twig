@@ -8,7 +8,7 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Offres commerciales</h1>
         </div>
-        {{ form_start(form) }}
+        {{ form_start(form, {'action': path('crud_new', {'class': class }), 'method': 'POST'}) }}
         <div class="form-row">
             <div class="form-group col-md-9">
                 {{ form_row(form.name) }}
@@ -35,7 +35,7 @@
         <button type="submit" class="btn btn-primary">
             Enregistrer
         </button>
-        <a href="{{ path('deal_index') }}"
+        <a href="{{ path('crud_index', {'class' : class}) }}"
            class="btn btn-outline-secondary">
             Retour
         </a>

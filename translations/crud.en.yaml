@@ -1,0 +1,31 @@
+link:
+  dashboard: Dashboard
+  back: Back to the list
+  new: New
+  show: Show
+  edit: Edit
+list: List
+actions: Actions
+empty:
+  list: Empty list !
+title:
+  new: New
+  edit: Update
+delete:
+  confirmation: Are you sure ?
+  button: Delete
+save: Save
+add: Add
+new:
+  success: The item was successfully saved !
+  error: Error while trying to save the item !
+edit:
+  success: The item was successfully updated !
+  error: Error while trying to update the item !
+remove:
+  success: The item was successfully removed !
+  error: Error while trying to remove the item !
+class:
+  not_found: This entity does not exist !
+update:
+  button: Update

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'list'|trans({}, 'crud') }} {{ (class|trans({}, 'crud'))|capitalize }}{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_SUPERADMIN') %}
+        {% include('admin/menu.html.twig') %}
+    {% endif %}
+    <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">{{ 'list'|trans({}, 'crud') }} {{ (class|trans({}, 'crud'))|capitalize }}</h1>
+        </div>
+        {% if is_granted('ROLE_SUPERADMIN') %}
+            <a href="{{ path('crud_new', { 'class': class }) }}"
+               class="btn btn-outline-primary mb-3">
+                {{ 'link.new'|trans({}, 'crud') }}
+            </a>
+        {% endif %}
+        <div class="table-responsive table-hover">
+            <table class="table table-striped table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        {% for property_key in property_keys %}
+                            <th scope="col" class="text-center">{{ property_key|trans({}, 'crud') }}</th>
+                        {% endfor %}
+                        {% if is_granted('ROLE_SUPERADMIN') %}
+                            <th>{{ 'actions'|trans({}, 'crud') }}</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        {% for property in properties %}
+                            <td scope="row" class="text-center">
+                                {% if attribute(entity, property).timestamp is defined %}
+                                     {{ attribute(entity, property)|date('d/m/Y') }}
+                                {% else %}
+                                        {% if (attribute(entity, property)) is defined and (attribute(entity, property) is not iterable or property == "password") %}
+                                            {{ attribute(entity, property) }}
+                                        {% endif %}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        {% if is_granted('ROLE_SUPERADMIN') %}
+                        <td width="300">
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-sm btn-primary mx-2"
+                                   href="{{ path('crud_show', {'id': entity.id, 'class': class }) }}">{{ 'link.show'|trans({}, 'crud') }}
+                                </a>
+                                <a class="btn btn-sm btn-warning mr-2"
+                                   href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}">{{ 'link.edit'|trans({}, 'crud') }}
+                                </a>
+                                {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
+                            </div>
+
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="{{ property_keys|length }}">{{ 'empty.list'|trans({}, 'crud') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-3 mb-5">
+            <a href="{{ path('crud_dashboard') }}"
+               class="btn btn-outline-primary mb-3">
+                {{ 'link.dashboard'|trans({}, 'crud') }}
+            </a>
+        </div>
+    </div>
+{% endblock %}
