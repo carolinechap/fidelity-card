@@ -13,19 +13,31 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AddCardType extends AbstractType
 {
+    private $urlGenerator;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
+            ->setAction($this->urlGenerator->generate('card_add_user'))
             ->add('card_number', TextType::class, [
                 'attr' => [
-                    'placeholder' => 'XX-XXX'
+                    'placeholder' => 'XXX-XXXXXX-X'
                 ],
-//                'constraints' => [
-//                    new IsValidCardNumber()
-//                ],
+                'required' => true,
+                'constraints' => [
+//                    new IsValidCardNumber(['message' => 'card.add.invalid_number'])
+                        new IsValidCardNumber()
+                ],
             ]);
     }
 

@@ -6,3 +6,6 @@ deal:
       enddate: End date
       description: Description
       costpoint: Cost (fidelity points)
+card:
+  add:
+    invalid_number: Invalid card number

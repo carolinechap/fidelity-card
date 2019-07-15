@@ -22,3 +22,11 @@ cardActivity:
   gamedate:
     valid: La date de l'activité n'est pas valide
     lessthan: La date ne peut pas être supérieure à aujourd'hui
+card:
+  number:
+    not_match_regex: Le numéro de carte ne correspond pas au format demandé
+    range_code_center: Le code centre n'est pas valide
+    range_customer_code: Le code client n'est pas valide
+    wrong_checksum: Le checksum de la carte n'est pas valide
+    not_existent_code_center: Le code centre de la carte n'est pas valide
+    not_existent_code_customer: Le code client de la carte n'est pas valide

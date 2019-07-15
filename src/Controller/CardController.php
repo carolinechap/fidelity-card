@@ -74,8 +74,6 @@ class CardController extends AbstractController
         ]);
     }
 
-
-
     /**
      * @Route("/suppression/{id}", name="card_delete")
      */
@@ -93,27 +91,24 @@ class CardController extends AbstractController
      * @IsGranted("ROLE_USER")
      * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
      */
-    public function addCardToUser()
+    public function addCardToUser(Request $request, CardRepository $cardRepository)
     {
         if (!$user = $this->getUser()) {
             throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à afficher cette page.");
         }
 
         $form = $this->createForm(AddCardType::class);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // data is an array with "name", "email", and "message" keys
-            $data = $form->getData();
-            var_dump($data);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()){
+
+            if ($form->isValid()) {
+
+            }
         }
 
-        return $this->render('card/add_card.html.twig', [
+        return $this->render('security/add_card.html.twig', [
             'form' => $form->createView()
         ]);
     }
 }
-
-//centerCode =$card->getStore()->getCenterCode();
-//$customerCode = $card->getUser()->getCustomerCode();
-//$cardCode = $centerCode . $customerCode . (($centerCode+$customerCode)%9);
-//$cardCode = (int)$cardCode;
-//$card->setCheckSum($cardCode);
