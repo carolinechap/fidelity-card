@@ -3,6 +3,7 @@
     "app": {
       "js": [
         "/build/runtime.js",
+        "/build/vendors~app~index.js",
         "/build/vendors~app.js",
         "/build/app.js"
       ],
@@ -11,10 +12,11 @@
         "/build/app.css"
       ]
     },
-    "pagination": {
+    "index": {
       "js": [
         "/build/runtime.js",
-        "/build/pagination.js"
+        "/build/vendors~app~index.js",
+        "/build/index.js"
       ]
     }
   }

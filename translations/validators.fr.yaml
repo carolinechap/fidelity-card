@@ -30,3 +30,5 @@ card:
     wrong_checksum: Le checksum de la carte n'est pas valide
     not_existent_code_center: Le code centre de la carte n'est pas valide
     not_existent_code_customer: Le code client de la carte n'est pas valide
+    too_short: Numéro de carte trop court
+    too_long: Numéro de carte trop long

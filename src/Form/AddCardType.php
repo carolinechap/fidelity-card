@@ -14,6 +14,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Range;
 
 class AddCardType extends AbstractType
 {
@@ -35,9 +39,16 @@ class AddCardType extends AbstractType
                 ],
                 'required' => true,
                 'constraints' => [
-//                    new IsValidCardNumber(['message' => 'card.add.invalid_number'])
-                        new IsValidCardNumber()
+                        new NotBlank(),
+                        new NotNull(),
+                        new IsValidCardNumber(),
+                        new Length(['min' => 10,
+                            'minMessage' => 'card.number.too_short',
+                            'max' => 12,
+                            'maxMessage' => 'card.number.too_long'])
                 ],
+                'translation_domain' => 'forms',
+                'label' => 'card.add.user.label'
             ]);
     }
 

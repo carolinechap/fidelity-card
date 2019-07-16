@@ -30,3 +30,5 @@ card:
     wrong_checksum : The checksum of the card is not valid
     not_existent_code_center: The code center doesn't exist
     not_existent_code_customer: The code customer doesn't exist
+    too_short: Number card is too short
+    too_long: Number card is too long
