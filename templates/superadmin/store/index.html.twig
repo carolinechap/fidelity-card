@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Magasins{% endblock %}
+
+    {% block body %}
+        {% include('admin/menu.html.twig') %}
+<div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Magasins</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary">Partager</button>
+                <button class="btn btn-sm btn-outline-secondary">Exporter</button>
+            </div>
+        </div>
+    </div>
+        <a href="{{ path('crud_new', { 'class': 'store' }) }}"
+           class="btn btn-outline-primary mb-3">
+            Ajouter un magasin
+        </a>
+
+        <table class="table">
+            <tr>
+                <th>Numéro de centre</th>
+                <th>Nom du centre</th>
+                <th>Numéro de rue</th>
+                <th>Rue</th>
+                <th>Code postal</th>
+                <th>Ville</th>
+                <th>Pays</th>
+                <th width="300px">Actions</th>
+            </tr>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.centerCode }}</td>
+                    <td>{{ entity.name }}</td>
+                    <td >{{ entity.numberStreet }}</td>
+                    <td >{{ entity.nameStreet }}</td>
+                    <td >{{ entity.zipCode }}</td>
+                    <td >{{ entity.city }}</td>
+                    <td >{{ entity.country }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}"
+                               class="btn btn-sm mx-2 btn-primary">
+                                Modifier
+                            </a>
+                            {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">
+                        Aucun résultat
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endblock %}

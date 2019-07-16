@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use App\Card\CardGenerator;
 use App\Form\AddCardType;
 use App\Form\CardType;

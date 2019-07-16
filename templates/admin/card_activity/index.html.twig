@@ -23,7 +23,7 @@
                         <th scope="col" class="text-center">Date du jeu</th>
                         <th scope="col" class="text-center">Gagnant</th>
                         <th scope="col" class="text-center">Point de fidélité minimum gagné</th>
-                        <th scope="col" class="text-center"></th>
+                        <th scope="col" class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,13 +37,13 @@
                             <td class="text-center">{% if ca.isTheWinner == 1  %} Match gagné {% else %} Match perdu {% endif %}</td>
                             <td class="text-center">{{ ca.activity.fidelityPoint }}</td>
                             <td width="250">
-                                <a href="{{ path('card_activity_new', {'id' : ca.id}) }}" class="btn btn-warning">
+                                <a href="{{ path('card_activity_new', {'id' : ca.id}) }}" class="btn btn-sm btn-warning">
                                     Modifier
                                 </a>
-                                <a href="{{ path('card_activity_delete', {'id' : ca.id}) }}" class="btn btn-danger">
+                                <a href="{{ path('card_activity_delete', {'id' : ca.id}) }}" class="btn btn-sm btn-danger">
                                     Supprimer
                                 </a>
-                                <a href="{{ path('card_activity_historical', {'id' : ca.card.user.id}) }}" class="btn btn-success">
+                                <a href="{{ path('card_activity_historical', {'id' : ca.card.user.id}) }}" class="btn btn-sm btn-success">
                                     Voir
                                 </a>
                             </td>

@@ -6,7 +6,9 @@ use App\Entity\Card;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 /**
  * @method Card|null find($id, $lockMode = null, $lockVersion = null)
  * @method Card|null findOneBy(array $criteria, array $orderBy = null)
@@ -15,8 +17,16 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class CardRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+
+    private $user;
+
+    private $tokenStorage;
+
+    const ITEMS_PER_PAGE = 5;
+
+    public function __construct(RegistryInterface $registry, TokenStorageInterface $tokenStorage)
     {
+        $this->tokenStorage = $tokenStorage;
         parent::__construct($registry, Card::class);
     }
 
@@ -28,6 +38,34 @@ class CardRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+
+    public function getCardByUserActivity(int $page=1): Paginator
+    {
+        $firstResult = ($page -1) * self::ITEMS_PER_PAGE;
+
+        $user = $this->tokenStorage->getToken()->getUser();
+        $query = $this->createQueryBuilder('c');
+        $query->select('c')
+            ->from(Card::class, 'c')
+            ->join('c.user', 'cu')
+            ->andWhere('c.user = :user')
+            ->setParameter('user', $user);
+
+        $query->getQuery()
+            ->setFirstResult($firstResult)
+            ->setMaxResults(self::ITEMS_PER_PAGE);
+
+
+        $doctrinePaginator = new DoctrinePaginator($query);
+        $paginator = new Paginator($doctrinePaginator);
+
+        return $paginator;
+    }
+
+
+
+
 
     // /**
     //  * @return Card[] Returns an array of Card objects

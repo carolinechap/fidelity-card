@@ -29,3 +29,10 @@ class:
   not_found: Cette entité n'existe pas dans l'administration
 update:
   button: Modifier
+fidelity:
+  point: Point de fidélité
+
+game:
+  name: Nom de l'activité
+
+

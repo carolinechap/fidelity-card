@@ -24,8 +24,8 @@
                     <th scope="col" class="text-center">Date de début</th>
                     <th scope="col" class="text-center">Date de fin</th>
                     <th scope="col" class="text-center">Description</th>
-                    <th scope="col" class="text-center">Points de fidélité à dédurie</th>
-                    <th scope="col" class="text-center"></th>
+                    <th scope="col" class="text-center">Points de fidélité à déduire</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,14 +38,16 @@
                         <td scope="row" class="text-center">{{ entity.costPoint }}</td>
                         <td width="300">
                             {% if is_granted('ROLE_SUPERADMIN') %}
-                                <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}" class="btn btn-warning">
-                                    Modifier
-                                </a>
-                                {#Formulaire de suppression, il n'affiche qu'un bouton défini dans _delete_form.html.twig #}
-                                {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
-                                <a href="{{ path('crud_show', {'id': entity.id, 'class': class }) }}" class="btn btn-primary">
-                                    Voir
-                                </a>
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-warning mx-2">
+                                        Modifier
+                                    </a>
+                                    {#Formulaire de suppression, il n'affiche qu'un bouton défini dans _delete_form.html.twig #}
+                                    {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
+                                    <a href="{{ path('crud_show', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-primary mr-2">
+                                        Voir
+                                    </a>
+                            </div>
                             {% endif %}
                         </td>
                     </tr>

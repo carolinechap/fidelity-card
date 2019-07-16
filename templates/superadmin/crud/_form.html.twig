@@ -9,10 +9,11 @@
             {{ form_row(field) }}
         </div>
         {% if loop.index is divisible by(2) %}
-            </div><div class="form-row">
+            </div><div class="form-row col-md-6">
+
         {% endif %}
         </div>
     {% endfor %}
 
-<button class="btn btn-primary">{{ button_label|default( 'save'|trans({}, 'crud') ) }}</button>
+<button class="btn btn-success">{{ button_label|default( 'save'|trans({}, 'crud') ) }}</button>
 {{ form_end(form) }}

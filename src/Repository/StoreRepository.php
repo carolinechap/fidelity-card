@@ -24,12 +24,13 @@ class StoreRepository extends ServiceEntityRepository
     public function findStoreByUser(User $user)
     {
         $qb = $this->createQueryBuilder('s');
-        $qb->join('s.card', 'sc')
+        $qb->join('s.cards', 'sc')
             ->andWhere('sc.user = :user')
             ->setParameter(':user', $user);
 
         return $qb->getQuery()->getResult();
     }
+
 
     // /**
     //  * @return Store[] Returns an array of Store objects

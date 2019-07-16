@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
+use App\Repository\CardRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -12,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class HomeController extends AbstractController
 {
+
     /**
      * @Route("/", name="home")
      */
