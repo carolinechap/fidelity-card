@@ -28,14 +28,13 @@
                     </thead>
                     <tbody>
                     {% for ca in cardActivities %}
-                        <tr>
-
-                            <td class="text-center">{{ ca.card.user.fullName }}</td>
-                            <td class="text-center">{{ ca.activity.gameName }}</td>
-                            <td scope="row" class="text-center">{{ ca.personalScore }}</td>
-                            <td class="text-center">{{ ca.gameDate  | date('d/m/Y')}}</td>
-                            <td class="text-center">{% if ca.isTheWinner == 1  %} Match gagné {% else %} Match perdu {% endif %}</td>
-                            <td class="text-center">{{ ca.activity.fidelityPoint }}</td>
+                        <tr class=" {% if ca.id == lastRec.0.id %} bg-secondary {% endif %}">
+                            <td class="text-center" {% if ca.id == lastRec.0.id %}style="color:white" {% endif %}>{{ ca.card.user.fullName }}</td>
+                            <td class="text-center" {% if ca.id == lastRec.0.id %}style="color:white" {% endif %}>{{ ca.activity.gameName }}</td>
+                            <td scope="row" class="text-center" {% if ca.id == lastRec.0.id %}style="color:white" {% endif %}>{{ ca.personalScore }}</td>
+                            <td class="text-center" {% if ca.id == lastRec.0.id %}style="color:white" {% endif %}>{{ ca.gameDate  | date('d/m/Y')}}</td>
+                            <td class="text-center" {% if ca.id == lastRec.0.id %}style="color:white" {% endif %}>{% if ca.isTheWinner == 1  %} Match gagné {% else %} Match perdu {% endif %}</td>
+                            <td class="text-center" {% if ca.id == lastRec.0.id %}style="color:white" {% endif %}>{{ ca.activity.fidelityPoint }}</td>
                             <td width="250">
                                 <a href="{{ path('card_activity_new', {'id' : ca.id}) }}" class="btn btn-sm btn-warning">
                                     Modifier
@@ -49,8 +48,12 @@
                             </td>
                         </tr>
                     {% endfor %}
+
                     </tbody>
                 </table>
+            </div>
+            <div class="pagination justify-content-center">
+                {{ knp_pagination_render(cardActivities) }}
             </div>
         </div>
 

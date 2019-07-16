@@ -29,7 +29,9 @@ class UserController extends AbstractController
      * @return Response
      * @Route("/" , name="admin_user_index")
      */
-    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator)
+    public function index(Request $request,
+                          UserRepository $userRepository,
+                          PaginatorInterface $paginator)
     {
         $users = $paginator->paginate($userRepository->searchByRoles((array)['ROLE_USER']), $request->query->getInt('page', 1),15);
 
