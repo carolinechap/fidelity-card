@@ -44,7 +44,7 @@
                                     </a>
                                     {#Formulaire de suppression, il n'affiche qu'un bouton défini dans _delete_form.html.twig #}
                                     {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
-                                    <a href="{{ path('crud_show', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-primary mr-2">
+                                    <a href="{{ path('crud_show', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-secondary ml-2">
                                         Voir
                                     </a>
                             </div>
