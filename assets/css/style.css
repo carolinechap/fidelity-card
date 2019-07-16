@@ -6,13 +6,14 @@
     z-index: 0;
     background-size: contain;
 }
-.bg-img-full{
-    background: url('../../public/lib/img/laser-dark.png') no-repeat top center;
-    width: 100%;
-    height: 100vh;
-    z-index: 0;
-    background-size: cover;
+
+.page-link{
+    color:red;
 }
+.page-link:hover{
+    color:black;
+}
+
 
 
 .card-home{
@@ -31,7 +32,7 @@
 
 .public-ranking{
     position: relative;
-    top: 160px;
+    top: 0px;
 }
 
 /* Dashboard admin */
@@ -158,7 +159,10 @@
     }
     .ranking{
         position: relative;
-        top: 90px;
+        top: 70px;
+    }
+    .public-ranking{
+        top: 40px;
     }
 }
 
@@ -176,18 +180,34 @@
     .ranking{
         top: 0px;
     }
+    .public-ranking{
+        top: 90px;
+    }
 
 }
 /*  Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
     .ranking{
-        top: 50px;
+        top: 90px;
+    }
+    .public-ranking{
+        top: 150px;
     }
 }
 
-/* Extra Extra large devices (large desktops, 1440px and up) */
-@media (min-width: 1440px) {
+/* Extra Extra large devices (large desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    .bg-img{
+        width: 100vw;
+        background-size: cover;
+    }
+    .bg-img-profile{
+        height: 50vh;
+    }
     .ranking{
-        top: 100px;
+        top: 150px;
+    }
+    .public-ranking{
+        top: 200px;
     }
 }

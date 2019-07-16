@@ -10,13 +10,6 @@
         "/build/vendors~app.css",
         "/build/app.css"
       ]
-    },
-    "pagination": {
-      "js": [
-        "/build/runtime.js",
-        "/build/vendors~pagination.js",
-        "/build/pagination.js"
-      ]
     }
   }
 }

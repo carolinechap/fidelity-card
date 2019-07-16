@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="container-fluid bg-img">
+    <div class="container-fluid bg-img {% if is_granted('ROLE_USER') %} bg-img-profile {% endif %}">
 {% if app.user %}
     {% if is_granted('ROLE_USER') %}
         <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4 user-dashboard">
@@ -27,12 +27,12 @@
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <h5 class="text-color text-center">Mes offres</h5>
-                    <p class="text-color text-center mb-md-0">Toutes les offres ajoutées à ma carte</p>
-                    <a class="btn btn-success my-5 my-md-2 my-lg-5  my-xl-4 btn-lg d-flex justify-content-center"  href="#">Voir</a>
+                    <p class="text-color text-center mb-md-0">Toutes mes offres</p>
+                    <a class="btn btn-success my-5 my-md-2 my-lg-5 btn-lg d-flex justify-content-center"  href="#">Voir</a>
                 </div>
             </div>
             <div class="row ranking">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h1>Classement</h1>
                 </div>
                 <div class="table-responsive table-hover">
@@ -50,6 +50,10 @@
                         </tbody>
                     </table>
                 </div>
+                <nav aria-label="page-navigation">
+                    <ul class="pagination">
+                    </ul>
+                </nav>
              </div>
         {% endif %}
         {% else %}
@@ -64,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row ranking">
+            <div class="row">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3 border-bottom">
                     <h1>Classement</h1>
                 </div>
@@ -83,13 +87,8 @@
                         </tbody>
                     </table>
                 </div>
-                <nav aria-label="Page navigation example">
+                <nav aria-label="page-navigation">
                     <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
             </div>
