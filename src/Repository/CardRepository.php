@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Card;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
@@ -39,29 +40,16 @@ class CardRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-
-    public function getCardByUserActivity(int $page=1): Paginator
+    public function findCardByOrderStore(): Query
     {
-        $firstResult = ($page -1) * self::ITEMS_PER_PAGE;
-
-        $user = $this->tokenStorage->getToken()->getUser();
-        $query = $this->createQueryBuilder('c');
-        $query->select('c')
-            ->from(Card::class, 'c')
-            ->join('c.user', 'cu')
-            ->andWhere('c.user = :user')
-            ->setParameter('user', $user);
-
-        $query->getQuery()
-            ->setFirstResult($firstResult)
-            ->setMaxResults(self::ITEMS_PER_PAGE);
-
-
-        $doctrinePaginator = new DoctrinePaginator($query);
-        $paginator = new Paginator($doctrinePaginator);
-
-        return $paginator;
+        $qb = $this->createQueryBuilder('c');
+        $qb->orderBy('c.store', 'DESC')
+            ->join('c.store', 'cs')
+            ->orderBy('cs.name', 'ASC');
+        $query = $qb->getQuery();
+        return $query;
     }
+
 
 
 

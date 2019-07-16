@@ -9,6 +9,7 @@ use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,14 +28,13 @@ class CardController extends AbstractController
      * @Route("/", name="card_index")
      */
     public function index(
-        CardRepository $cardRepository
+        CardRepository $cardRepository,
+        PaginatorInterface $paginator,
+        Request $request
             ) {
-        $cards = $cardRepository->findBy(
-            [],
-            [
-                'checkSum' => 'DESC'
-            ]
-        );
+        $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
+
+
         return $this->render(
             'card/index.html.twig',
             [

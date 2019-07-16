@@ -43,8 +43,6 @@ class UserRepository extends ServiceEntityRepository
             ->setMaxResults(1);
         $query = $qb->getQuery()->getResult();
         return $query;
-
-
     }
 
 
