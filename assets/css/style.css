@@ -30,7 +30,7 @@
     color:black;
 }
 
-.public-ranking{
+.public-view{
     position: relative;
     top: 0px;
 }
@@ -161,9 +161,13 @@
         position: relative;
         top: 70px;
     }
-    .public-ranking{
+    .public-view{
         top: 40px;
     }
+    .public-ranking{
+        margin-top: 50px;
+    }
+
 }
 
 /* Large devices (desktops, 992px and up) */
@@ -180,8 +184,11 @@
     .ranking{
         top: 0px;
     }
-    .public-ranking{
+    .public-view{
         top: 90px;
+    }
+    .public-ranking{
+        margin-top: 100px;
     }
 
 }
@@ -190,7 +197,7 @@
     .ranking{
         top: 90px;
     }
-    .public-ranking{
+    .public-view{
         top: 150px;
     }
 }
@@ -199,15 +206,23 @@
 @media (min-width: 1400px) {
     .bg-img{
         width: 100vw;
-        background-size: cover;
     }
     .bg-img-profile{
         height: 50vh;
+        background-size: cover;
     }
     .ranking{
         top: 150px;
     }
-    .public-ranking{
+    .public-view{
         top: 200px;
+    }
+    .public-ranking{
+        margin-top: 130px;
+    }
+}
+@media (min-width: 1920px) {
+    .public-ranking {
+        margin-top: 250px;
     }
 }
