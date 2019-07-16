@@ -38,9 +38,20 @@ class CardActivityRepository extends ServiceEntityRepository
     public function findByGameDate() : Query
     {
         $qb = $this->createQueryBuilder('ca');
-        $qb->orderBy('ca.gameDate', 'ASC');
+        $qb->orderBy('ca.gameDate', 'DESC');
         $query = $qb->getQuery();
         return $query;
+    }
+
+    public function findLastRecord()
+    {
+        $qb = $this->createQueryBuilder('ca');
+        $qb->orderBy('ca.id', 'DESC')
+            ->setMaxResults(1);
+        $query = $qb->getQuery()->getResult();
+        return $query;
+
+
     }
 
 

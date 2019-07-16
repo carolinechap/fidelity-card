@@ -46,12 +46,16 @@ class CardActivityController extends AbstractController
         $cards = $cardRepository->findAll();
         $users = $userRepository->findAll();
 
+        $lastRec = $cardActivityRepository->findLastRecord();
+        //dd($lastRec);
+
 
         return $this->render('admin/card_activity/index.html.twig', [
             'cardActivities' => $cardActivities,
             'activities' => $activities,
             'users' => $users,
-            'cards' => $cards
+            'cards' => $cards,
+            'lastRec' => $lastRec
         ]);
     }
 
