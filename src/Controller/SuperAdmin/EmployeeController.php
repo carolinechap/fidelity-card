@@ -29,8 +29,12 @@ class EmployeeController extends AbstractController
     {
         $employees = $paginator->paginate($userRepository->searchByRoles((array)['ROLE_ADMIN']), $request->query->getInt('page', 1),5);
 
+        $lastRecord = $userRepository->findLastRecordByRole((array)['ROLE_ADMIN']);
+
+
         return $this->render('superadmin/employees/index.html.twig', [
             'employees' => $employees,
+            'lastRecord' => $lastRecord
         ]);
     }
 
