@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#btn-add-customer-card').click(function(event) {
+    $(document).on("click", "#btn-add-customer-card", function(event) {
         event.preventDefault();
         var addCardForm = $("#add-card");
         var linkSubmit = addCardForm.attr('action');
@@ -8,7 +8,8 @@ $(document).ready(function() {
             url: (linkSubmit),
             data: addCardForm.serialize(),
             success: function (response) {
-                $('.container').replaceWith(response);
+                $('#customer-add-card').replaceWith(response);
+                $('#message').removeClass('d-none');
             },
             error: function () {
                 $('#message').removeClass('d-none');

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use App\Card\CardGenerator;
 use App\Card\CardNumberExtractor;
 use App\Form\AddCardType;
@@ -20,12 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\Validation;
 
 /**
  * Class CardController
@@ -110,7 +104,7 @@ class CardController extends AbstractController
                                   EntityManagerInterface $entityManager,
                                   CardRepository $cardRepository,
                                   TranslatorInterface $translator,
-                                  CardNumberExtractor $cardNumberExtractor, ValidatorInterface $validator)
+                                  CardNumberExtractor $cardNumberExtractor)
     {
         if (!$user = $this->getUser()) {
             throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à afficher cette page.");
@@ -132,16 +126,16 @@ class CardController extends AbstractController
                 $entityManager->flush();
                 $message = $translator->trans('card.add.user.success', [], 'forms');
                 $typeMessage = 'success';
-                if ($request->isXmlHttpRequest()) {
+                if (!$request->isXmlHttpRequest()) {
                     $this->addFlash('success', $message);
                 }
             }
-        }
-        else {
-            $message = $translator->trans('card.add.user.error', [], 'forms');
-            $typeMessage = 'error';
-            if ($request->isXmlHttpRequest()) {
-                $this->addFlash('error', $message);
+            else {
+                $message = $translator->trans('card.add.user.error', [], 'forms');
+                $typeMessage = 'danger';
+                if (!$request->isXmlHttpRequest()) {
+                    $this->addFlash('error', $message);
+                }
             }
         }
 

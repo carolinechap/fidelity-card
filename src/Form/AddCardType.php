@@ -19,15 +19,30 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Range;
 
+/**
+ * Class AddCardType
+ * @package App\Form
+ */
 class AddCardType extends AbstractType
 {
+    /**
+     * @var UrlGeneratorInterface
+     */
     private $urlGenerator;
 
+    /**
+     * AddCardType constructor.
+     * @param UrlGeneratorInterface $urlGenerator
+     */
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -39,19 +54,20 @@ class AddCardType extends AbstractType
                 ],
                 'required' => true,
                 'constraints' => [
-                        new NotBlank(),
-                        new NotNull(),
-                        new IsValidCardNumber(),
-                        new Length(['min' => 10,
-                            'minMessage' => 'card.number.too_short',
-                            'max' => 12,
-                            'maxMessage' => 'card.number.too_long'])
+                    new NotBlank(),
+                    new NotNull(),
+                    new IsValidCardNumber(),
+                    new Length(['min' => 10,
+                        'max' => 12])
                 ],
                 'translation_domain' => 'forms',
                 'label' => 'card.add.user.label'
             ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

@@ -24,11 +24,4 @@ cardActivity:
     lessthan: The activity date can not be superior of today
 card:
   number:
-    not_match_regex: The card number doesn't fit the appropriate format
-    range_code_center: The code center doesn't fit the appropriate format
-    range_customer_code: The customer code doesn't fit the appropriate format
-    wrong_checksum : The checksum of the card is not valid
-    not_existent_code_center: The code center doesn't exist
-    not_existent_code_customer: The code customer doesn't exist
-    too_short: Number card is too short
-    too_long: Number card is too long
+    not_valid: The number card is not valid
