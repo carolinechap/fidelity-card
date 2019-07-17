@@ -8,6 +8,7 @@ use App\Form\AddCardType;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
+use App\Repository\UserRepository;
 use App\Validator\Constraints\IsValidCardNumber;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Workflow\Exception\LogicException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -66,6 +68,17 @@ class CardController extends AbstractController
             # Process de création d'une carte ...
             $card = $cardGenerator->generateCard($card);
 
+            # Handle Workflow
+            $workflow = $this->registry->get($card);
+            if ($workflow->can($card, 'preactivating')) {
+                try {
+                    $workflow->apply($card, 'preactivating');
+                } catch (LogicException $e) {
+                    # Transition non autorisé
+                    $e->getMessage();
+                }
+            }
+
             # Sauvegarde de la carte
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($card);
@@ -97,6 +110,13 @@ class CardController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param CardRepository $cardRepository
+     * @param TranslatorInterface $translator
+     * @param CardNumberExtractor $cardNumberExtractor
+     * @return Response
+     *
      * @IsGranted("ROLE_USER")
      * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
      */
@@ -144,5 +164,26 @@ class CardController extends AbstractController
             'message' => $message,
             'typeMessage' => $typeMessage
         ]);
+    }
+
+    /**
+     * @todo rajouter IsGranted("ROLE_ADMIN")
+     * @Route("/declarer-perdue", name="card_lost", methods={"GET", "POST"})
+     */
+    public function declareLostCard(CardRepository $cardRepository, UserRepository $userRepository)
+    {
+        //récupérer le store
+        $employees = $userRepository->searchByRoles(['ROLE_ADMIN']);
+
+        foreach($employees as $employee) {
+            $stores[] = $employee->getStore();
+        }
+        var_dump("employees");
+        var_dump($employees);
+        var_dump("stores");
+        var_dump($stores); exit;
+
+        return new Response("coucou");
+
     }
 }
