@@ -11,8 +11,7 @@ $(document).ready(function() {
                 $('.container').replaceWith(response);
             },
             error: function () {
-                var messageContainer = $('#message');
-                messageContainer.removeClass('d-none');
+                $('#message').removeClass('d-none');
             },
         });
     });

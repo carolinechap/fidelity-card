@@ -4,7 +4,7 @@
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link {{ app.request.attributes.get('_route') == 'admin_dashboard' ? 'active' }}" href="{{ path('admin_dashboard') }}">
+                                <a class="nav-link {{ app.request.attributes.get('_route') == 'crud_dashboard' ? 'active' }}" href="{{ path('crud_dashboard') }}">
                                     <span data-feather="home"></span>
                                     Dashboard <span class="sr-only">(current)</span>
                                 </a>
@@ -16,7 +16,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{app.request.attributes.get('_route') == 'activity_index' ? 'active' }}" href="{{ path('activity_index') }}">
+                                <a class="nav-link {{app.request.attributes.get('_route') == 'activity_index' ? 'active' }}" href="{{ path('crud_index', {'class': 'activity' }) }}">
                                     <span data-feather="box"></span>
                                     Activités du laser game
                                 </a>
@@ -54,13 +54,13 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ app.request.attributes.get('_route') == 'store_index' ? 'active' }}" href="{{ path('store_index') }}">
+                                    <a class="nav-link {{ app.request.attributes.get('_route') == 'store_index' ? 'active' }}" href="{{ path('crud_index', {'class': 'store' }) }}">
                                         <span data-feather="map"></span>
                                         Magasins
                                     </a>
                                     <ul class="nav flex-column nested-list">
                                         <li class="nav-item">
-                                            <a class="nav-link {{ app.request.attributes.get('_route') == 'store_edition' ? 'active' }}" href="{{ path('store_edition') }}">
+                                            <a class="nav-link {{ app.request.attributes.get('_route') == 'store_edition' ? 'active' }}" href="{{ path('crud_new', { 'class': 'store' }) }}">
                                                 <span data-feather="plus-circle"></span>
                                                 Ajouter un magasin
                                             </a>
@@ -68,13 +68,13 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_index' ? 'active' }}" href="{{ path('deal_index') }}">
+                                    <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_index' ? 'active' }}" href="{{ path('crud_index', {'class': 'deal' }) }}">
                                         <span data-feather="shopping-cart"></span>
                                         Offres
                                     </a>
                                     <ul class="nav flex-column nested-list">
                                         <li class="nav-item">
-                                            <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_new' ? 'active' }}" href="{{ path('deal_new') }}">
+                                            <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_new' ? 'active' }}" href="{{ path('crud_new', { 'class': 'deal' }) }}">
                                                 <span data-feather="plus-circle"></span>
                                                 Ajouter un offre
                                             </a>

@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\CardActivity;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -33,6 +34,26 @@ class CardActivityRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findByGameDate() : Query
+    {
+        $qb = $this->createQueryBuilder('ca');
+        $qb->orderBy('ca.gameDate', 'DESC');
+        $query = $qb->getQuery();
+        return $query;
+    }
+
+    public function findLastRecord()
+    {
+        $qb = $this->createQueryBuilder('ca');
+        $qb->orderBy('ca.id', 'DESC')
+            ->setMaxResults(1);
+        $query = $qb->getQuery()->getResult();
+        return $query;
+
+
+    }
+
 
 
     // /**

@@ -45,7 +45,7 @@ class StoreFixtures extends Fixture implements DependentFixtureInterface
             }
             $store->setCenterCode($faker->numberBetween(100, 999));
             $store->setCity($faker->city);
-            $store->setCountry($faker->country);
+            $store->setCountry('France');
             $store->setNumberStreet($faker->numberBetween(1,30));
             $store->setNameStreet($faker->streetName);
             $store->setZipCode($faker->postcode);

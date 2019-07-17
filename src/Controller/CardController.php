@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use App\Card\CardGenerator;
 use App\Card\CardNumberExtractor;
 use App\Form\AddCardType;
@@ -10,6 +11,7 @@ use App\Repository\CardRepository;
 use App\Entity\Card;
 use App\Validator\Constraints\IsValidCardNumber;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,14 +38,13 @@ class CardController extends AbstractController
      * @Route("/", name="card_index")
      */
     public function index(
-        CardRepository $cardRepository
+        CardRepository $cardRepository,
+        PaginatorInterface $paginator,
+        Request $request
             ) {
-        $cards = $cardRepository->findBy(
-            [],
-            [
-                'checkSum' => 'DESC'
-            ]
-        );
+        $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
+
+
         return $this->render(
             'card/index.html.twig',
             [

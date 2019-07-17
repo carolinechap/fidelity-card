@@ -6,7 +6,6 @@
         <!--     Fonts and icons     -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
         {{ encore_entry_link_tags('app') }}
-        <link rel="stylesheet" href="{{ asset('lib/css/style.css') }}">
 
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
@@ -15,11 +14,19 @@
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN') %}
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark shadow">
             <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('home') }}">Shinigami Laser</a>
-            <input class="form-control form-control-dark w-100" type="text" placeholder="Recherche" aria-label="Recherche">
-            <ul class="navbar-nav px-3">
-                <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="{{ path('logout_route') }}">Deconnexion</a>
-                </li>
+            <ul class="navbar-nav ml-auto">
+                {% if app.user is not null %}
+                    <li class="nav-item">
+                        <span class="nav-link">
+                            {{ app.user }}
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout_route') }}">
+                            Déconnexion
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
     {% else %}
@@ -34,15 +41,8 @@
                     <li class="nav-item">
                         <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_display_all' ? 'active' }}"
                            href="{{ path('deal_display_all') }}">
-                            <span data-feather="box"></span>
-                            Offres
+                            Nos offres
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Lien2</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Lien3</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -59,10 +59,6 @@
                         </li>
                     {% endif %}
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Recherche</button>
-                </form>
             </div>
         </nav>
     {% endif %}

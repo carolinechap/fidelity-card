@@ -15,6 +15,7 @@ use App\Repository\CardActivityRepository;
 use App\Repository\CardRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,19 +37,25 @@ class CardActivityController extends AbstractController
     public function index(CardActivityRepository $cardActivityRepository,
                           ActivityRepository $activityRepository,
                           CardRepository $cardRepository,
-                          UserRepository $userRepository)
+                          UserRepository $userRepository,
+                          PaginatorInterface $paginator,
+                          Request $request)
     {
-        $cardActivities = $cardActivityRepository->findAll();
+        $cardActivities = $paginator->paginate($cardActivityRepository->findByGameDate(), $request->query->getInt('page', 1),5);
         $activities = $activityRepository->findAll();
         $cards = $cardRepository->findAll();
         $users = $userRepository->findAll();
+
+        $lastRec = $cardActivityRepository->findLastRecord();
+        //dd($lastRec);
 
 
         return $this->render('admin/card_activity/index.html.twig', [
             'cardActivities' => $cardActivities,
             'activities' => $activities,
             'users' => $users,
-            'cards' => $cards
+            'cards' => $cards,
+            'lastRec' => $lastRec
         ]);
     }
 

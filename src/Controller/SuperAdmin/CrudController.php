@@ -139,7 +139,7 @@ class CrudController extends AbstractController
             : 'superadmin/crud/new.html.twig';
 
         return $this->render($template, [
-            'crud' => $entity,
+            'entity' => $entity,
             'form' => $form->createView(),
             'class' => $class
         ]);

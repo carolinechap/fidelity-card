@@ -2,12 +2,30 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ *     normalizationContext={"groups"={"card_listening:read"}},
+ *     attributes={
+ *          "pagination_client_enabled"=true,
+ *          "pagination_items_per_page"=5,
+ *          "pagination_fetch_join_collection"=true,
+ *          "formats"={"jsonld", "json", "html", "jsonhal", "csv"={"text/csv"}}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
+ * @ApiFilter(OrderFilter::class, properties={"personalScore": "ASC", "countVictory": "ASC"})
+ * @ApiFilter(RangeFilter::class, properties={"personalScore"})
  */
 class Card
 {
@@ -15,6 +33,7 @@ class Card
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"card_listening:read"})
      */
     private $id;
 
@@ -30,12 +49,14 @@ class Card
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="card")
+     * @Groups({"card_listening:read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Store", inversedBy="cards")
      * @ORM\JoinColumn(name="store_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Groups({"card_listening:read"})
      */
     private $store;
 
@@ -51,6 +72,7 @@ class Card
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CardActivity", mappedBy="card")
+     * @Groups({"card_listening:read"})
      */
     private $activities;
 
@@ -61,8 +83,19 @@ class Card
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"card_listening:read"})
      */
     private $personalScore;
+
+    /**
+     * @var integer
+     */
+    private $countVictory;
+
+    /**
+     * @var integer
+     */
+    private $countGames;
 
 
     public function __construct()
@@ -210,8 +243,8 @@ class Card
     {
         return $this->getStore()->getCenterCode() .
             $this->getCustomerCode() . $this->getCheckSum();
-    }
 
+    }
 
     public function getCardOwnerName()
     {
@@ -241,5 +274,57 @@ class Card
 
         return $this;
     }
+
+
+    /**
+     * @return int
+     */
+    public function getCountGamePlayed(){
+        $game = 0;
+
+        $games = $this->getActivities();
+
+        foreach ($games as $g){
+            $game += 1;
+        }
+        return $game;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getCountWonGame(){
+        $activities = $this->getActivities();
+        $victories = 0;
+
+        foreach ($activities as $activity){
+            if($activity->getIsTheWinner() ==  true ){
+                $victories += 1;
+            }
+        }
+            return $victories;
+        }
+
+    /**
+     * @return int
+     * @Groups({"card_listening:read"})
+     */
+    public function getCountVictory(): int
+    {
+        return $this->getCountWonGame();
+    }
+
+    /**
+     * @return int
+     * @Groups({"card_listening:read"})
+     */
+    public function getCountGames(): int
+    {
+        return $this->getCountGamePlayed();
+    }
+
+
+
 
 }
