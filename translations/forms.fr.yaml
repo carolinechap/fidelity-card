@@ -6,3 +6,10 @@ deal:
       enddate: Date de fin
       description: Description
       costpoint: Coût (en points de fidélité)
+card:
+  add:
+    invalid_number: Numéro de carte invalide
+    user:
+      error: Erreur à l'ajout de la carte à votre compte.
+      success: La carte a bien été ajoutée à votre compte !
+      label : Entrez votre numéro de carte

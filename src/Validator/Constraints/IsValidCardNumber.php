@@ -19,6 +19,5 @@ class IsValidCardNumber extends Constraint
     /**
      * @var string
      */
-    public $message =
-        'The card number "{{ cardnumber }}" is not a valid card number.';
+    public $message = 'The card number "{{ cardnumber }}" is not a valid card number.';
 }

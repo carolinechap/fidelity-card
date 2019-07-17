@@ -22,3 +22,6 @@ cardActivity:
   gamedate:
     valid: La date de l'activité n'est pas valide
     lessthan: La date ne peut pas être supérieure à aujourd'hui
+card:
+  number:
+    not_valid: Le numéro de carte n'est pas valide

@@ -1,19 +1,18 @@
-{% extends 'base.html.twig' %}
-
 {% block title %}Rattacher une carte{% endblock %}
 
 {% block body %}
-    <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+    <div class="container container-admin ml-sm-auto col-md-5 col-lg-5 px-md-2 px-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Rattacher une carte</h1>
-            {{ form_start(form)}}
+            {{ form_start(form, {'attr' : {'id': 'add-card'}}) }}
+            <div id="message" class="alert alert-{{ typeMessage }} d-none">{{ message }}</div>
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-8">
                     {{ form_row(form.card_number) }}
                 </div>
             </div>
             <div class="text-right">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" id="btn-add-customer-card">
                     Enregistrer
                 </button>
             </div>

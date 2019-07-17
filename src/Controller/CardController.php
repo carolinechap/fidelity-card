@@ -2,20 +2,24 @@
 
 namespace App\Controller;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use App\Card\CardGenerator;
+use App\Card\CardNumberExtractor;
 use App\Form\AddCardType;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
+use App\Validator\Constraints\IsValidCardNumber;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CardController
@@ -75,13 +79,15 @@ class CardController extends AbstractController
         ]);
     }
 
-
-
     /**
+     * @param Card $card
+     * @param EntityManagerInterface $entityManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @Route("/suppression/{id}", name="card_delete")
      */
-    public function delete(Card $card, EntityManagerInterface $entityManager
-    ) {
+    public function delete(Card $card, EntityManagerInterface $entityManager) : RedirectResponse
+    {
         $entityManager->remove($card);
         $entityManager->flush();
 
@@ -94,27 +100,49 @@ class CardController extends AbstractController
      * @IsGranted("ROLE_USER")
      * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
      */
-    public function addCardToUser()
+    public function addCardToUser(Request $request,
+                                  EntityManagerInterface $entityManager,
+                                  CardRepository $cardRepository,
+                                  TranslatorInterface $translator,
+                                  CardNumberExtractor $cardNumberExtractor)
     {
         if (!$user = $this->getUser()) {
             throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à afficher cette page.");
         }
 
         $form = $this->createForm(AddCardType::class);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // data is an array with "name", "email", and "message" keys
-            $data = $form->getData();
-            var_dump($data);
+        $form->handleRequest($request);
+        $message = null;
+        $typeMessage = null;
+
+        if ($form->isSubmitted()){
+            $cardNumber = $form->getData()['card_number'];
+            if ($form->isValid()) {
+                $customerCode = $cardNumberExtractor->evaluate($cardNumber);
+                $card = $cardRepository->findOneBy([
+                    'customerCode' => $customerCode
+                ]);
+                $card->setUser($user);
+                $entityManager->flush();
+                $message = $translator->trans('card.add.user.success', [], 'forms');
+                $typeMessage = 'success';
+                if (!$request->isXmlHttpRequest()) {
+                    $this->addFlash('success', $message);
+                }
+            }
+            else {
+                $message = $translator->trans('card.add.user.error', [], 'forms');
+                $typeMessage = 'danger';
+                if (!$request->isXmlHttpRequest()) {
+                    $this->addFlash('error', $message);
+                }
+            }
         }
 
-        return $this->render('card/add_card.html.twig', [
-            'form' => $form->createView()
+        return $this->render('security/add_card.html.twig', [
+            'form' => $form->createView(),
+            'message' => $message,
+            'typeMessage' => $typeMessage
         ]);
     }
 }
-
-//centerCode =$card->getStore()->getCenterCode();
-//$customerCode = $card->getUser()->getCustomerCode();
-//$cardCode = $centerCode . $customerCode . (($centerCode+$customerCode)%9);
-//$cardCode = (int)$cardCode;
-//$card->setCheckSum($cardCode);

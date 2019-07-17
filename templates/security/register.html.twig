@@ -58,10 +58,7 @@
                     {{ form_row(form.country) }}
                 </div>
             </div>
-
-
-
-{#{{ form_row(form.has_card) }} #}
+    {#{{ form_row(form.has_card) }} #}
 
 
     <div class="text-right">
@@ -75,6 +72,13 @@
 
     {{ form_end(form) }}
     </div>
+
+    {% if is_granted('ROLE_USER') %}
+    <div id="customer-add-card">
+        {{ render(controller(
+            'App\\Controller\\CardController::addCardToUser')) }}
+    </div>
+    {% endif %}
 
 {% endblock %}
 

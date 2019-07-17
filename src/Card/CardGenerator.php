@@ -27,9 +27,9 @@ class CardGenerator
 
     /**
      * Générer un code client aléatoire
-     * @return int
+     * @return string
      */
-    public function generateCustomerCode(): int
+    public function generateCustomerCode(): string
     {
         $randCode = mt_rand(1,999999);
 
@@ -41,7 +41,7 @@ class CardGenerator
             $this->generateCustomerCode();
         }
 
-        return intval(sprintf("%06s",$randCode));
+        return sprintf("%06s",$randCode);
     }
 
 }
