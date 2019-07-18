@@ -175,8 +175,9 @@ class CardController extends AbstractController
         //récupérer le store
         $employees = $userRepository->searchByRoles(['ROLE_ADMIN']);
 
+        $stores = [];
         foreach($employees as $employee) {
-            $stores[] = $employee->getStore();
+            $stores = $employee->getStore();
         }
         var_dump("employees");
         var_dump($employees);
