@@ -61,7 +61,7 @@ class AddCardType extends AbstractType
                         'max' => 12])
                 ],
                 'translation_domain' => 'forms',
-                'label' => 'card.add.user.label'
+                //'label' => 'card.add.user.label'
             ]);
     }
 

@@ -38,11 +38,15 @@ class CardController extends AbstractController
             ) {
         $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
 
+        $lastCard = $cardRepository->findLastRecord();
+
+        //dd($lastCard);
 
         return $this->render(
             'card/index.html.twig',
             [
-                'cards' => $cards
+                'cards' => $cards,
+                'last_card' => $lastCard
             ]
         );
     }

@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block title %} Inscription - {{ parent() }}{% endblock %}
 {% block body %}
-    {% if is_granted('ROLE_SUPERADMIN')  %}
-            <div class="container-fluid dashboard">
-                <div class="row">
-                    {% include('admin/menu.html.twig') %}
+    {% if is_granted('ROLE_SUPERADMIN') %}
+        <div class="container-fluid dashboard">
+            <div class="row">
+                {% include('admin/menu.html.twig') %}
 
-                </div>
             </div>
+        </div>
     {% endif %}
     <div class="container container-admin {% if is_granted('ROLE_SUPERADMIN') %} ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4 {% endif %}">
         {% if is_granted('ROLE_SUPERADMIN') %}
@@ -15,70 +15,65 @@
                 <h1 class="h2">Création d'un compte employé</h1>
             </div>
 
-            {% else %}
-                <h3>S'inscrire</h3>
+        {% else %}
+            <h3>S'inscrire</h3>
         {% endif %}
         {{ form_start(form) }}
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    {{ form_row(form.lastname) }}
-                </div>
-                <div class="form-group col-md-6">
-                    {{ form_row(form.firstname) }}
-                </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form_row(form.lastname) }}
             </div>
-            <div class="form-row">
-                <div class="col-12">
-                    {{ form_row(form.email) }}
-                </div>
+            <div class="form-group col-md-6">
+                {{ form_row(form.firstname) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12">
+                {{ form_row(form.email) }}
+            </div>
 
-                <div class="form-group col-md-6">
-                    {{ form_row(form.plainPassword) }}
-                </div>
+            <div class="form-group col-md-6">
+                {{ form_row(form.plainPassword) }}
             </div>
+        </div>
         {% if is_granted('ROLE_SUPERADMIN') %}
-            <p class="text-muted font-weight-lighter font-italic mt-5">Ce complément d'informations est optionnel pour un employé</p>
+            <p class="text-muted font-weight-lighter font-italic mt-5">Ce complément d'informations est optionnel pour
+                un employé</p>
         {% endif %}
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    {{ form_row(form.numberStreet) }}
-                </div>
-                <div class="form-group col-md-6">
-                    {{ form_row(form.nameStreet) }}
-                </div>
-                <div class="form-group col-md-3">
-                    {{ form_row(form.zipCode) }}
-                </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                {{ form_row(form.numberStreet) }}
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    {{ form_row(form.city) }}
-                </div>
-                <div class="form-group col-md-6">
-                    {{ form_row(form.country) }}
-                </div>
+            <div class="form-group col-md-6">
+                {{ form_row(form.nameStreet) }}
             </div>
-    {#{{ form_row(form.has_card) }} #}
+            <div class="form-group col-md-3">
+                {{ form_row(form.zipCode) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form_row(form.city) }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form_row(form.country) }}
+            </div>
+        </div>
+        {#{{ form_row(form.has_card) }} #}
 
 
-    <div class="text-right">
-        <button type="submit" class="btn btn-success">
-            Enregistrer
-        </button>
-        <a href="{{ path('home') }}" class="btn btn-outline-primary">
-            Retour
-        </a>
+        <div class="text-right">
+            <button type="submit" class="btn btn-success">
+                Enregistrer
+            </button>
+            <a href="{{ path('home') }}" class="btn btn-outline-primary">
+                Retour
+            </a>
+        </div>
+
+        {{ form_end(form) }}
     </div>
 
-    {{ form_end(form) }}
-    </div>
-
-    {% if is_granted('ROLE_USER') %}
-    <div id="customer-add-card">
-        {{ render(controller(
-            'App\\Controller\\CardController::addCardToUser')) }}
-    </div>
-    {% endif %}
 
 {% endblock %}
 
