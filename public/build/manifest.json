@@ -8,5 +8,7 @@
   "build/vendors~api~app.js": "/build/vendors~api~app.js",
   "build/vendors~app.css": "/build/vendors~app.css",
   "build/vendors~app.js": "/build/vendors~app.js",
-  "build/images/laser-dark1.png": "/build/images/laser-dark1.9130da27.png"
+  "build/images/bg_purple.png": "/build/images/bg_purple.315b225d.png",
+  "build/images/laser-dark1.png": "/build/images/laser-dark1.9130da27.png",
+  "build/images/overlay_stars.svg": "/build/images/overlay_stars.0390ba85.svg"
 }
