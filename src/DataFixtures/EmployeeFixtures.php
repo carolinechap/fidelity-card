@@ -1,62 +1,55 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Corinne
- * Date: 14/07/2019
- * Time: 06:46
- */
 
 namespace App\DataFixtures;
 
-
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Entity\User;
 
-class UserFixtures extends Fixture
+class EmployeeFixtures extends Fixture
 {
+    private $encoder;
+
     const NB_ADMINS = 10;
 
-    private $encoder;
-    
+
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->encoder = $passwordEncoder;
     }
 
-    /**
-     * Load data fixtures with the passed EntityManager
-     *
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
 
+
         //This superadmin is for test and demo purposes, login with email 'superadmin@email.com' and password superadmin
-        $superadmin = new User();
+        $superAdmin = new User();
 
-        $superadmin->setFirstname("Superadmin");
-        $superadmin->setLastname("Superadmin");
-        $superadmin->setEmail('superadmin@email.com');
+        $superAdmin->setFirstname("Superadmin");
+        $superAdmin->setLastname("Superadmin");
+        $superAdmin->setEmail('superadmin@email.com');
 
-        $superadmin->setNumberStreet($faker->buildingNumber);
-        $superadmin->setNameStreet($faker->streetName);
-        $superadmin->setZipCode($faker->postcode);
-        $superadmin->setCity($faker->city);
-        $superadmin->setCountry('France');
-        $superadmin->setRoles(['ROLE_SUPERADMIN']);
+        $superAdmin->setNumberStreet($faker->buildingNumber);
+        $superAdmin->setNameStreet($faker->streetName);
+        $superAdmin->setZipCode($faker->postcode);
+        $superAdmin->setCity($faker->city);
+        $superAdmin->setCountry('France');
+        $superAdmin->setRoles(['ROLE_SUPERADMIN']);
 
-        $superadmin->setPlainPassword("superadmin");
+        $superAdmin->setPlainPassword("superadmin");
         $passwordAdmin = $this->encoder->encodePassword(
-            $superadmin,
-            $superadmin->getPlainPassword()
+            $superAdmin,
+            $superAdmin->getPlainPassword()
         );
-        $superadmin->setPassword($passwordAdmin);
+        $superAdmin->setPassword($passwordAdmin);
 
-        $manager->persist($superadmin);
+        $manager->persist($superAdmin);
+
+
+
 
         //Store admins for demo/test and dev fixtures
         for ($i = 0; $i < self::NB_ADMINS; $i ++) {
@@ -83,7 +76,6 @@ class UserFixtures extends Fixture
 
             $manager->persist($admin);
         }
-
         $manager->flush();
     }
 }
