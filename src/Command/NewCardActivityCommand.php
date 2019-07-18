@@ -17,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class NewCardActivityCommand extends Command
 {
 
-    protected static $defaultName = 'newCardActivity';
+    protected static $defaultName = 'app:new-card-activity';
 
     private $manager;
 
