@@ -1,11 +1,23 @@
 /* Home page*/
 .bg-img{
-    background: url('../../public/lib/img/laser-dark.png') no-repeat top center;
+    background: url('../../public/lib/img/laser-dark1.png') no-repeat top center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     z-index: 0;
-    background-size: cover;
+    background-size: contain;
 }
+
+.page-link{
+    color:red;
+}
+.page-link:hover{
+    color:black;
+}
+.page-link.active{
+    background-color:grey;
+}
+
+
 
 .card-home{
     position: relative;
@@ -17,6 +29,15 @@
     z-index: 10;
 }
 
+.text-color{
+    color:black;
+}
+
+.public-view{
+    position: relative;
+    top: 0px;
+}
+
 /* Dashboard admin */
 .dashboard{
     position: relative;
@@ -24,7 +45,12 @@
 }
 .container-admin{
     position: relative;
-    top:150px;
+    top:0px;
+}
+
+.user-dashboard{
+    position: relative;
+    top: 150px;
 }
 /*
  * Sidebar
@@ -117,6 +143,10 @@
     .dashboard{
         top : 134px;
     }
+    .user-dashboard{
+        top: 200px;
+    }
+
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -124,6 +154,23 @@
     .sidebar{
         top: 86px;
     }
+    .text-color{
+        color:white;
+    }
+    .user-dashboard{
+        top: 0px;
+    }
+    .ranking{
+        position: relative;
+        top: 70px;
+    }
+    .public-view{
+        top: 40px;
+    }
+    .public-ranking{
+        margin-top: 50px;
+    }
+
 }
 
 /* Large devices (desktops, 992px and up) */
@@ -137,7 +184,48 @@
     .container-admin{
         top:70px;
     }
+    .ranking{
+        top: 0px;
+    }
+    .public-view{
+        top: 90px;
+    }
+    .public-ranking{
+        margin-top: 100px;
+    }
+
+}
+/*  Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .ranking{
+        top: 90px;
+    }
+    .public-view{
+        top: 150px;
+    }
 }
 
-/* Extra large devices (large desktops, 1200px and up) */
-/* @media (min-width: 1200px) { ... } */
+/* Extra Extra large devices (large desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    .bg-img{
+        width: 100vw;
+    }
+    .bg-img-profile{
+        height: 50vh;
+        background-size: cover;
+    }
+    .ranking{
+        top: 150px;
+    }
+    .public-view{
+        top: 200px;
+    }
+    .public-ranking{
+        margin-top: 130px;
+    }
+}
+@media (min-width: 1920px) {
+    .public-ranking {
+        margin-top: 250px;
+    }
+}

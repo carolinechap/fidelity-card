@@ -18,6 +18,7 @@ security:
             form_login:
                 login_path: login_route
                 check_path: login_route
+                default_target_path: home
             logout:
                 path: logout_route
 
@@ -37,4 +38,4 @@ security:
         ROLE_SUPERADMIN: ROLE_ADMIN
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/crud, roles: ROLE_ADMIN }

@@ -3,16 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\EventListeners\LoginListener;
 use App\Form\UserType;
 use App\User\UserRequest;
 use App\User\UserRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class SecurityController extends AbstractController
 {
@@ -22,7 +28,7 @@ class SecurityController extends AbstractController
     public function register(Request $request,
                              UserPasswordEncoderInterface $passwordEncoder,
                              EntityManagerInterface $entityManager,
-                            UserRequestHandler $userRequestHandler)
+                             UserRequestHandler $userRequestHandler)
     {
 
         $user = new UserRequest();
@@ -58,8 +64,6 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        // TODO:Faire une condition pour savoir si l'utilisateur est déjà connecté
-        // TODO: Voir pour un event qui écoutera le role -> permet de faire la redirection pour l'admin sur une page après connexion
 
         return $this->render('security/login.html.twig',[
                 'last_username' => $lastUsername,

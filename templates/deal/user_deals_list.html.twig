@@ -5,14 +5,14 @@
 {% block body %}
     <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Offres</h1>
+            <h1 class="h2">Mes offres</h1>
             <a href="{{ path('deal_display_all') }}"
                class="btn btn-outline-primary mb-3">
                 Retour vers la liste
             </a>
         </div>
         {% for card in cards %}
-            <h3>Carte n° {{ card.customerCode }}</h3>
+            <h3>Carte n° {{ card.code }}</h3>
             {% include 'deal/_tab_deals.html.twig' with {'deals': card.deals, 'enabled': 0}%}
         {% endfor %}
     </div>

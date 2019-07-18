@@ -15,24 +15,52 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Security\Core\Security;
+use App\Card\CardNumberExtractor;
 
+/**
+ * Class IsValidCardNumberValidator
+ * @package App\Validator\Constraints
+ */
 class IsValidCardNumberValidator extends ConstraintValidator
 {
 
+    /**
+     * @var CardRepository
+     */
     private $cardRepository;
 
+    /**
+     * @var StoreRepository
+     */
     private $storeRepository;
 
+    /**
+     * @var Security
+     */
     private $security;
 
+    /**
+     * @var CardNumberExtractor
+     */
+    private $cardNumberExtractor;
 
+
+    /**
+     * IsValidCardNumberValidator constructor.
+     * @param CardRepository $cardRepository
+     * @param StoreRepository $storeRepository
+     * @param Security $security
+     * @param CardNumberExtractor $cardNumberExtractor
+     */
     public function __construct(CardRepository $cardRepository,
                                 StoreRepository $storeRepository,
-                                Security $security)
+                                Security $security,
+                                CardNumberExtractor $cardNumberExtractor)
     {
         $this->cardRepository = $cardRepository;
         $this->storeRepository = $storeRepository;
         $this->security = $security;
+        $this->cardNumberExtractor = $cardNumberExtractor;
     }
 
     /**
@@ -54,9 +82,6 @@ class IsValidCardNumberValidator extends ConstraintValidator
         if (!is_string($value)) {
             // throw this exception if your validator cannot handle the passed type so that it can be marked as invalid
             throw new UnexpectedValueException($value, 'string');
-
-            // separate multiple types using pipes
-            // throw new UnexpectedValueException($value, 'string|int');
         }
 
         if (!preg_match('/^([0-9 \-]+)$/', $value, $matches)) {
@@ -65,63 +90,23 @@ class IsValidCardNumberValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        $codeCentre = $this->evaluate($value)['code_centre'];
-        if (strlen($codeCentre) !== 3) {
-            $this->context->buildViolation('card.number.range_code_center')
-                ->setParameter('{{ string }}', $value)
-                ->addViolation();
-        }
-
-        $customerCode = $this->evaluate($value)['code_carte'];
-        if (strlen($customerCode) !== 6) {
-            $this->context->buildViolation('card.number.range_customer_code')
-                ->setParameter('{{ string }}', $value)
-                ->addViolation();
-        }
-
-        $checkSum = (intval($codeCentre) + intval($customerCode))% 9;
-        if (strlen($checkSum) !== 1) {
-            $this->context->buildViolation('card.number.wrong_checksum')
-                ->setParameter('{{ string }}', $value)
-                ->addViolation();
-        }
-
-        if ($checkSum !== $this->evaluate($value)['card.number.wrong_checksum'] ) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ string }}', $value)
-                ->addViolation();
-        }
-
-        if ($this->storeRepository->findOneBy(['centerCode' => $codeCentre])) {
-            $this->context->buildViolation('card.number.not_existent_code_center')
-                ->setParameter('{{ string }}', $value)
-                ->addViolation();
-        }
-
-        if ($this->cardRepository->findOneBy(['customerCode' => $customerCode])) {
-            $this->context->buildViolation('card.number.not_existent_code_customer')
-                ->setParameter('{{ string }}', $value)
-                ->addViolation();
-        }
+        $customerCode = $this->cardNumberExtractor->evaluate($value)['code_carte'];
+        $codeCentre = $this->cardNumberExtractor->evaluate($value)['code_centre'];
+        $checkSum = $this->cardNumberExtractor->evaluate($value)['checksum'];
+        if (
+                (strlen($codeCentre) !== 3) || (strlen($customerCode)) !== 6 ||
+                (!$this->storeRepository->findOneBy(['centerCode' => $codeCentre])) ||
+                (!$this->cardRepository->findOneBy(['customerCode' => $customerCode])) ||
+                $checkSum !== ((intval($codeCentre) + intval($customerCode))% 9)
+        )
+            {
+                $this->context->buildViolation('card.number.not_valid')
+                    ->setParameter('{{ string }}', $value)
+                    ->addViolation();
+            }
     }
 
-    private function evaluate($value) {
-        if (strpos('-', $value) != false) {
-            //enter a code with delimiter like in placeholder
-            $numberPieces = explode ('-', $value);
-            $codeCentre = $numberPieces[0];
-            $codeCarte = $numberPieces[1];
-            $checkSum = $numberPieces[2];
-        } else {
-            //without delimiter
-            $codeCentre = substr($value, 0, 3);
-            $codeCarte = substr($value, 4, 6);
-            $checkSum = substr($value, 11, 1);
-        }
-        return [
-            'code_centre' => $codeCentre,
-            'code_carte' => $codeCarte,
-            'checksum' => intval($checkSum)
-        ];
-    }
+
+
+
 }

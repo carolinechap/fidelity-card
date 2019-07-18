@@ -9,3 +9,7 @@ deal:
 card:
   add:
     invalid_number: Invalid card number
+    user:
+      error: Error while trying to add this card to your account.
+      success: The card has been successfully added to your account !
+      label : Please write your card number

@@ -3,17 +3,23 @@
 namespace App\Controller;
 
 use App\Card\CardGenerator;
+use App\Card\CardNumberExtractor;
 use App\Form\AddCardType;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
+use App\Validator\Constraints\IsValidCardNumber;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CardController
@@ -26,14 +32,13 @@ class CardController extends AbstractController
      * @Route("/", name="card_index")
      */
     public function index(
-        CardRepository $cardRepository
+        CardRepository $cardRepository,
+        PaginatorInterface $paginator,
+        Request $request
             ) {
-        $cards = $cardRepository->findBy(
-            [],
-            [
-                'checkSum' => 'DESC'
-            ]
-        );
+        $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
+
+
         return $this->render(
             'card/index.html.twig',
             [
@@ -75,10 +80,14 @@ class CardController extends AbstractController
     }
 
     /**
+     * @param Card $card
+     * @param EntityManagerInterface $entityManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @Route("/suppression/{id}", name="card_delete")
      */
-    public function delete(Card $card, EntityManagerInterface $entityManager
-    ) {
+    public function delete(Card $card, EntityManagerInterface $entityManager) : RedirectResponse
+    {
         $entityManager->remove($card);
         $entityManager->flush();
 
@@ -91,7 +100,11 @@ class CardController extends AbstractController
      * @IsGranted("ROLE_USER")
      * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
      */
-    public function addCardToUser(Request $request, CardRepository $cardRepository)
+    public function addCardToUser(Request $request,
+                                  EntityManagerInterface $entityManager,
+                                  CardRepository $cardRepository,
+                                  TranslatorInterface $translator,
+                                  CardNumberExtractor $cardNumberExtractor)
     {
         if (!$user = $this->getUser()) {
             throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à afficher cette page.");
@@ -99,16 +112,37 @@ class CardController extends AbstractController
 
         $form = $this->createForm(AddCardType::class);
         $form->handleRequest($request);
+        $message = null;
+        $typeMessage = null;
 
         if ($form->isSubmitted()){
-
+            $cardNumber = $form->getData()['card_number'];
             if ($form->isValid()) {
-
+                $customerCode = $cardNumberExtractor->evaluate($cardNumber);
+                $card = $cardRepository->findOneBy([
+                    'customerCode' => $customerCode
+                ]);
+                $card->setUser($user);
+                $entityManager->flush();
+                $message = $translator->trans('card.add.user.success', [], 'forms');
+                $typeMessage = 'success';
+                if (!$request->isXmlHttpRequest()) {
+                    $this->addFlash('success', $message);
+                }
+            }
+            else {
+                $message = $translator->trans('card.add.user.error', [], 'forms');
+                $typeMessage = 'danger';
+                if (!$request->isXmlHttpRequest()) {
+                    $this->addFlash('error', $message);
+                }
             }
         }
 
         return $this->render('security/add_card.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'message' => $message,
+            'typeMessage' => $typeMessage
         ]);
     }
 }

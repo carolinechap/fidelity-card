@@ -5,8 +5,11 @@ namespace App\Repository;
 use App\Entity\Card;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 /**
  * @method Card|null find($id, $lockMode = null, $lockVersion = null)
  * @method Card|null findOneBy(array $criteria, array $orderBy = null)
@@ -15,8 +18,16 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class CardRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+
+    private $user;
+
+    private $tokenStorage;
+
+    const ITEMS_PER_PAGE = 5;
+
+    public function __construct(RegistryInterface $registry, TokenStorageInterface $tokenStorage)
     {
+        $this->tokenStorage = $tokenStorage;
         parent::__construct($registry, Card::class);
     }
 
@@ -28,6 +39,21 @@ class CardRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findCardByOrderStore(): Query
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->orderBy('c.store', 'DESC')
+            ->join('c.store', 'cs')
+            ->orderBy('cs.name', 'ASC');
+        $query = $qb->getQuery();
+        return $query;
+    }
+
+
+
+
+
 
     // /**
     //  * @return Card[] Returns an array of Card objects

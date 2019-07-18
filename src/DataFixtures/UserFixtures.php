@@ -17,6 +17,8 @@ use App\Entity\User;
 
 class UserFixtures extends Fixture
 {
+    const NB_ADMINS = 10;
+
     private $encoder;
     
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
@@ -34,40 +36,53 @@ class UserFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         //This superadmin is for test and demo purposes, login with email 'superadmin@email.com' and password superadmin
-        $superAdmin = new User();
-        $superAdmin->setFirstname("SuperAdmin");
-        $superAdmin->setLastname("SuperAdmin");
-        $superAdmin->setEmail('superadmin@email.com');
+        $superadmin = new User();
 
-        $superAdmin->setPassword($this->encoder->encodePassword($superAdmin, 'superadmin'));
+        $superadmin->setFirstname("Superadmin");
+        $superadmin->setLastname("Superadmin");
+        $superadmin->setEmail('superadmin@email.com');
 
-        $superAdmin->setNumberStreet($faker->buildingNumber);
-        $superAdmin->setNameStreet($faker->streetName);
-        $superAdmin->setZipCode($faker->postcode);
-        $superAdmin->setCity($faker->city);
-        $superAdmin->setCountry('France');
-        $superAdmin->setRoles(['ROLE_SUPERADMIN']);
+        $superadmin->setNumberStreet($faker->buildingNumber);
+        $superadmin->setNameStreet($faker->streetName);
+        $superadmin->setZipCode($faker->postcode);
+        $superadmin->setCity($faker->city);
+        $superadmin->setCountry('France');
+        $superadmin->setRoles(['ROLE_SUPERADMIN']);
 
-        $manager->persist($superAdmin);
-        $this->addReference('superadmin', $superAdmin);
+        $superadmin->setPlainPassword("superadmin");
+        $passwordAdmin = $this->encoder->encodePassword(
+            $superadmin,
+            $superadmin->getPlainPassword()
+        );
+        $superadmin->setPassword($passwordAdmin);
 
-        //This admin is for test and demo purposes, login with email 'admin@email.com' and password admin
-        $admin = new User();
-        $admin->setFirstname("Admin");
-        $admin->setLastname("Admin");
-        $admin->setEmail('admin@email.com');
+        $manager->persist($superadmin);
 
-        $admin->setPassword($this->encoder->encodePassword($admin, 'admin'));
+        //Store admins for demo/test and dev fixtures
+        for ($i = 0; $i < self::NB_ADMINS; $i ++) {
+            $admin = new User();
+            $admin->setFirstname("Admin-" .$i);
+            $admin->setLastname("Admin-" .$i);
+            $admin->setEmail('admin'. $i.'@email.com');
 
-        $admin->setNumberStreet($faker->buildingNumber);
-        $admin->setNameStreet($faker->streetName);
-        $admin->setZipCode($faker->postcode);
-        $admin->setCity($faker->city);
-        $admin->setCountry('France');
-        $admin->setRoles(['ROLE_ADMIN']);
+            $admin->setNumberStreet($faker->buildingNumber);
+            $admin->setNameStreet($faker->streetName);
+            $admin->setZipCode($faker->postcode);
+            $admin->setCity($faker->city);
+            $admin->setCountry('France');
+            $admin->setRoles(['ROLE_ADMIN']);
 
-        $manager->persist($admin);
-        $this->addReference('admin', $admin);
+            $admin->setPlainPassword("admin" .$i);
+            $passwordAdmin = $this->encoder->encodePassword(
+                $admin,
+                $admin->getPlainPassword()
+            );
+            $admin->setPassword($passwordAdmin);
+
+            $this->addReference('admin_'.$i, $admin);
+
+            $manager->persist($admin);
+        }
 
         $manager->flush();
     }
