@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <body class="bg-purple">
+
+    <div class="stars">
+        <div class="central-body">
+            <p class="error-text" style="font-size: 2em;"> 500</p>
+            <p class="error-text">Erreur interne du server...</p>
+        </div>
+        <div class="objects">
+            <img class="object_rocket" src="{{ asset('lib/img/rocket.svg') }}" width="40px">
+            <div class="earth-moon">
+                <img class="object_earth" src="{{ asset('lib/img/earth.svg') }}" width="100px">
+                <img class="object_moon" src="{{ asset('lib/img/moon.svg') }}" width="80px">
+            </div>
+            <div class="box_astronaut">
+                <img class="object_astronaut" src="{{ asset('lib/img/astronaut.svg') }}" width="140px">
+            </div>
+        </div>
+        <div class="glowing_stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+
+        </div>
+
+    </div>
+
+    </body>
+{% endblock %}
