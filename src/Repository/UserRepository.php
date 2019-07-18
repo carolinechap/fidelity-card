@@ -46,6 +46,34 @@ class UserRepository extends ServiceEntityRepository
     }
 
 
+    public function searchCustomer($roles = [], array $filters = []) : Query
+    {
+        $roles = serialize($roles);
+
+        $qb = $this->createQueryBuilder('u');
+        $qb->orderBy('u.lastname', 'ASC');
+
+        if (!empty($filters['lastname'])){
+            $qb->andWhere('u.lastname LIKE :lastname')
+                ->setParameter(':lastname', '%' . $filters['lastname'] . '%');
+        }
+        if (!empty($filters['firstname'])){
+            $qb->andWhere('u.firstname LIKE :firstname')
+                ->setParameter(':firstname', '%' . $filters['firstname'] . '%');
+        }
+        if (!empty($filters['email'])){
+            $qb->andWhere('u.email LIKE :email')
+                ->setParameter(':email', '%' . $filters['email'] . '%');
+        }
+
+        $qb->andWhere('u.roles = :roles')
+            ->setParameter(':roles', $roles);
+
+        $query = $qb->getQuery();
+        return $query;
+    }
+
+
 
 
     // /**

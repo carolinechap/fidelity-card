@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 
 use App\Entity\User;
+use App\Form\SearchUserType;
 use App\Repository\CardRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
@@ -33,10 +34,17 @@ class UserController extends AbstractController
                           UserRepository $userRepository,
                           PaginatorInterface $paginator)
     {
-        $users = $paginator->paginate($userRepository->searchByRoles((array)['ROLE_USER']), $request->query->getInt('page', 1),15);
+        $searchForm = $this->createForm(SearchUserType::class);
+        $searchForm->handleRequest($request);
+
+
+
+
+        $users = $paginator->paginate($userRepository->searchCustomer((array)['ROLE_USER'],(array) $searchForm->getData()), $request->query->getInt('page', 1),15);
 
         return $this->render('admin/user/index.html.twig', [
             'users' => $users,
+            'search_form' => $searchForm->createView()
         ]);
     }
 
