@@ -48,7 +48,7 @@ class Card
     private $checkSum;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="card")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="cards")
      * @Groups({"card_listening:read"})
      */
     private $user;
@@ -325,6 +325,11 @@ class Card
     }
 
 
-
+    public function __toString()
+    {
+        $concatCode = $this->getStore()->getCenterCode() .$this->getCustomerCode();
+        $checksum = intval($concatCode) % 9;
+        return $concatCode.$checksum;
+    }
 
 }

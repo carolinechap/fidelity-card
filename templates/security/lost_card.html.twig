@@ -1,0 +1,31 @@
+{#{% extends 'base.html.twig' %}#}
+
+{% block title %}Déclarer une carte perdue ou volée{% endblock %}
+
+{% block body %}
+    <div class="container container-admin ml-sm-auto col-md-5 col-lg-5 px-md-2 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Déclarer une carte perdue ou volée</h1>
+            {{ form_start(form) }}
+            <div id="message" class="alert alert-{{ typeMessage }} d-none">{{ message }}</div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.customers, {'attr': { 'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.cards, {'attr': { 'class' : 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary" id="btn-select-customer">
+                    Chercher
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

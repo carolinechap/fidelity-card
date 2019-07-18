@@ -68,7 +68,7 @@ class Store
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="store")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="stores")
      */
     private $users;
 

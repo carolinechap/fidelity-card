@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Card\CardGenerator;
 use App\Card\CardNumberExtractor;
+use App\DataFixtures\UserFixtures;
+use App\Entity\User;
 use App\Form\AddCardType;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
+use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use App\Validator\Constraints\IsValidCardNumber;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -170,21 +174,33 @@ class CardController extends AbstractController
      * @todo rajouter IsGranted("ROLE_ADMIN")
      * @Route("/declarer-perdue", name="card_lost", methods={"GET", "POST"})
      */
-    public function declareLostCard(CardRepository $cardRepository, UserRepository $userRepository)
+    public function declareLostCard(TranslatorInterface $translator,
+                                    Request $request,
+                                    UserRepository $userRepository)
     {
-        //récupérer le store
-        $employees = $userRepository->searchByRoles(['ROLE_ADMIN']);
-
-        $stores = [];
-        foreach($employees as $employee) {
-            $stores = $employee->getStore();
+        if (!$store = $this->getUser()->getStore()[0]) {
+            throw new HttpException(401,
+                $translator->trans('access.forbidden', [], 'messages'));
         }
-        var_dump("employees");
-        var_dump($employees);
-        var_dump("stores");
-        var_dump($stores); exit;
 
-        return new Response("coucou");
+        $form = $this->createForm('App\Form\LostTypeCard', null, [
+            'store' => $store
+        ]);
 
+        $form->handleRequest($request);
+
+        var_dump($request->request->get('lost_type_card')['customers']);
+        if ($request->request->get('lost_type_card')['customers'] !== null ) {
+            $customerId = intval($request->request->get('lost_type_card')['customers']);
+            $customer = $userRepository->findOneById(intval($customerId));
+            var_dump($customer); exit;
+        }
+
+
+        return $this->render('security/lost_card.html.twig', [
+            'typeMessage' => null,
+            'message' => null,
+            'form' => $form->createView()
+        ]);
     }
 }
