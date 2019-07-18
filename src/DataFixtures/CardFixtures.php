@@ -53,7 +53,7 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
 
         for ($x = 1; $x < self::NB_CARDS; $x ++) {
             $card = new Card();
-            for ($y = 1; $y <= StoreFixtures::NB_STORES; $y ++) {
+            for ($y = 1; $y <= StoreFixtures::NB_STORES-1; $y ++) {
                 $card->setStore($this->getReference('store_'.$y));
             }
             $card->setUser($this->getReference('customer_'.$x));
