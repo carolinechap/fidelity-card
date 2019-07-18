@@ -3,6 +3,7 @@
 
 namespace App\Controller\SuperAdmin;
 
+use App\Form\SearchUserType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\User\UserRequest;
@@ -27,14 +28,19 @@ class EmployeeController extends AbstractController
      */
     public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator)
     {
-        $employees = $paginator->paginate($userRepository->searchByRoles((array)['ROLE_ADMIN']), $request->query->getInt('page', 1),5);
+        // Search form
+        $searchForm = $this->createForm(SearchUserType::class);
+        $searchForm->handleRequest($request);
 
+        $employees = $paginator->paginate($userRepository->searchCustomer((array)['ROLE_ADMIN'],(array) $searchForm->getData()), $request->query->getInt('page', 1),15);
+        // Find the last record in db
         $lastRecord = $userRepository->findLastRecordByRole((array)['ROLE_ADMIN']);
 
 
         return $this->render('superadmin/employees/index.html.twig', [
             'employees' => $employees,
-            'lastRecord' => $lastRecord
+            'lastRecord' => $lastRecord,
+            'search_form' => $searchForm->createView()
         ]);
     }
 
