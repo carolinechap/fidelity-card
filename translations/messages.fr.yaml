@@ -2,3 +2,5 @@ add_deal:
   success: Le deal a bien été ajouté à votre carte !
   error: Vous ne pouvez pas ajouter ce deal !
   nocard: Il faut rattacher une carte à votre compte pour ajouter des deals.
+access:
+  forbidden: You cannot access this part of the site !

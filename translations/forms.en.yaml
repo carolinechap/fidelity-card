@@ -13,3 +13,14 @@ card:
       error: Error while trying to add this card to your account.
       success: The card has been successfully added to your account !
       label : Please write your card number
+lost_card:
+  inactive:
+    success: The card was successfully inactivated !
+    error: There was an error trying to inactivate the card.
+  select:
+    label:
+      customer: Select the customer
+      card: Select the card
+    placeholder:
+      customer: Choice in the list
+      card: Choice in the list

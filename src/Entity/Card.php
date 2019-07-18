@@ -325,7 +325,10 @@ class Card
     }
 
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function getCompleteCode()
     {
         $concatCode = $this->getStore()->getCenterCode() .$this->getCustomerCode();
         $checksum = intval($concatCode) % 9;

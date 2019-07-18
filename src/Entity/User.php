@@ -301,10 +301,6 @@ class User implements UserInterface
     {
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
-            // set the owning side to null (unless already changed)
-            if ($card->getUser() === $this) {
-                $card->setUser(null);
-            }
         }
 
         return $this;

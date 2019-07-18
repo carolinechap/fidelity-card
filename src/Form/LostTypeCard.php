@@ -35,49 +35,22 @@ class LostTypeCard extends AbstractType
                 'query_builder' => function (UserRepository $er) use ($store) {
                     return $er->getCustomers($store);
                 },
-                'required' => true,
-                'translation_domain' => 'forms',
-                'label' => 'card.lost.select.label.customer',
-                'placeholder' => 'card.lost.select.placeholder.customer',
-                'compound' => true
-            ]);
-
-        $formModifier = function (FormInterface $form, $customer) {
-            $cards = $customer  === null ? [] : $customer->getCards();
-            $form->add('cards', EntityType::class, [
-                'class' => Card::class,
-                'choices' => $cards,
                 'required' => false,
                 'translation_domain' => 'forms',
-                'label' => 'card.lost.select.label.card',
-                'placeholder' => 'card.lost.select.placeholder.card'
-            ]);
-        };
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
-                if (null !== $event->getData()) {
-                    // we don't need to add the friend field because
-                    // the message will be addressed to a fixed friend
-                    return;
+                'label' => 'lost_card.select.label.customer',
+                'placeholder' => 'lost_card.select.placeholder.customer',
+            ])
+            ->add('cards', EntityType::class, [
+                'class' => Card::class,
+                'choices' => null,
+                'required' => false,
+                'translation_domain' => 'forms',
+                'label' => 'lost_card.select.label.card',
+                'placeholder' => 'lost_card.select.placeholder.card',
+                'choice_label' => function ($card) {
+                    return $card->getCompleteCode();
                 }
-                $customer = $event->getData();
-                $formModifier($event->getForm(), $customer);
-            }
-        );
-
-        $builder->get('customers')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
-                $customer = $event->getForm()->getData();;
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $customer);
-            }
-        );
+            ]);
     }
 
     /**

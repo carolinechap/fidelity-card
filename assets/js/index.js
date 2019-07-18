@@ -17,27 +17,43 @@ $(document).ready(function() {
         });
     });
 
-    var $customers = $('#lost_type_card_customers');
-    // $(document).on("change", $customers, function() {
-    //     // ... retrieve the corresponding form.
-    //     var $form = $(this).closest('form');
-    //     // Simulate form data, but only include the selected value.
-    //     var data = {};
-    //     data[$customers.attr('name')] = $customers.val();
-    //     // Submit data via AJAX to the form's action path.
-    //     console.log(data);
-    //     $.ajax({
-    //         url : $form.attr('action'),
-    //         type: $form.attr('method'),
-    //         data : data,
-    //         success: function(html) {
-    //             // Replace current position field ...
-    //             $('#lost_type_card_cards').replaceWith(
-    //                 // ... with the returned one from the AJAX response.
-    //                 $(html).find('#lost_type_card_cards')
-    //             );
-    //             // Position field now displays the appropriate positions.
-    //         }
-    //     });
-    // });
+    var $customers = $('select#lost_type_card_customers');
+    var $cards = $('select#lost_type_card_cards');
+    var $form = $customers.closest('form');
+    $($customers).change(function () {
+        var data = {};
+        data[$customers.attr('name')] = $customers.val();
+        $.ajax({
+            url : $form.attr('action'),
+            type: $form.attr('method'),
+            data : data,
+            success: function(html) {
+                $('#lost_type_card_cards').replaceWith(
+                    $(html).find('#lost_type_card_cards')
+                );
+                $('#message').removeClass('d-none');
+            }
+        });
+    });
+    $($form).submit(function (event) {
+        event.preventDefault();
+        var data = {};
+        data[$customers.attr('name')] = $customers.val();
+        data[$cards.attr('name')] = $cards.val();
+        $.ajax({
+            url : $form.attr('action'),
+            type: $form.attr('method'),
+            data : $form.serialize(),
+            success: function(html) {
+                var message = $('#message');
+                message.replaceWith(
+                    $(html).find('#message')
+                );
+                message.removeClass('d-none');
+            },
+            error: function(error) {
+                $('#message').removeClass('d-none');
+            }
+        });
+    });
 });

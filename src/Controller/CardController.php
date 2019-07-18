@@ -171,12 +171,19 @@ class CardController extends AbstractController
     }
 
     /**
-     * @todo rajouter IsGranted("ROLE_ADMIN")
+     * @param TranslatorInterface $translator
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/declarer-perdue", name="card_lost", methods={"GET", "POST"})
+     *
      */
     public function declareLostCard(TranslatorInterface $translator,
                                     Request $request,
-                                    UserRepository $userRepository)
+                                    UserRepository $userRepository,
+                                    CardRepository $cardRepository)
     {
         if (!$store = $this->getUser()->getStore()[0]) {
             throw new HttpException(401,
@@ -188,19 +195,40 @@ class CardController extends AbstractController
         ]);
 
         $form->handleRequest($request);
+        $message = "";
+        $cards = [];
+        $typeMessage = null;
 
-        var_dump($request->request->get('lost_type_card')['customers']);
-        if ($request->request->get('lost_type_card')['customers'] !== null ) {
+        if (isset($request->request->get('lost_type_card')['customers'])
+            && $request->request->get('lost_type_card')['customers'] !== null ) {
             $customerId = intval($request->request->get('lost_type_card')['customers']);
             $customer = $userRepository->findOneById(intval($customerId));
-            var_dump($customer); exit;
+            $cards = $customer->getCards();
+        }
+        if (isset($request->request->get('lost_type_card')['cards'])
+            && $request->request->get('lost_type_card')['cards'] !== null ) {
+            $cardId = $request->request->get('lost_type_card')['cards'];
+            $card = $cardRepository->findOneById(intval($cardId));
+            $customer = $card->getUser();
+            $customer->removeCard($card);
+
+            $message = $translator->trans('lost_card.inactive.success', [], 'forms');
+            $typeMessage = "success";
+
+            //Workflow here, inactivating
         }
 
+        if (!$request->isXmlHttpRequest() && $form->isSubmitted()) {
+            $this->addFlash('success', $message);
+            //todo voir la rediction
+            $this->redirectToRoute('home');
+        }
 
         return $this->render('security/lost_card.html.twig', [
-            'typeMessage' => null,
-            'message' => null,
-            'form' => $form->createView()
+            'typeMessage' => $typeMessage,
+            'message' => $message,
+            'form' => $form->createView(),
+            'cards' => $cards
         ]);
     }
 }
