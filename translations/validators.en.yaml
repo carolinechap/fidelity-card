@@ -8,15 +8,19 @@ deal:
   description:
     max: Description cannot be more than {{ limit }} characters.
     min: Description must be {{ limit }} characters minimum.
+  cost_point:
+    type: The type is not valid
 activity:
   fidelitypoint:
     positive: Fidelity points can not be negative
+    type: The type is not valid
   gamename:
     blank: The activity can not be null
-    maxlength: The activity name can not be more than {{ max }} characters
+    maxlength: The activity name can not be more than {{ limit }} characters
 cardActivity:
   personalscore:
     positive: Points can not be negative
+    type: The type is not valid
   isthewinner:
     type: The type is not valid
   gamedate:
@@ -26,34 +30,64 @@ card:
   number:
     not_valid: The number card is not valid
   status:
-    blank: Status can not be null
+    blank: The status can not be null
   check_sum:
-    blank: Check sum can not be null
+    blank: The check sum can not be null
+    type: The type is not valid
   customer_code:
-    maxlength: The customer code can not be more than {{ max }} characters
+    maxlength: The customer code can not be more than {{ limit }} characters
   fidelity_point:
     positiveozero: Fidelity points can not be negative
+    type: The type is not valid
   personal_score:
     positiveozero: Points can not be negative
+    type: The type is not valid
 store:
   center_code:
-    blank: Center's code can not be null
-    positive: Center's code can not be negative
+    blank: The center's code can not be null
+    positive: The center's code can not be negative
+    type: The type is not valid
   street_number:
-    blank: Street number can not be null
-    positive: Street number can not be negative
+    blank: The street number can not be null
+    positive: The street number can not be negative
+    type: The type is not valid
   street_name:
-    blank: Street name can not be null
-    max: Street name can not be more than {{ max }} characters
+    blank: The street name can not be null
+    max: The street name can not be more than {{ limit }} characters
   zip_code:
-    blank: Zipcode can not be null
-    max: Zipcode can not be more than {{ max }} characters
+    blank: The zipcode can not be null
+    max: The zipcode can not be more than {{ limit }} characters
   city:
-    blank: City can not be null
-    max: City can not be more than {{ max }} characters
+    blank: The city can not be null
+    max: The city can not be more than {{ limit }} characters
   country:
-    blank: Country can not be null
-    max: Country can not be more than {{ max }} characters
+    blank: The country can not be null
+    max: The country can not be more than {{ limit }} characters
   name:
-    blank: Store's name can not be null
-    max: Store's name can not be more than {{ max }} characters
+    blank: The store's name can not be null
+    max: The store's name can not be more than {{ limit }} characters
+user:
+  email:
+    blank: The email can not be null
+    message: The email {{ value }} is not a valid email.
+  password:
+    blank: The password can not be null
+    min: The password can not be less than {{ limit }} characters
+    max: The password can not be more than {{ limit }} characters
+  street_number:
+    positive: The street number can not be negative
+    type: The type is not valid
+  street_name:
+    max: The street name can not be more than {{ limit }} characters
+  zip_code:
+    max: The zipcode can not be more than {{ limit }} characters
+  city:
+    max: The city can not be more than {{ limit }} characters
+  country:
+    max: The country can not be more than {{ limit }} characters
+  name:
+    max: The store's name can not be more than {{ limit }} characters
+  lastname:
+    max: The lastname can not be more than {{ limit }} characters
+  firstname:
+    max: The fistname can not be more than {{ limit }} characters

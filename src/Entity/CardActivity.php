@@ -35,6 +35,7 @@ class CardActivity
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Positive(message="cardActivity.personalscore.positive")
+     * @Assert\Type(type="integer", message="cardActivity.personalscore.type")
      */
     private $personalScore;
 
