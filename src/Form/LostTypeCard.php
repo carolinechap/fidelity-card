@@ -10,16 +10,16 @@ namespace App\Form;
 
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\User;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use App\Entity\Card;
-use Symfony\Component\Form\FormInterface;
 
+/**
+ * Class LostTypeCard
+ * @package App\Form
+ */
 class LostTypeCard extends AbstractType
 {
     /**
