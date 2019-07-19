@@ -24,7 +24,7 @@
                     <th scope="col" class="text-center">Date de début</th>
                     <th scope="col" class="text-center">Date de fin</th>
                     <th scope="col" class="text-center">Description</th>
-                    <th scope="col" class="text-center">Points de fidélité à déduire</th>
+                    <th scope="col" class="text-center">Pts de fidélité à déduire</th>
                     <th scope="col" class="text-center">Actions</th>
                 </tr>
                 </thead>
@@ -36,7 +36,7 @@
                         <td scope="row" class="text-center">{{ entity.endDate ? entity.endDate|date('d/m/Y') : '' }}</td>
                         <td scope="row" class="text-center">{{ entity.description|length > 30 ? entity.description|slice(0, 25) ~ '...' : entity.description  }}</td>
                         <td scope="row" class="text-center">{{ entity.costPoint }}</td>
-                        <td width="300">
+                        <td width="220">
                             {% if is_granted('ROLE_SUPERADMIN') %}
                             <div class="d-flex justify-content-center">
                                 <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-warning mx-2">

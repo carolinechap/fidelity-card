@@ -3,7 +3,7 @@
 {% block title %}Employés{% endblock %}
 
 {% block body %}
-{% include('admin/menu.html.twig') %}
+    {% include('admin/menu.html.twig') %}
     <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Liste des employés</h1>
@@ -40,16 +40,20 @@
                     <th scope="col">Prénom</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Action</th>
 
                 </tr>
                 </thead>
                 <tbody>
                 {% for employee in employees %}
                     <tr class="{% if employee.id == lastRecord.0.id %} bg-secondary {% endif %}">
-                        <th scope="row" {% if employee.id == lastRecord.0.id %}style="color:white" {% endif %}>{{ employee.id }}</th>
+                        <th scope="row"
+                            {% if employee.id == lastRecord.0.id %}style="color:white" {% endif %}>{{ employee.id }}</th>
                         <td {% if employee.id == lastRecord.0.id %}style="color:white" {% endif %}>{{ employee.firstname }}</td>
                         <td {% if employee.id == lastRecord.0.id %}style="color:white" {% endif %}>{{ employee.lastname }}</td>
                         <td {% if employee.id == lastRecord.0.id %}style="color:white" {% endif %}>{{ employee.email }}</td>
+                        <td><a href="{{ path('superAdmin_deleteEmployee', {'id' : employee.id}) }}"
+                               class="btn btn-sm btn-danger">Supprimer</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

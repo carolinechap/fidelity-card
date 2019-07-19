@@ -11,15 +11,17 @@
                 <table class="table table-striped table-sm">
                     <thead class="thead-dark">
                     <tr>
+                        <th scope="col" class="text-center">Numéro de la carte</th>
                         <th scope="col" class="text-center">Total du score personnel</th>
                         <th scope="col" class="text-center">Total des points de fidélité</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for act in activities  %}
+                    {% for card in cards  %}
                         <tr>
-                            <td scope="row" class="text-center" >{{ act.card.personalScore }}</td>
-                            <td scope="row" class="text-center">{{ act.card.fidelityPoint }}</td>
+                            <td scope="row" class="text-center">{{ card.getCode }}</td>
+                            <td scope="row" class="text-center" >{{ card.personalScore }}</td>
+                            <td scope="row" class="text-center">{{ card.fidelityPoint }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
