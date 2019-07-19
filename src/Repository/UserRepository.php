@@ -46,7 +46,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
 
-    public function searchCustomer($roles = [], array $filters = []) : Query
+    public function searchUser($roles = [], array $filters = []) : Query
     {
         $roles = serialize($roles);
 
