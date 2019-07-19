@@ -32,7 +32,7 @@
                 <a class="btn btn-secondary my-5 my-md-2 my-lg-5 btn-lg d-flex justify-content-center"
                    href="{{ path('deal_display_user') }}">Voir</a>
             </div>
-            <div class="col-12 col-lg-4">
+            <div class="col-md-12 col-lg-4">
                 {% if is_granted('ROLE_USER') %}
                     {% if cards_user is empty %}
                         <div id="customer-add-card">
@@ -51,8 +51,8 @@
                                 - {% if card_user.fidelityPoint is empty %} 0 {% else %}{{ card_user.fidelityPoint }}{% endif %}
                                 pts</p>
                         {% endfor %}
-                    {% endif %}
                     </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
