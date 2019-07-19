@@ -52,7 +52,7 @@ class Card
     private $checkSum;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="card")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="cards")
      * @Groups({"card_listening:read"})
      */
     private $user;
