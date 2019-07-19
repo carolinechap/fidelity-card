@@ -21,6 +21,9 @@ lost_card:
     label:
       customer: Sélectionnez le client
       card: Sélectionnez la carte
+      button: Chercher
+      submit: Désactiver
+      cancel: Réinitialiser
     placeholder:
       customer: Choisir dans la liste
       card: Choisir dans la liste

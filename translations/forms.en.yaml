@@ -21,6 +21,9 @@ lost_card:
     label:
       customer: Select the customer
       card: Select the card
+      button: Select
+      submit: Deactivate
+      cancel: Reinitialize
     placeholder:
       customer: Choice in the list
       card: Choice in the list

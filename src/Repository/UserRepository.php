@@ -45,7 +45,7 @@ class UserRepository extends ServiceEntityRepository
         return $query;
     }
 
-    public function getCustomers($store)
+    public function getCustomersByStore($store)
     {
         $roles = ['ROLE_USER'];
         $roles = serialize($roles);

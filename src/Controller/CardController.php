@@ -190,37 +190,45 @@ class CardController extends AbstractController
                 $translator->trans('access.forbidden', [], 'messages'));
         }
 
+        $message = "";
+        $cards = [];
+        $typeMessage = null;
+        $labelButton = null;
+
         $form = $this->createForm('App\Form\LostTypeCard', null, [
             'store' => $store
         ]);
 
         $form->handleRequest($request);
-        $message = "";
-        $cards = [];
-        $typeMessage = null;
 
         if (isset($request->request->get('lost_type_card')['customers'])
             && $request->request->get('lost_type_card')['customers'] !== null ) {
             $customerId = intval($request->request->get('lost_type_card')['customers']);
             $customer = $userRepository->findOneById(intval($customerId));
             $cards = $customer->getCards();
+            $labelButton = 1;
         }
+
         if (isset($request->request->get('lost_type_card')['cards'])
             && $request->request->get('lost_type_card')['cards'] !== null ) {
             $cardId = $request->request->get('lost_type_card')['cards'];
-            $card = $cardRepository->findOneById(intval($cardId));
-            $customer = $card->getUser();
-            $customer->removeCard($card);
 
-            $message = $translator->trans('lost_card.inactive.success', [], 'forms');
-            $typeMessage = "success";
+            $card = $cardRepository->findOneById(intval($cardId));
+            if (!$customer = $card->getUser()) {
+                $message = $translator->trans('lost_card.inactive.error', [], 'forms');
+                $typeMessage = "error";
+            } else {
+                $customer->removeCard($card);
+                $message = $translator->trans('lost_card.inactive.success', [], 'forms');
+                $typeMessage = "success";
+            }
 
             //Workflow here, inactivating
         }
 
         if (!$request->isXmlHttpRequest() && $form->isSubmitted()) {
             $this->addFlash('success', $message);
-            //todo voir la rediction
+            //todo voir où on envoie la redirection
             $this->redirectToRoute('home');
         }
 
@@ -228,7 +236,8 @@ class CardController extends AbstractController
             'typeMessage' => $typeMessage,
             'message' => $message,
             'form' => $form->createView(),
-            'cards' => $cards
+            'cards' => $cards,
+            'labelButton' => $labelButton
         ]);
     }
 }
