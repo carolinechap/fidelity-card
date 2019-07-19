@@ -85,18 +85,17 @@ class User implements UserInterface
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Store", inversedBy="users")
      */
-    private $store;
+    private $stores;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="user")
      */
-    private $card;
+    private $cards;
 
     public function __construct()
     {
-        $this->store = new ArrayCollection();
-        $this->card = new ArrayCollection();
-        //$this->customerCode = null;
+        $this->stores = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     public function __toString()
@@ -145,7 +144,6 @@ class User implements UserInterface
             return false;
         }
     }
-
 
     public function getEmail(): ?string
     {
@@ -260,13 +258,13 @@ class User implements UserInterface
      */
     public function getStore(): Collection
     {
-        return $this->store;
+        return $this->stores;
     }
 
     public function addStore(Store $store): self
     {
-        if (!$this->store->contains($store)) {
-            $this->store[] = $store;
+        if (!$this->stores->contains($store)) {
+            $this->stores[] = $store;
         }
 
         return $this;
@@ -274,8 +272,8 @@ class User implements UserInterface
 
     public function removeStore(Store $store): self
     {
-        if ($this->store->contains($store)) {
-            $this->store->removeElement($store);
+        if ($this->stores->contains($store)) {
+            $this->stores->removeElement($store);
         }
 
         return $this;
@@ -284,15 +282,15 @@ class User implements UserInterface
     /**
      * @return Collection|Card[]
      */
-    public function getCard(): Collection
+    public function getCards(): Collection
     {
-        return $this->card;
+        return $this->cards;
     }
 
     public function addCard(Card $card): self
     {
-        if (!$this->card->contains($card)) {
-            $this->card[] = $card;
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
             $card->setUser($this);
         }
 
@@ -301,12 +299,8 @@ class User implements UserInterface
 
     public function removeCard(Card $card): self
     {
-        if ($this->card->contains($card)) {
-            $this->card->removeElement($card);
-            // set the owning side to null (unless already changed)
-            if ($card->getUser() === $this) {
-                $card->setUser(null);
-            }
+        if ($this->cards->contains($card)) {
+            $this->cards->removeElement($card);
         }
 
         return $this;

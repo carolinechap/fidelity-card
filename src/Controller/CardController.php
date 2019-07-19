@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Card\CardGenerator;
 use App\Card\CardNumberExtractor;
+use App\DataFixtures\UserFixtures;
+use App\Entity\User;
 use App\Form\AddCardType;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
+use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use App\Validator\Constraints\IsValidCardNumber;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -167,23 +171,73 @@ class CardController extends AbstractController
     }
 
     /**
-     * @todo rajouter IsGranted("ROLE_ADMIN")
+     * @param TranslatorInterface $translator
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/declarer-perdue", name="card_lost", methods={"GET", "POST"})
+     *
      */
-    public function declareLostCard(CardRepository $cardRepository, UserRepository $userRepository)
+    public function declareLostCard(TranslatorInterface $translator,
+                                    Request $request,
+                                    UserRepository $userRepository,
+                                    CardRepository $cardRepository)
     {
-        //récupérer le store
-        $employees = $userRepository->searchByRoles(['ROLE_ADMIN']);
-
-        foreach($employees as $employee) {
-            $stores[] = $employee->getStore();
+        if (!$store = $this->getUser()->getStore()[0]) {
+            throw new HttpException(401,
+                $translator->trans('access.forbidden', [], 'messages'));
         }
-        var_dump("employees");
-        var_dump($employees);
-        var_dump("stores");
-        var_dump($stores); exit;
 
-        return new Response("coucou");
+        $message = "";
+        $cards = [];
+        $typeMessage = null;
+        $labelButton = null;
 
+        $form = $this->createForm('App\Form\LostTypeCard', null, [
+            'store' => $store
+        ]);
+
+        $form->handleRequest($request);
+
+        if (isset($request->request->get('lost_type_card')['customers'])
+            && $request->request->get('lost_type_card')['customers'] !== null ) {
+            $customerId = intval($request->request->get('lost_type_card')['customers']);
+            $customer = $userRepository->findOneById(intval($customerId));
+            $cards = $customer->getCards();
+            $labelButton = 1;
+        }
+
+        if (isset($request->request->get('lost_type_card')['cards'])
+            && $request->request->get('lost_type_card')['cards'] !== null ) {
+            $cardId = $request->request->get('lost_type_card')['cards'];
+
+            $card = $cardRepository->findOneById(intval($cardId));
+            if (!$customer = $card->getUser()) {
+                $message = $translator->trans('lost_card.inactive.error', [], 'forms');
+                $typeMessage = "error";
+            } else {
+                $customer->removeCard($card);
+                $message = $translator->trans('lost_card.inactive.success', [], 'forms');
+                $typeMessage = "success";
+            }
+
+            //Workflow here, inactivating
+        }
+
+        if (!$request->isXmlHttpRequest() && $form->isSubmitted()) {
+            $this->addFlash('success', $message);
+            //todo voir où on envoie la redirection
+            $this->redirectToRoute('home');
+        }
+
+        return $this->render('security/lost_card.html.twig', [
+            'typeMessage' => $typeMessage,
+            'message' => $message,
+            'form' => $form->createView(),
+            'cards' => $cards,
+            'labelButton' => $labelButton
+        ]);
     }
 }

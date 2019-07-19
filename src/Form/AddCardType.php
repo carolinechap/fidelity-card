@@ -45,7 +45,6 @@ class AddCardType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->setAction($this->urlGenerator->generate('card_add_user'))
             ->add('card_number', TextType::class, [
@@ -61,7 +60,7 @@ class AddCardType extends AbstractType
                         'max' => 12])
                 ],
                 'translation_domain' => 'forms',
-                'label' => 'card.add.user.label'
+                //'label' => 'card.add.user.label'
             ]);
     }
 
@@ -74,5 +73,4 @@ class AddCardType extends AbstractType
             'data_class' => null,
         ]);
     }
-
 }

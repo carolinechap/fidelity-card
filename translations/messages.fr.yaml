@@ -2,3 +2,8 @@ add_deal:
   success: Le deal a bien été ajouté à votre carte !
   error: Vous ne pouvez pas ajouter ce deal !
   nocard: Il faut rattacher une carte à votre compte pour ajouter des deals.
+registration:
+  success: Votre compte est créé !
+  failed : Une erreur est survenu, votre compte n'a pas été crée, veuillez recommencer
+access:
+  forbidden: You cannot access this part of the site !

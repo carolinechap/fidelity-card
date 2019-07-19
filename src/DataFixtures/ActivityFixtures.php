@@ -25,6 +25,13 @@ class ActivityFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        // Demo and test purposes
+        $oneActivity = new Activity();
+        $oneActivity->setFidelityPoint(100);
+        $oneActivity->setGameName('ActivityTest');
+        $this->addReference('myactivity', $oneActivity);
+
+
 
         for($a = 0; $a<self::COUNT; $a++){
             $fidelityPoint = $a + rand($a, 200);

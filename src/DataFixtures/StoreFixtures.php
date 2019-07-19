@@ -43,7 +43,7 @@ class StoreFixtures extends Fixture implements DependentFixtureInterface
             for ($y = 1; $y < CustomerFixtures::COUNT; $y ++) {
                 $store->addUser($this->getReference('customer_'.rand(0, CustomerFixtures::COUNT - 1)));
             }
-            $store->addUser($this->getReference('admin_'.rand(0, UserFixtures::NB_ADMINS)));
+            $store->addUser($this->getReference('admin_'.rand(0, EmployeeFixtures::NB_ADMINS -1)));
             $store->setCenterCode($faker->numberBetween(100, 999));
             $store->setCity($faker->city);
             $store->setCountry('France');
@@ -66,7 +66,7 @@ class StoreFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             CustomerFixtures::class,
-            UserFixtures::class
+            EmployeeFixtures::class
         ];
     }
 }

@@ -1,5 +1,5 @@
 /* Home page*/
-.bg-img{
+.bg-img {
     background: url('../../public/lib/img/laser-dark1.png') no-repeat top center;
     width: 100%;
     height: 100%;
@@ -7,19 +7,20 @@
     background-size: contain;
 }
 
-.page-link{
-    color:red;
+.page-link {
+    color: red;
 }
-.page-link:hover{
-    color:black;
+
+.page-link:hover {
+    color: black;
 }
-.page-link.active{
-    background-color:grey;
+
+.page-link.active {
+    background-color: grey;
 }
 
 
-
-.card-home{
+.card-home {
     position: relative;
     z-index: 10;
 }
@@ -29,29 +30,31 @@
     z-index: 10;
 }
 
-.text-color{
-    color:black;
+.text-color {
+    color: black;
 }
 
-.public-view{
+.public-view {
     position: relative;
     top: 0px;
 }
 
 /* Dashboard admin */
-.dashboard{
-    position: relative;
-    top : 150px;
-}
-.container-admin{
-    position: relative;
-    top:0px;
-}
-
-.user-dashboard{
+.dashboard {
     position: relative;
     top: 150px;
 }
+
+.container-admin {
+    position: relative;
+    top: 0px;
+}
+
+.user-dashboard {
+    position: relative;
+    top: 150px;
+}
+
 /*
  * Sidebar
  */
@@ -75,7 +78,7 @@
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
-.nested-list{
+.nested-list {
     padding-left: 30px;
 }
 
@@ -110,10 +113,11 @@
     text-transform: uppercase;
 }
 
-.sidebar a{
+.sidebar a {
     color: black;
 }
-.sidebar a:hover{
+
+.sidebar a:hover {
     color: red;
 }
 
@@ -140,10 +144,11 @@
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
-    .dashboard{
-        top : 134px;
+    .dashboard {
+        top: 134px;
     }
-    .user-dashboard{
+
+    .user-dashboard {
         top: 200px;
     }
 
@@ -151,23 +156,28 @@
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-    .sidebar{
+    .sidebar {
         top: 86px;
     }
-    .text-color{
-        color:white;
+
+    .text-color {
+        color: white;
     }
-    .user-dashboard{
+
+    .user-dashboard {
         top: 0px;
     }
-    .ranking{
+
+    .ranking {
         position: relative;
         top: 70px;
     }
-    .public-view{
+
+    .public-view {
         top: 40px;
     }
-    .public-ranking{
+
+    .public-ranking {
         margin-top: 50px;
     }
 
@@ -175,55 +185,67 @@
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-    .dashboard{
-        top : 56px;
+    .dashboard {
+        top: 56px;
     }
-    .sidebar{
-        top:inherit;
+
+    .sidebar {
+        top: inherit;
     }
-    .container-admin{
-        top:70px;
+
+    .container-admin {
+        top: 70px;
     }
-    .ranking{
+
+    .ranking {
         top: 0px;
     }
-    .public-view{
+
+    .public-view {
         top: 90px;
     }
-    .public-ranking{
+
+    .public-ranking {
         margin-top: 100px;
     }
 
 }
+
 /*  Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-    .ranking{
+    .ranking {
         top: 90px;
     }
-    .public-view{
+
+    .public-view {
         top: 150px;
     }
 }
 
 /* Extra Extra large devices (large desktops, 1400px and up) */
 @media (min-width: 1400px) {
-    .bg-img{
+    .bg-img {
         width: 100vw;
     }
-    .bg-img-profile{
+
+    .bg-img-profile {
         height: 50vh;
         background-size: cover;
     }
-    .ranking{
+
+    .ranking {
         top: 150px;
     }
-    .public-view{
+
+    .public-view {
         top: 200px;
     }
-    .public-ranking{
+
+    .public-ranking {
         margin-top: 130px;
     }
 }
+
 @media (min-width: 1920px) {
     .public-ranking {
         margin-top: 250px;

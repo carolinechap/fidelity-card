@@ -58,7 +58,7 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
             }
             $card->setUser($this->getReference('customer_'.$x));
             $card = $this->cardGenerator->generateCard($card);
-            $card->setFidelityPoint($faker->numberBetween(200, 500));
+            $card->setFidelityPoint(0);
             $manager->persist($card);
             $this->addReference('card_'.$x, $card);
         }

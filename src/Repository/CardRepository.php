@@ -50,6 +50,17 @@ class CardRepository extends ServiceEntityRepository
         return $query;
     }
 
+    public function findLastRecord()
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->orderBy('c.id', 'DESC')
+            ->setMaxResults(1);
+        $query = $qb->getQuery()->getResult();
+        return $query;
+
+
+    }
+
 
 
 

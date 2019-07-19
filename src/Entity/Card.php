@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -39,16 +40,18 @@ class Card
 
     /**
      * @ORM\Column(type="array")
+     * @Assert\NotBlank(message="card.status.blank")
      */
     private $status = [];
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="card.check_sum.blank")
      */
     private $checkSum;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="card")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="cards")
      * @Groups({"card_listening:read"})
      */
     private $user;
@@ -67,6 +70,7 @@ class Card
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max="6", maxMessage="card.customer_code.maxlength")
      */
     private $customerCode;
 
@@ -78,12 +82,14 @@ class Card
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero(message="card.fidelity_point.positiveozero")
      */
     private $fidelityPoint;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"card_listening:read"})
+     * @Assert\PositiveOrZero(message="card.personal_score.positiveozero")
      */
     private $personalScore;
 
@@ -325,6 +331,14 @@ class Card
     }
 
 
-
+    /**
+     * @return string
+     */
+    public function getCompleteCode()
+    {
+        $concatCode = $this->getStore()->getCenterCode() .$this->getCustomerCode();
+        $checksum = intval($concatCode) % 9;
+        return $concatCode.$checksum;
+    }
 
 }
