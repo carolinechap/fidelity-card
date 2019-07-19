@@ -25,3 +25,35 @@ cardActivity:
 card:
   number:
     not_valid: Le numéro de carte n'est pas valide
+  status:
+    blank: Le status ne peut pas être vide
+    check_sum:
+      blank: le check sum ne peut pas être vide
+    customer_code:
+      maxlength: Le code client ne peut pas dépasser {{ max }} caractères
+    fidelity_point:
+      positiveozero: Le nombre de points ne doit pas être négatif
+    personal_score:
+      positiveozero: Le nombre de points ne doit pas être négatif
+store:
+  center_code:
+    blank: Le numéro du centre ne peut pas être vide
+    positiveorzero: Le numéro du centre ne doit pas être négatif
+  street_number:
+    blank: Le numéro de la rue ne peut pas être vide
+    positiveorzero: Le numéro de la rue ne doit pas être négatif
+  street_name:
+    blank: Le nom de la rue ne peut pas être vide
+    max: Le nom de la rue ne peut pas dépasser {{ max }} caractères
+  zip_code:
+    blank: Le code postal ne peut pas être vide
+    max: Le code postal ne peut pas dépasser {{ max }} caractères
+  city:
+    blank: La ville ne peut pas être vide
+    max: La ville ne peut pas dépasser {{ max }} caractères
+  country:
+    blank: Le pays ne peut pas être vide
+    max: Le pays ne peut pas dépasser {{ max }} caractères
+  name:
+    blank: Le nom du centre ne peut pas être vide
+    max: Le nom du store ne peut pas dépasser {{ max }} caractères
