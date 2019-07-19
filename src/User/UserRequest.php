@@ -34,7 +34,6 @@ class UserRequest
 
     /**
      * @Assert\Positive(message="user.street_number.positive")
-     * @Assert\Type(type="integer", message="user.street_number.type")
      */
     private $numberStreet;
 

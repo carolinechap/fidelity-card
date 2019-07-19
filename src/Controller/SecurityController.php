@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -28,7 +29,8 @@ class SecurityController extends AbstractController
     public function register(Request $request,
                              UserPasswordEncoderInterface $passwordEncoder,
                              EntityManagerInterface $entityManager,
-                             UserRequestHandler $userRequestHandler)
+                             UserRequestHandler $userRequestHandler,
+                             TranslatorInterface $translator)
     {
 
         $user = new UserRequest();
@@ -37,13 +39,14 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $user = $userRequestHandler->registerAsUser($user);
-                $this->addFlash('success', 'Votre compte est créé');
+                $this->addFlash('success', $translator->trans('registration.success', [], 'messages'));
                 return $this->redirectToRoute('login_route');
             } else {
-                $this->addFlash('error', 'Le formulaire contient des erreurs');
+                $this->addFlash('error', $translator->trans('registration.failed', [], 'messages'));
+
             }
 
         }
@@ -59,13 +62,13 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion" , name="login_route")
      */
-    public function login(AuthenticationUtils $authenticationUtils) : Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
 
-        return $this->render('security/login.html.twig',[
+        return $this->render('security/login.html.twig', [
                 'last_username' => $lastUsername,
                 'error' => $error
             ]

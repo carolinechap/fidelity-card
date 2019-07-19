@@ -2,3 +2,6 @@ add_deal:
   success: This deal has been added to your card !
   error: You cannot add the deal !
   nocard: You must first link a card to your account before you can add some deals in it !
+registration:
+  success: Your account is created !
+  failed : Something happened, your account is not created

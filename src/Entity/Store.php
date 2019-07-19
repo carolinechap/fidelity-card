@@ -35,7 +35,6 @@ class Store
     /**
      * @ORM\Column(type="integer")
      * @Assert\Positive(message="store.street_number.positive")
-     * @Assert\Type(type="integer", message="store.street_number.type")
      */
     private $numberStreet;
 
