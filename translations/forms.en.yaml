@@ -13,3 +13,32 @@ card:
       error: Error while trying to add this card to your account.
       success: The card has been successfully added to your account !
       label : Please write your card number
+  form:
+    label:
+      store_name: Store's name
+activity:
+  form:
+    label:
+      fidelityPoint: Fidelity points
+      gameName: Game name
+user:
+  form:
+    label:
+      lastname: Lastname
+      firstname: Firstname
+      email: Email address
+      password: Password
+      confirmation_password: Confirm
+      number_street: Street number
+      name_street: Street name
+      zip_code: Zip code
+      city: City
+      country: Country
+cardactivity:
+  form:
+    label:
+      is_the_winner: Winning game
+      personal_score: Personal score
+      card_number : Card's number
+      game_name: Game name
+      game_date: Game date

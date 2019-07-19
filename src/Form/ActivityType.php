@@ -19,12 +19,14 @@ class ActivityType extends AbstractType
 
             ->add('fidelityPoint', IntegerType::class,
                 [
-                    'label' => 'Points de fidélité',
+                    'translation_domain' => 'forms',
+                    'label' => 'activity.form.label.fidelityPoint',
                     'required' => false
                 ])
             ->add('gameName', TextType::class,
                 [
-                    'label' => 'Nom de l\'activité',
+                    'translation_domain' => 'forms',
+                    'label' => 'activity.form.label.gameName',
                     'required' => true
                 ])
 
