@@ -4,6 +4,8 @@
 namespace App\Command;
 
 
+use App\Activity\FidelityPointGenerator;
+use App\Activity\CalculatePersonalScore;
 use App\Entity\Activity;
 use App\Entity\Card;
 use App\Entity\CardActivity;
@@ -20,14 +22,19 @@ class NewCardActivityCommand extends Command
     protected static $defaultName = 'app:new-card-activity';
 
     private $manager;
+    private $generator;
+    private $calculatePersonalScore;
 
-    const COUNT = 30;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, FidelityPointGenerator $fidelityPointGenerator, CalculatePersonalScore $calculatePersonalScore)
     {
         parent::__construct();
         $this->manager = $manager;
+        $this->generator = $fidelityPointGenerator;
+        $this->calculatePersonalScore = $calculatePersonalScore;
+
     }
+
     protected function configure()
     {
         $this->setDescription('Generate a new random activity for an client');
@@ -37,30 +44,42 @@ class NewCardActivityCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        // On va chercher les informations
+        // Set values into variables
         $activity = $this->getRandomActivity();
         $card = $this->getRandomCard();
         $isTheWinner = $this->getRandomWinnerGame();
-        $personalScore = $this->getRandomPersonalScore();
+        $randPersonalScore = $this->getRandomPersonalScore();
 
-        // Generation de l'activité/client
-        $cardActivity = new CardActivity();
+        // Generate an card/activity
+        $oneCardActivity = new CardActivity();
 
-        for($a = 0; $a<self::COUNT; $a++) {
-            $cardActivity->setCard($card)
-                ->setActivity($activity)
-                ->setGameDate(new \DateTime())
-                ->setIsTheWinner($isTheWinner)
-                ->setPersonalScore($personalScore);
+        $oneCardActivity->setCard($card)
+            ->setActivity($activity)
+            ->setGameDate(new \DateTime())
+            ->setIsTheWinner($isTheWinner)
+            ->setPersonalScore($randPersonalScore);
+
+
+        // Fidelity points on cardActivity and Card
+        $fidelityPoint = $this->generator->sumFidelityPoint($oneCardActivity);
+        $oneCardActivity->getCard()->setFidelityPoint($fidelityPoint);
+
+        // Personal score on cardActivity and Card
+        $personalScoreSum = $this->calculatePersonalScore->sumPersonalScore($oneCardActivity, $randPersonalScore);
+
+        // Set the total into Card
+        $oneCardActivity->getCard()->setPersonalScore($personalScoreSum);
+
+
+        try {
+            $this->manager->persist($oneCardActivity);
+            $this->manager->flush();
+
+            $io->success('Super, un client a effectué une activité dans le centre');
+        } catch (LogicException $exception) {
+            $io->warning($exception->getMessage());
+            $io->error('Oups, il y a eu une erreur de process');
         }
-            try {
-                $this->manager->persist($cardActivity);
-                $this->manager->flush();
-                $io->success('Super, des clients sont venus jouer dans votre centre');
-            } catch (LogicException $exception) {
-                $io->warning($exception->getMessage());
-                $io->error('Oups, il y a eu une erreur de process ');
-            }
     }
 
     /**
@@ -78,7 +97,7 @@ class NewCardActivityCommand extends Command
     private function getRandomCard(): Card
     {
         $cards = $this->manager->getRepository(Card::class)->findAll();
-         return $cards[array_rand($cards)];
+        return $cards[array_rand($cards)];
     }
 
     /**
@@ -88,13 +107,13 @@ class NewCardActivityCommand extends Command
     {
         $personalScores = [
             15,
-            189,
-            43,
-            26,
-            78,
+            65,
+            40,
+            30,
+            75,
             99,
-            26,
-            38
+            25,
+            35
         ];
         return $personalScores[array_rand($personalScores)];
     }
@@ -105,9 +124,10 @@ class NewCardActivityCommand extends Command
     private function getRandomWinnerGame()
     {
         $isTheWinner = [
-           1,
+            1,
             0
         ];
         return $isTheWinner[array_rand($isTheWinner)];
     }
+
 }
