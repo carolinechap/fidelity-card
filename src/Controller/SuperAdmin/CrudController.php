@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
  * @author Corinne Poullette
  * @version 1.01
  * @example your routes : /superadmin/your-entity or /superadmin/yourEntity  ...
- * @Route("/crud")
+ * @Route("/dashboard")
  */
 class CrudController extends AbstractController
 {

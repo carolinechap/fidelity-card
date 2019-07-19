@@ -17,22 +17,31 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 /**
  * Class CardActivityController
  * @package App\Controller
- * @Route("carte/activite")
+ * @Route("dashboards/carte/activite")
  */
 class CardActivityController extends AbstractController
 {
     /**
      * @Route("/", name="card_activity_index")
      * @IsGranted("ROLE_ADMIN")
+     * @param CardActivityRepository $cardActivityRepository
+     * @param ActivityRepository $activityRepository
+     * @param CardRepository $cardRepository
+     * @param UserRepository $userRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
      */
     public function index(CardActivityRepository $cardActivityRepository,
                           ActivityRepository $activityRepository,
@@ -41,13 +50,12 @@ class CardActivityController extends AbstractController
                           PaginatorInterface $paginator,
                           Request $request)
     {
-        $cardActivities = $paginator->paginate($cardActivityRepository->findByGameDate(), $request->query->getInt('page', 1),5);
+        $cardActivities = $paginator->paginate($cardActivityRepository->findByGameDate(), $request->query->getInt('page', 1), 5);
         $activities = $activityRepository->findAll();
         $cards = $cardRepository->findAll();
         $users = $userRepository->findAll();
 
         $lastRec = $cardActivityRepository->findLastRecord();
-        //dd($lastRec);
 
 
         return $this->render('admin/card_activity/index.html.twig', [
@@ -55,42 +63,57 @@ class CardActivityController extends AbstractController
             'activities' => $activities,
             'users' => $users,
             'cards' => $cards,
-            'lastRec' => $lastRec
+            'last_record' => $lastRec
         ]);
     }
 
     /**
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/creation", name="card_activity_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param FidelityPointGenerator $fidelityPointGenerator
+     * @param SumPersonalScore $sumPersonalScore
+     * @param TranslatorInterface $translator
+     * @return Response
      */
-    public function new(Request $request, FidelityPointGenerator $fidelityPointGenerator, SumPersonalScore $sumPersonalScore): Response
+    public function new(Request $request,
+                        FidelityPointGenerator $fidelityPointGenerator,
+                        SumPersonalScore $sumPersonalScore, TranslatorInterface $translator): Response
     {
         $cardActivity = new CardActivity();
 
         $form = $this->createForm(CardActivityType::class, $cardActivity);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            // Lorsque le client effectue une activité
-            // Ajouter les points de fidélité sur la carte
-            //TODO:Refactorer au niveau de cardController
-            $fidelityPoint = $fidelityPointGenerator->sumFidelityPoint($cardActivity);
-            $cardActivity->getCard()->setFidelityPoint($fidelityPoint);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
 
-            // Ajouter le score personnel sur la carte
-            //TODO:Refactorer au niveau de cardController
-            $personalScoreFromForm = $form->getData()->getPersonalScore();
-            $personalScore = $sumPersonalScore->sumPersonalScore($cardActivity, $personalScoreFromForm);
-            $cardActivity->getCard()->setPersonalScore($personalScore);
+                // When a client plays a game
+                // Add fidelity points on his card
+                //TODO:Refactorer au niveau de cardController?
+                $fidelityPoint = $fidelityPointGenerator->sumFidelityPoint($cardActivity);
+                $cardActivity->getCard()->setFidelityPoint($fidelityPoint);
+
+                // Add personal score on his card
+                //TODO:Refactorer au niveau de cardController?
+                $personalScoreFromForm = $form->getData()->getPersonalScore();
+                $personalScore = $sumPersonalScore->sumPersonalScore($cardActivity, $personalScoreFromForm);
+                $cardActivity->getCard()->setPersonalScore($personalScore);
 
 
-            $entityManager = $this->getDoctrine()->getManager();
+                $entityManager = $this->getDoctrine()->getManager();
 
-            $entityManager->persist($cardActivity);
-            $entityManager->flush();
+                $entityManager->persist($cardActivity);
+                $entityManager->flush();
+                $this->addFlash('success', $translator->trans('new.success', [], 'crud'));
 
-            return $this->redirectToRoute('card_activity_index');
+                return $this->redirectToRoute('card_activity_index');
+            } else {
+                $this->addFlash('error', $translator->trans('new.error', [], 'crud'));
+
+            }
         }
+
 
         return $this->render('admin/card_activity/new.html.twig', [
             'cardActivity' => $cardActivity,
@@ -100,39 +123,49 @@ class CardActivityController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/suppression/{id}", name="card_activity_delete", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param CardActivity $cardActivity
+     * @param TranslatorInterface $translator
+     * @return RedirectResponse
      */
-    public function delete(CardActivity $cardActivity) {
-
-        $user = $cardActivity->getCard()->getUser()->getFullName();
+    public function delete(CardActivity $cardActivity,
+                           TranslatorInterface $translator)
+    {
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($cardActivity);
         $entityManager->flush();
 
-        $this->addFlash('success', "L'activité de $user est supprimée");
+        $this->addFlash('success', $translator->trans('remove.success', [], 'crud'));
 
         return $this->redirectToRoute('card_activity_index');
     }
 
     /**
-     * @IsGranted("ROLE_USER")
+     * Personal profile, allows to display historical activities, personal scores and fidelity points per card.
      * @Route("/historique", name="card_activity_historical", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     * @param CardActivityRepository $cardActivityRepository
+     * @param CardRepository $cardRepository
+     * @return Response
      */
-    public function displayHistorical(CardActivityRepository $cardActivityRepository, CardRepository $cardRepository){
+    public function displayHistorical(CardActivityRepository $cardActivityRepository,
+                                      CardRepository $cardRepository)
+    {
 
-        // Récupération de l'id du User
+        // Find user's id
         $user = $this->getUser();
 
+        // Find user's activities
         $activities = $cardActivityRepository->findActivityByUser($user);
-        //TODO:Recuperer seulement 1 fois sans boucle les points
-        //$card = $cardRepository->findCardByUser($user);
-        //dd($card);
+
+        // Find user's cards
+        $cards = $cardRepository->findCardByUser($user);
 
         return $this->render('card_activity/historical.html.twig', [
             'activities' => $activities,
-            //'card' => $card
+            'cards' => $cards
         ]);
 
     }

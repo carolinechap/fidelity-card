@@ -20,7 +20,8 @@ class CardType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Store::class,
-                    'label' => 'Centre laser game',
+                    'translation_domain' => 'forms',
+                    'label' => 'card.form.label.store_name',
                     'choice_label' => 'name',
                     'expanded' => false,
                     'multiple' => false,

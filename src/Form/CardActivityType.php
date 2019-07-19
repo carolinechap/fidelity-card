@@ -21,7 +21,8 @@ class CardActivityType extends AbstractType
         $builder
             ->add('isTheWinner', ChoiceType::class,
                 [
-                    'label' => 'Match gagné',
+                    'translation_domain' => 'forms',
+                    'label' => 'cardactivity.form.label.is_the_winner',
                     'choices' => [
                         'Oui' => 1,
                         'Non' => 0
@@ -30,13 +31,15 @@ class CardActivityType extends AbstractType
                 ])
             ->add('personalScore', IntegerType::class,
                 [
-                    'label' => 'Points gagnés lors du jeu',
+                    'translation_domain' => 'forms',
+                    'label' => 'cardactivity.form.label.personal_score',
 
                 ])
             ->add('card', EntityType::class,
                 [
                     'class' => Card::class,
-                    'label' => 'Numéro de la carte',
+                    'translation_domain' => 'forms',
+                    'label' => 'cardactivity.form.label.card_number',
                     'query_builder' => function(CardRepository $cardRepository){
                     return $cardRepository->createQueryBuilder('c')
                         ->join('c.user','cu' );
@@ -47,12 +50,14 @@ class CardActivityType extends AbstractType
             ->add('activity', EntityType::class,
                 [
                     'class' => Activity::class,
-                    'label' => 'Nom de l\'activité',
+                    'translation_domain' => 'forms',
+                    'label' => 'cardactivity.form.label.game_name',
                     'choice_label' => 'gameName'
                 ])
             ->add('gameDate', DateType::class,
                 [
-                    'label' => 'Date du jeu',
+                    'translation_domain' => 'forms',
+                    'label' => 'cardactivity.form.label.game_date',
                     'required' => true,
                     'widget' => 'single_text',
                     'format' => 'dd/MM/yyyy',

@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DefineUserRoleCommand extends Command
 {
-    protected static $defaultName = 'DefineUserRole';
+    protected static $defaultName = 'app:define-role';
 
     private $io;
     private $em;
