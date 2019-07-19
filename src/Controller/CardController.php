@@ -24,23 +24,27 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class CardController
  * @package App\Controller
- * @Route("/carte")
+ * @Route("dashboards/carte")
  */
 class CardController extends AbstractController
 {
     /**
      * @Route("/", name="card_index")
+     * @param CardRepository $cardRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
      */
     public function index(
         CardRepository $cardRepository,
         PaginatorInterface $paginator,
         Request $request
-            ) {
+    )
+    {
         $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
 
         $lastCard = $cardRepository->findLastRecord();
 
-        //dd($lastCard);
 
         return $this->render(
             'card/index.html.twig',
@@ -52,31 +56,40 @@ class CardController extends AbstractController
     }
 
     /**
+     * @Route("/creation", name="card_new", methods={"GET", "POST"})
      * @param Request $request
      * @param CardGenerator $cardGenerator
+     * @param TranslatorInterface $translator
      * @return Response
-     * @Route("/creation", name="card_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, CardGenerator $cardGenerator): Response
+    public function new(Request $request,
+                        CardGenerator $cardGenerator,
+                        TranslatorInterface $translator): Response
     {
-        # Création d'une nouvelle carte
+        // Creation of a card
         $card = new Card();
 
         $form = $this->createForm(CardType::class, $card)
             ->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
 
-            # Process de création d'une carte ...
-            $card = $cardGenerator->generateCard($card);
+                // Assignment card's code (randomly)
+                $card = $cardGenerator->generateCard($card);
 
-            # Sauvegarde de la carte
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($card);
-            $entityManager->flush();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($card);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('card_index');
+                $this->addFlash('success', $translator->trans('new.success', [], 'crud'));
+
+                return $this->redirectToRoute('card_index');
+            } else {
+                $this->addFlash('error', $translator->trans('new.error', [], 'crud'));
+            }
         }
+
         return $this->render('card/edit.html.twig', [
             'card' => $card,
             'form' => $form->createView()
@@ -84,25 +97,31 @@ class CardController extends AbstractController
     }
 
     /**
+     * @Route("/suppression/{id}", name="card_delete")
      * @param Card $card
      * @param EntityManagerInterface $entityManager
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @Route("/suppression/{id}", name="card_delete")
+     * @param TranslatorInterface $translator
+     * @return RedirectResponse
      */
-    public function delete(Card $card, EntityManagerInterface $entityManager) : RedirectResponse
+    public function delete(Card $card, EntityManagerInterface $entityManager, TranslatorInterface $translator): RedirectResponse
     {
         $entityManager->remove($card);
         $entityManager->flush();
 
-        $this->addFlash('success', "La carte est supprimée");
+        $this->addFlash('success', $translator->trans('remove.success', [], 'crud'));
 
         return $this->redirectToRoute('card_index');
     }
 
     /**
-     * @IsGranted("ROLE_USER")
      * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param CardRepository $cardRepository
+     * @param TranslatorInterface $translator
+     * @param CardNumberExtractor $cardNumberExtractor
+     * @return Response
      */
     public function addCardToUser(Request $request,
                                   EntityManagerInterface $entityManager,
@@ -119,7 +138,7 @@ class CardController extends AbstractController
         $message = null;
         $typeMessage = null;
 
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $cardNumber = $form->getData()['card_number'];
             if ($form->isValid()) {
                 $customerCode = $cardNumberExtractor->evaluate($cardNumber);
@@ -133,8 +152,7 @@ class CardController extends AbstractController
                 if (!$request->isXmlHttpRequest()) {
                     $this->addFlash('success', $message);
                 }
-            }
-            else {
+            } else {
                 $message = $translator->trans('card.add.user.error', [], 'forms');
                 $typeMessage = 'danger';
                 if (!$request->isXmlHttpRequest()) {
