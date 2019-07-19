@@ -35,7 +35,6 @@ class CardActivity
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Positive(message="cardActivity.personalscore.positive")
-     * @Assert\Type(type="integer", message="cardActivity.personalscore.type")
      */
     private $personalScore;
 
@@ -53,7 +52,7 @@ class CardActivity
     private $card;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="cards", cascade={"persist"})
      * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      * @Groups({"card_listening:read"})
 
