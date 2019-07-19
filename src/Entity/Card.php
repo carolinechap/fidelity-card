@@ -47,7 +47,6 @@ class Card
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="card.check_sum.blank")
-     * @Assert\Type(type="integer", message="card.customer_code.type")
      */
     private $checkSum;
 
@@ -84,7 +83,6 @@ class Card
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero(message="card.fidelity_point.positiveozero")
-     * @Assert\Type(type="integer", message="card.fidelitypoint.type")
      */
     private $fidelityPoint;
 
@@ -92,7 +90,6 @@ class Card
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"card_listening:read"})
      * @Assert\PositiveOrZero(message="card.personal_score.positiveozero")
-     * @Assert\Type(type="integer", message="card.personal_score.type")
      */
     private $personalScore;
 

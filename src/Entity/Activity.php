@@ -28,7 +28,6 @@ class Activity
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Positive(message="activity.fidelitypoint.positive")
-     * @Assert\Type(type="integer", message="activity.fidelitypoint.type")
      */
     private $fidelityPoint;
 

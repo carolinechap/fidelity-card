@@ -28,7 +28,6 @@ class Store
     /**
      * @ORM\Column(type="integer")
      * @Assert\Positive(message="store.center_code.positive")
-     * @Assert\Type(type="integer", message="store.center_code.type")
      */
     private $centerCode;
 

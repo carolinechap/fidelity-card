@@ -46,7 +46,6 @@ class Deal
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\Type(type="integer", message="deal.cost_point.type")
      * @todo assert for costPoint range ?
      */
     private $costPoint;
