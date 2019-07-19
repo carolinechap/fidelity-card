@@ -27,48 +27,51 @@ class Store
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive(message="store.center_code.positive")
+     * @Assert\Type(type="integer", message="store.center_code.type")
      */
     private $centerCode;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\Length(max="6", maxMessage="Le numéro de rue ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Positive(message="store.street_number.positive")
+     * @Assert\Type(type="integer", message="store.street_number.type")
      */
     private $numberStreet;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Length(max="150", maxMessage="Le nom de la rue ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="150", maxMessage="store.street_name.max")
      */
     private $nameStreet;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Assert\Length(max="20", maxMessage="Le code postal ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="15", maxMessage="store.zip_code.max")
      */
     private $zipCode;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Length(max="100", maxMessage="La ville ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="100", maxMessage="store.city.max")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Length(max="100", maxMessage="Le pays ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="100", maxMessage="store.country.max")
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Length(max="100", maxMessage="Le nom ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="100", maxMessage="store.name.max")
      * @Groups({"card_listening:read"})
      */
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="store")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="stores")
      */
     private $users;
 
