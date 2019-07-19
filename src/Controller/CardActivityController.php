@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Activity\FidelityPointGenerator;
-use App\Activity\SumPersonalScore;
+use App\Activity\CalculatePersonalScore;
 use App\Entity\Activity;
 use App\Entity\Card;
 use App\Entity\CardActivity;
@@ -72,13 +72,13 @@ class CardActivityController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param FidelityPointGenerator $fidelityPointGenerator
-     * @param SumPersonalScore $sumPersonalScore
+     * @param CalculatePersonalScore $sumPersonalScore
      * @param TranslatorInterface $translator
      * @return Response
      */
     public function new(Request $request,
                         FidelityPointGenerator $fidelityPointGenerator,
-                        SumPersonalScore $sumPersonalScore, TranslatorInterface $translator): Response
+                        CalculatePersonalScore $calculatePersonalScore, TranslatorInterface $translator): Response
     {
         $cardActivity = new CardActivity();
 
@@ -97,7 +97,7 @@ class CardActivityController extends AbstractController
                 // Add personal score on his card
                 //TODO:Refactorer au niveau de cardController?
                 $personalScoreFromForm = $form->getData()->getPersonalScore();
-                $personalScore = $sumPersonalScore->sumPersonalScore($cardActivity, $personalScoreFromForm);
+                $personalScore = $calculatePersonalScore->sumPersonalScore($cardActivity, $personalScoreFromForm);
                 $cardActivity->getCard()->setPersonalScore($personalScore);
 
 
@@ -127,11 +127,25 @@ class CardActivityController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      * @param CardActivity $cardActivity
      * @param TranslatorInterface $translator
+     * @param CalculatePersonalScore $calculatePersonalScore
+     * @param FidelityPointGenerator $fidelityPointGenerator
      * @return RedirectResponse
      */
     public function delete(CardActivity $cardActivity,
-                           TranslatorInterface $translator)
+                           TranslatorInterface $translator,
+                           CalculatePersonalScore $calculatePersonalScore,
+                           FidelityPointGenerator $fidelityPointGenerator)
     {
+
+        // Remove personal score of this activity from card
+        $activityPersonalScore = $cardActivity->getPersonalScore();
+        $personalScore = $calculatePersonalScore->subPersonalScore($cardActivity, $activityPersonalScore);
+        $cardActivity->getCard()->setPersonalScore($personalScore);
+
+        // Remove fidelity points of this activity from card
+        $fidelityPoints = $fidelityPointGenerator->subFidelityPoint($cardActivity);
+        $cardActivity->getCard()->setFidelityPoint($fidelityPoints);
+
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($cardActivity);
