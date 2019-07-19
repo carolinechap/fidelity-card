@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Card\CardGenerator;
 use App\Card\CardNumberExtractor;
+use App\DataFixtures\UserFixtures;
+use App\Entity\User;
 use App\Form\AddCardType;
 use App\Form\CardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
+use App\Repository\StoreRepository;
+use App\Repository\UserRepository;
 use App\Validator\Constraints\IsValidCardNumber;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -16,80 +20,76 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Workflow\Exception\LogicException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CardController
  * @package App\Controller
- * @Route("dashboards/carte")
+ * @Route("/carte")
  */
 class CardController extends AbstractController
 {
     /**
      * @Route("/", name="card_index")
-     * @param CardRepository $cardRepository
-     * @param PaginatorInterface $paginator
-     * @param Request $request
-     * @return Response
      */
     public function index(
         CardRepository $cardRepository,
         PaginatorInterface $paginator,
         Request $request
-    )
-    {
+            ) {
         $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
-
-        $lastCard = $cardRepository->findLastRecord();
 
 
         return $this->render(
             'card/index.html.twig',
             [
-                'cards' => $cards,
-                'last_card' => $lastCard
+                'cards' => $cards
             ]
         );
     }
 
     /**
-     * @Route("/creation", name="card_new", methods={"GET", "POST"})
      * @param Request $request
      * @param CardGenerator $cardGenerator
-     * @param TranslatorInterface $translator
      * @return Response
+     * @Route("/creation", name="card_new", methods={"GET", "POST"})
      */
-    public function new(Request $request,
-                        CardGenerator $cardGenerator,
-                        TranslatorInterface $translator): Response
+    public function new(Request $request, CardGenerator $cardGenerator): Response
     {
-        // Creation of a card
+        # Création d'une nouvelle carte
         $card = new Card();
 
         $form = $this->createForm(CardType::class, $card)
             ->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                // Assignment card's code (randomly)
-                $card = $cardGenerator->generateCard($card);
+            # Process de création d'une carte ...
+            $card = $cardGenerator->generateCard($card);
 
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($card);
-                $entityManager->flush();
-
-                $this->addFlash('success', $translator->trans('new.success', [], 'crud'));
-
-                return $this->redirectToRoute('card_index');
-            } else {
-                $this->addFlash('error', $translator->trans('new.error', [], 'crud'));
+            # Handle Workflow
+            $workflow = $this->registry->get($card);
+            if ($workflow->can($card, 'preactivating')) {
+                try {
+                    $workflow->apply($card, 'preactivating');
+                } catch (LogicException $e) {
+                    # Transition non autorisé
+                    $e->getMessage();
+                }
             }
-        }
 
+            # Sauvegarde de la carte
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($card);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('card_index');
+        }
         return $this->render('card/edit.html.twig', [
             'card' => $card,
             'form' => $form->createView()
@@ -97,31 +97,32 @@ class CardController extends AbstractController
     }
 
     /**
-     * @Route("/suppression/{id}", name="card_delete")
      * @param Card $card
      * @param EntityManagerInterface $entityManager
-     * @param TranslatorInterface $translator
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/suppression/{id}", name="card_delete")
      */
-    public function delete(Card $card, EntityManagerInterface $entityManager, TranslatorInterface $translator): RedirectResponse
+    public function delete(Card $card, EntityManagerInterface $entityManager) : RedirectResponse
     {
         $entityManager->remove($card);
         $entityManager->flush();
 
-        $this->addFlash('success', $translator->trans('remove.success', [], 'crud'));
+        $this->addFlash('success', "La carte est supprimée");
 
         return $this->redirectToRoute('card_index');
     }
 
     /**
-     * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
-     * @IsGranted("ROLE_USER")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param CardRepository $cardRepository
      * @param TranslatorInterface $translator
      * @param CardNumberExtractor $cardNumberExtractor
      * @return Response
+     *
+     * @IsGranted("ROLE_USER")
+     * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
      */
     public function addCardToUser(Request $request,
                                   EntityManagerInterface $entityManager,
@@ -138,7 +139,7 @@ class CardController extends AbstractController
         $message = null;
         $typeMessage = null;
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted()){
             $cardNumber = $form->getData()['card_number'];
             if ($form->isValid()) {
                 $customerCode = $cardNumberExtractor->evaluate($cardNumber);
@@ -152,7 +153,8 @@ class CardController extends AbstractController
                 if (!$request->isXmlHttpRequest()) {
                     $this->addFlash('success', $message);
                 }
-            } else {
+            }
+            else {
                 $message = $translator->trans('card.add.user.error', [], 'forms');
                 $typeMessage = 'danger';
                 if (!$request->isXmlHttpRequest()) {
@@ -165,6 +167,77 @@ class CardController extends AbstractController
             'form' => $form->createView(),
             'message' => $message,
             'typeMessage' => $typeMessage
+        ]);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/declarer-perdue", name="card_lost", methods={"GET", "POST"})
+     *
+     */
+    public function declareLostCard(TranslatorInterface $translator,
+                                    Request $request,
+                                    UserRepository $userRepository,
+                                    CardRepository $cardRepository)
+    {
+        if (!$store = $this->getUser()->getStore()[0]) {
+            throw new HttpException(401,
+                $translator->trans('access.forbidden', [], 'messages'));
+        }
+
+        $message = "";
+        $cards = [];
+        $typeMessage = null;
+        $labelButton = null;
+
+        $form = $this->createForm('App\Form\LostTypeCard', null, [
+            'store' => $store
+        ]);
+
+        $form->handleRequest($request);
+
+        if (isset($request->request->get('lost_type_card')['customers'])
+            && $request->request->get('lost_type_card')['customers'] !== null ) {
+            $customerId = intval($request->request->get('lost_type_card')['customers']);
+            $customer = $userRepository->findOneById(intval($customerId));
+            $cards = $customer->getCards();
+            $labelButton = 1;
+        }
+
+        if (isset($request->request->get('lost_type_card')['cards'])
+            && $request->request->get('lost_type_card')['cards'] !== null ) {
+            $cardId = $request->request->get('lost_type_card')['cards'];
+
+            $card = $cardRepository->findOneById(intval($cardId));
+            if (!$customer = $card->getUser()) {
+                $message = $translator->trans('lost_card.inactive.error', [], 'forms');
+                $typeMessage = "error";
+            } else {
+                $customer->removeCard($card);
+                $message = $translator->trans('lost_card.inactive.success', [], 'forms');
+                $typeMessage = "success";
+            }
+
+            //Workflow here, inactivating
+        }
+
+        if (!$request->isXmlHttpRequest() && $form->isSubmitted()) {
+            $this->addFlash('success', $message);
+            //todo voir où on envoie la redirection
+            $this->redirectToRoute('home');
+        }
+
+        return $this->render('security/lost_card.html.twig', [
+            'typeMessage' => $typeMessage,
+            'message' => $message,
+            'form' => $form->createView(),
+            'cards' => $cards,
+            'labelButton' => $labelButton
         ]);
     }
 }

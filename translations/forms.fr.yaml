@@ -42,3 +42,17 @@ cardactivity:
       card_number : Carte de fidélité
       game_name: Nom de l'activité
       game_date: Date de l'activité
+lost_card:
+  inactive:
+    success: La carte a bien été désactivée !
+    error: Erreur durant la désactivation.
+  select:
+    label:
+      customer: Sélectionnez le client
+      card: Sélectionnez la carte
+      button: Chercher
+      submit: Désactiver
+      cancel: Réinitialiser
+    placeholder:
+      customer: Choisir dans la liste
+      card: Choisir dans la liste

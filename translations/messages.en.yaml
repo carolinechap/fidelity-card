@@ -5,3 +5,5 @@ add_deal:
 registration:
   success: Your account is created !
   failed : Something happened, your account is not created
+access:
+  forbidden: You cannot access this part of the site !

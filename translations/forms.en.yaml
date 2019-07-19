@@ -42,3 +42,17 @@ cardactivity:
       card_number : Card's number
       game_name: Game name
       game_date: Game date
+lost_card:
+  inactive:
+    success: The card was successfully inactivated !
+    error: There was an error trying to inactivate the card.
+  select:
+    label:
+      customer: Select the customer
+      card: Select the card
+      button: Select
+      submit: Deactivate
+      cancel: Reinitialize
+    placeholder:
+      customer: Choice in the list
+      card: Choice in the list

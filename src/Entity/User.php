@@ -31,7 +31,7 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=150, unique=true)
+     * @ORM\Column(type="string", length=150)
      */
     private $email;
 
@@ -96,7 +96,6 @@ class User implements UserInterface
     {
         $this->stores = new ArrayCollection();
         $this->cards = new ArrayCollection();
-        //$this->customerCode = null;
     }
 
     public function __toString()
@@ -145,7 +144,6 @@ class User implements UserInterface
             return false;
         }
     }
-
 
     public function getEmail(): ?string
     {
@@ -258,7 +256,7 @@ class User implements UserInterface
     /**
      * @return Collection|Store[]
      */
-    public function getStores(): Collection
+    public function getStore(): Collection
     {
         return $this->stores;
     }
@@ -303,10 +301,6 @@ class User implements UserInterface
     {
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
-            // set the owning side to null (unless already changed)
-            if ($card->getUser() === $this) {
-                $card->setUser(null);
-            }
         }
 
         return $this;
