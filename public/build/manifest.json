@@ -3,10 +3,14 @@
   "build/api.js": "/build/api.js",
   "build/app.css": "/build/app.css",
   "build/app.js": "/build/app.js",
+  "build/error.css": "/build/error.css",
+  "build/error.js": "/build/error.js",
   "build/runtime.js": "/build/runtime.js",
   "build/vendors~api.js": "/build/vendors~api.js",
   "build/vendors~api~app.js": "/build/vendors~api~app.js",
   "build/vendors~app.css": "/build/vendors~app.css",
   "build/vendors~app.js": "/build/vendors~app.js",
-  "build/images/laser-dark1.png": "/build/images/laser-dark1.9130da27.png"
+  "build/images/bg_purple.png": "/build/images/bg_purple.315b225d.png",
+  "build/images/laser-dark1.png": "/build/images/laser-dark1.9130da27.png",
+  "build/images/overlay_stars.svg": "/build/images/overlay_stars.98d17cfc.svg"
 }
