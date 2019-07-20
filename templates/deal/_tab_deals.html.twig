@@ -6,8 +6,8 @@
             <th scope="col" class="text-center">Date de début</th>
             <th scope="col" class="text-center">Date de fin</th>
             <th scope="col" class="text-center">Description</th>
-            <th scope="col" class="text-center">Points de fidélité à déduire</th>
-            <th scope="col" class="text-center"></th>
+            <th scope="col" class="text-center">Points de fidélité</th>
+            <th scope="col" class="text-center" width="200"></th>
         </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
                 <td scope="row" class="text-center">{{ deal.endDate ? deal.endDate|date('d/m/Y') : '' }}</td>
                 <td scope="row" class="text-center">{{ deal.description|length > 30 ? deal.description|slice(0, 25) ~ '...' : deal.description  }}</td>
                 <td scope="row" class="text-center">{{ deal.costPoint }}</td>
-                <td width="300">
+                <td scope="row" width="200">
                     <a href="{{ path('deal_show', {'id' : deal.id}) }}" class="btn btn-secondary btn-sm">
                         Voir
                     </a>
