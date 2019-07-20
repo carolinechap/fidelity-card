@@ -242,8 +242,8 @@ class CardController extends AbstractController
 
         if (!$request->isXmlHttpRequest() && $form->isSubmitted()) {
             $this->addFlash('success', $message);
-            //todo voir où on envoie la redirection
-            $this->redirectToRoute('home');
+            //Redirect to admin dashboard
+            $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('security/lost_card.html.twig', [
