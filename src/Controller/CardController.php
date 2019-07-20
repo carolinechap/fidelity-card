@@ -26,7 +26,7 @@ use Symfony\Component\Workflow\Registry;
 /**
  * Class CardController
  * @package App\Controller
- * @Route("/carte")
+ * @Route("dashboards/carte")
  */
 class CardController extends AbstractController
 {
@@ -62,10 +62,14 @@ class CardController extends AbstractController
     {
         $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
 
+        $lastCard = $cardRepository->findLastRecord();
+
+
         return $this->render(
             'card/index.html.twig',
             [
-                'cards' => $cards
+                'cards' => $cards,
+                'last_card' => $lastCard
             ]
         );
     }
@@ -73,10 +77,13 @@ class CardController extends AbstractController
     /**
      * @param Request $request
      * @param CardGenerator $cardGenerator
+     * @param TranslatorInterface $translator
      * @return Response
      * @Route("/creation", name="card_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, CardGenerator $cardGenerator): Response
+    public function new(Request $request,
+                        CardGenerator $cardGenerator,
+                        TranslatorInterface $translator): Response
     {
         # Création d'une nouvelle carte
         $card = new Card();
@@ -84,7 +91,8 @@ class CardController extends AbstractController
         $form = $this->createForm(CardType::class, $card)
             ->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
 
             # Process de création d'une carte ...
             $card = $cardGenerator->generateCard($card);
@@ -97,7 +105,12 @@ class CardController extends AbstractController
             $entityManager->persist($card);
             $entityManager->flush();
 
-            return $this->redirectToRoute('card_index');
+                $this->addFlash('success', $translator->trans('new.success', [], 'crud'));
+
+                return $this->redirectToRoute('card_index');
+            } else {
+                $this->addFlash('error', $translator->trans('new.error', [], 'crud'));
+            }
         }
         return $this->render('card/edit.html.twig', [
             'card' => $card,
