@@ -7,11 +7,11 @@ user:
     deactivated: Votre carte (n° {number_card} a bien été désactivée.
 store:
   new:
-    activity: Nous avons ajouté cette nouvelle activité : {activity} !
+    activity: Nous avons ajouté cette nouvelle activité ':' {activity} !
 card:
   new:
     activity: Vous avez ajouté l'activité {activity} à votre carte !
   fidelity_points:
-    changed:
+    changed: Vos points de fidélité ont changé !
 goto:
   site: Aller sur le site

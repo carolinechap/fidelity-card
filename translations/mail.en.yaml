@@ -7,11 +7,11 @@ user:
     deactivated: Your card (n° {number_card} has been successfully deactivated.
 store:
   new:
-    activity: We add this new activity to our store : {activity} !
+    activity: We add this new activity to our store ':' {activity} !
 card:
   new:
     activity: You added {activity} to your card !
   fidelity_points:
-    changed:
+    changed: Your fidelity points has changed !
 goto:
   site: Go to the site

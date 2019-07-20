@@ -68,9 +68,11 @@ class MailerService
         $subject = $this->translator->trans('user.card.add', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
-            'mail/new_order.html.twig', [
+            'mail/mail.html.twig', [
                 'type_notification' => 'workflow.ordering_workflow.completed.to_activating',
-                'card' => $card
+                'card' => $card,
+                'user' => $card->getUser(),
+                'subject' => $subject
             ]
         );
         $this->sendEmailAction($subject, $to, $body);
@@ -81,10 +83,11 @@ class MailerService
         $subject = $this->translator->trans('user.card.deactivated', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
-            'mail/new_order.html.twig', [
+            'mail/mail.html.twig', [
                 'type_notification' => 'workflow.ordering_workflow.completed.to_deactivating',
-                'name' => $card->getUser()->getLastname(). ' ' .$card->getUser()->getFirstname(),
-                'card' => $card
+                'card' => $card,
+                'subject' => $subject,
+                'user' => $card->getUser()
             ]
         );
         $this->sendEmailAction($subject, $to, $body);
@@ -95,10 +98,12 @@ class MailerService
         $subject = $this->translator->trans('store.new.activity', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
-            'mail/new_order.html.twig', [
+            'mail/mail.html.twig', [
                 'type_notification' => AppEvents::STORE_NEW_ACTIVITY,
                 'name' => $card->getUser()->getLastname(). ' ' .$card->getUser()->getFirstname(),
-                'card' => $card
+                'card' => $card,
+                'subject' => $subject,
+                'user' => $card->getUser()
             ]
         );
         $this->sendEmailAction($subject, $to, $body);
@@ -111,7 +116,9 @@ class MailerService
         $body = $this->twig->render(
             'mail/new_order.html.twig', [
                 'type_notification' => AppEvents::CARD_NEW_ACTIVITY,
-                'card' => $cardActivity
+                'card' => $cardActivity,
+                'subject' => $subject,
+                'user' => $cardActivity->getCard()->getUser()
             ]
         );
         $this->sendEmailAction($subject, $to, $body);
@@ -122,9 +129,11 @@ class MailerService
         $subject = $this->translator->trans('card.fidelity_points_changed', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
-            'mail/new_order.html.twig', [
+            'mail/mail.html.twig', [
                 'type_notification' => AppEvents::CARD_FIDELITY_POINTS_CHANGED,
-                'card' => $card
+                'card' => $card,
+                'subject' => $subject,
+                'user' => $card->getUser()
             ]
         );
         $this->sendEmailAction($subject, $to, $body);
