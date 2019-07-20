@@ -1,3 +1,9 @@
+{% extends app.request.xmlHttpRequest
+    ? 'base_ajax.html.twig'
+    : 'base.html.twig' %}
+
+{% block title %}Rattacher une carte{% endblock %}
+
 {% block body %}
     <h5 class="text-color text-center">Rattacher une carte</h5>
     {{ form_start(form, {'attr' : {'id': 'add-card'}}) }}
@@ -8,7 +14,7 @@
         </div>
     </div>
     <div class="text-right">
-        <button type="submit" class="btn btn-block btn-lg btn-success" id="btn-add-customer-card">
+        <button type="submit" class="btn btn-block btn-lg btn-success" id="-btn-add-customer-card">
             Enregistrer
         </button>
     </div>

@@ -8,19 +8,19 @@ framework:
           - 'status'
       supports:
         - App\Entity\Card
-      initial_place: created
+      initial_place: precreated
       places:
+        - precreated
         - created
-        - preactivated
         - activated
         - deactivated
       transitions:
-        preactivating:
-          from: created
-          to: preactivated
-        activating:
-          from: preactivated
-          to: activated
-        deactivating:
-          from: activated
-          to: deactivated
+        to_creating:
+          from: [precreated]
+          to: [created]
+        to_activating:
+          from: [created]
+          to: [activated]
+        to_deactivating:
+          from: [activated]
+          to: [deactivated]

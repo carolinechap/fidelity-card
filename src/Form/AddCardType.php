@@ -55,12 +55,12 @@ class AddCardType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                     new NotNull(),
-                    new IsValidCardNumber(),
                     new Length(['min' => 10,
-                        'max' => 12])
+                        'max' => 12]),
+                    new IsValidCardNumber()
                 ],
                 'translation_domain' => 'forms',
-                //'label' => 'card.add.user.label'
+                'label' => 'card.add.user.label'
             ]);
     }
 
