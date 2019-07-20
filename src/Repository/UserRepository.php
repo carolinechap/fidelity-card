@@ -113,15 +113,16 @@ class UserRepository extends ServiceEntityRepository
 
     public function findStoreForEmployee(User $user)
     {
-        $roles = ['ROLE_ADMIN'];
-        $roles = serialize($roles);
+        $roles = serialize(['ROLE_ADMIN']);
 
         $qb = $this->createQueryBuilder('e');
 
         $qb
-            ->andWhere('u.roles = :roles')
-            ->join('u.stores', 'ust')
+            ->andWhere('e.roles = :roles')
+            ->andWhere('e.id = :user')
+            ->join('e.stores', 'ust')
             ->setParameter(':user', $user)
+            ->setParameter(':roles', $roles)
             ;
 
         return $qb->getQuery()->getOneOrNullResult();

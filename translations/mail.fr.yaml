@@ -3,15 +3,15 @@ user:
     created: Votre compte a bien été créé !
     message: Bienvenue dans le lasergame.
   card:
-    added: Votre carte (n° {number_card} a bien été ajoutée à votre compte.
-    deactivated: Votre carte (n° {number_card} a bien été désactivée.
+    added: Votre carte n° %number_card% a bien été ajoutée à votre compte.
+    deactivated: Votre carte n° %number_card% a bien été désactivée.
 store:
   new:
-    activity: Nous avons ajouté cette nouvelle activité ':' {activity} !
+    activity: Nous avons ajouté %activity% à votre carte!
 card:
   new:
-    activity: Vous avez ajouté l'activité {activity} à votre carte !
-  fidelity_points:
-    changed: Vos points de fidélité ont changé !
+    activity: Vous avez ajouté une activité à votre carte ':' %activity% !
+    fidelity_points: Vos points de fidélité sont passés de %before_points% à %after_points%
+  fidelity_points: Vos points de fidélité ont atteint 500 points !
 goto:
   site: Aller sur le site

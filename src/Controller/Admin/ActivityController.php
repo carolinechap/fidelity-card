@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Activity;
-use App\Events\StoreActivityEvent;
+use App\Events\CardFidelityPointEvent;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -60,7 +60,7 @@ class ActivityController extends AbstractController
             $entityManager->flush();
 
             //On déclenche l'événement correspondant
-            $event = new StoreActivityEvent($this->getUser());
+            $event = new CardFidelityPointEvent($this->getUser());
             $eventDispatcher->dispatch($event, AppEvents::STORE_NEW_ACTIVITY);
 
             $this->addFlash('success', $translator->trans('add_activity.success', [], 'messages'));

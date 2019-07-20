@@ -3,15 +3,15 @@ user:
     subject: Your account has been successfully created !
     message: Welcome in the lasergame !
   card:
-    added: Your card (n° {number_card} has been successfully added to your account.
-    deactivated: Your card (n° {number_card} has been successfully deactivated.
+    added: Your card n° %number_card% has been successfully added to your account.
+    deactivated: Your card n° %number_card% has been successfully deactivated.
 store:
   new:
-    activity: We add this new activity to our store ':' {activity} !
+    activity: We add %activity% to your card !
 card:
   new:
-    activity: You added {activity} to your card !
-  fidelity_points:
-    changed: Your fidelity points has changed !
+    activity: You added %activity% to your card !
+    fidelity_points: Your fidelity points went from %before_points% to %after_points%
+  fidelity_points: Your fidelity points are now at 500 !
 goto:
   site: Go to the site

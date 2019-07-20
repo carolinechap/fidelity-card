@@ -11,6 +11,10 @@ namespace App\Events;
 use Symfony\Contracts\EventDispatcher\Event;
 use App\Entity\User;
 
+/**
+ * Class UserAccountEvent
+ * @package App\Events
+ */
 class UserAccountEvent extends Event
 {
     public const NAME = 'user.account';
@@ -19,11 +23,18 @@ class UserAccountEvent extends Event
     protected $user;
 
 
+    /**
+     * UserAccountEvent constructor.
+     * @param User $user
+     */
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;

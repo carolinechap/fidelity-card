@@ -16,6 +16,10 @@ use App\Events\AppEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\CardActivity;
 
+/**
+ * Class MailerService
+ * @package App\Service\Mailer
+ */
 class MailerService
 {
     /**
@@ -23,10 +27,22 @@ class MailerService
      */
     private $mailer;
 
+    /**
+     * @var Environment
+     */
     private $twig;
 
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
 
+    /**
+     * MailerService constructor.
+     * @param Swift_Mailer $mailer
+     * @param Environment $twig
+     * @param TranslatorInterface $translator
+     */
     public function __construct(Swift_Mailer $mailer,
                                 Environment $twig,
                                 TranslatorInterface $translator)
@@ -36,6 +52,12 @@ class MailerService
         $this->translator = $translator;
     }
 
+    /**
+     * @param $subject
+     * @param $to
+     * @param $body
+     * @return int
+     */
     public function sendEmailAction($subject, $to, $body)
     {
         $message = $this->mailer->createMessage();
@@ -48,6 +70,14 @@ class MailerService
         return $this->mailer->send($message);
     }
 
+    # Send email when user is created
+
+    /**
+     * @param User $user
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function notifCreatedUserAccount(User $user)
     {
         $subject = $this->translator->trans('user.account.subject', [], 'mail');
@@ -62,9 +92,17 @@ class MailerService
         $this->sendEmailAction($subject, $to, $body);
     }
 
+    # Send email when new card is added to user account
+
+    /**
+     * @param Card $card
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function notifAddCard(Card $card)
     {
-        $subject = $this->translator->trans('user.card.add', [], 'mail');
+        $subject = $this->translator->trans('user.card.added', ['%number_card%' => $card->getCompleteCode()], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [
@@ -77,9 +115,17 @@ class MailerService
         $this->sendEmailAction($subject, $to, $body);
     }
 
+    # Send email when lost card is deactivated
+
+    /**
+     * @param Card $card
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function notifLostCard(Card $card)
     {
-        $subject = $this->translator->trans('user.card.deactivated', [], 'mail');
+        $subject = $this->translator->trans('user.card.deactivated', ['%number_card%' => $card->getCompleteCode()], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [
@@ -92,46 +138,52 @@ class MailerService
         $this->sendEmailAction($subject, $to, $body);
     }
 
-    public function notifNewStoreActivity(Card $card)
-    {
-        $subject = $this->translator->trans('store.new.activity', [], 'mail');
-        $to = $card->getUser()->getEmail();
-        $body = $this->twig->render(
-            'mail/mail.html.twig', [
-                'type_notification' => AppEvents::STORE_NEW_ACTIVITY,
-                'card' => $card,
-                'subject' => $subject,
-                'user' => $card->getUser()
-            ]
-        );
-        $this->sendEmailAction($subject, $to, $body);
-    }
+    # Send email when a new card activity is created
 
-    public function notifNewCardActivity(CardActivity $cardActivity)
+    /**
+     * @param CardActivity $cardActivity
+     * @param $beforePoints
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function notifNewCardActivity(CardActivity $cardActivity, $beforePoints)
     {
-        $subject = $this->translator->trans('card.new.activity', [], 'mail');
+        $subject = $this->translator->trans('card.new.activity', ['%activity%' => $cardActivity->getActivity()], 'mail');
         $to = $cardActivity->getCard()->getUser()->getEmail();
         $body = $this->twig->render(
-            'mail/new_order.html.twig', [
+            'mail/mail.html.twig', [
                 'type_notification' => AppEvents::CARD_NEW_ACTIVITY,
-                'card' => $cardActivity,
+                'cardActivity' => $cardActivity,
                 'subject' => $subject,
-                'user' => $cardActivity->getCard()->getUser()
+                'user' => $cardActivity->getCard()->getUser(),
+                'before_points' => $beforePoints,
+                'after_points' => $cardActivity->getCard()->getFidelityPoint()
             ]
         );
         $this->sendEmailAction($subject, $to, $body);
     }
 
-    public function notifFidelityPoint(Card $card)
+    # Send email when fidelity points >= 500
+
+    /**
+     * @param Card $card
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function notifFidelityPoints(Card $card)
     {
-        $subject = $this->translator->trans('card.fidelity_points_changed', [], 'mail');
+        $subject = $this->translator->trans('card.fidelity_points', [], 'mail');
+
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [
-                'type_notification' => AppEvents::CARD_FIDELITY_POINTS_CHANGED,
+                'type_notification' => 'card.fidelity_points',
                 'card' => $card,
                 'subject' => $subject,
-                'user' => $card->getUser()
+                'user' => $card->getUser(),
+                'fidelity_points' => $card->getFidelityPoint()
             ]
         );
         $this->sendEmailAction($subject, $to, $body);

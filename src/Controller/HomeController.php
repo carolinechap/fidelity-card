@@ -2,15 +2,12 @@
 
 namespace App\Controller;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
-use App\Card\CardNumberExtractor;
 use App\Entity\Card;
-use App\Repository\CardRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Events\AppEvents;
+use App\Events\CardFidelityPointEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class HomeController
@@ -20,9 +17,12 @@ class HomeController extends AbstractController
 {
 
     /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @Route("/", name="home")
      */
-    public function index()
+    public function index(EventDispatcherInterface $eventDispatcher)
     {
 
         if ($this->getUser()) {
@@ -31,6 +31,14 @@ class HomeController extends AbstractController
             $cardRepository = $this->getDoctrine()->getRepository(Card::class);
 
             $cardsUser = $cardRepository->findCardByUser($user);
+
+            foreach ($cardsUser as $cardUser) {
+                //On déclenche l'événement' correspondant
+                $event = new CardFidelityPointEvent($cardUser);
+                if ($event->fidelityPointsAttained() === true) {
+                    $eventDispatcher->dispatch($event, AppEvents::CARD_FIDELITY_POINTS);
+                }
+            }
 
             return $this->render('home/index.html.twig', [
                 'cards_user' => $cardsUser

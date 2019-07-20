@@ -3,36 +3,40 @@
  * Created by PhpStorm.
  * User: Corinne
  * Date: 20/07/2019
- * Time: 07:45
+ * Time: 10:33
  */
-
-namespace App\Events;
 
 namespace App\Events;
 
 use Symfony\Contracts\EventDispatcher\Event;
 use App\Entity\Card;
 
-class FidelityPointsEvent extends Event
+class CardFidelityPointEvent extends Event
 {
+    public const NAME = 'card.fidelity_point';
+
     /** @var Card */
     protected $card;
 
-
+    /**
+     * CardEvent constructor.
+     * @param Card $card
+     */
     public function __construct(Card $card)
     {
         $this->card = $card;
     }
 
+    /**
+     * @return Card|null
+     */
     public function getCard(): ?Card
     {
         return $this->card;
     }
-
-    public function setCard(Card $card): self
+    
+    public function fidelityPointsAttained()
     {
-        $this->card = $card;
-
-        return $this;
+        return $this->getCard()->getFidelityPoint() >= 500;
     }
 }

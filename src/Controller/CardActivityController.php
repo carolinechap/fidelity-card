@@ -7,7 +7,6 @@ use App\Activity\CalculatePersonalScore;
 use App\Entity\CardActivity;
 use App\Events\AppEvents;
 use App\Events\CardActivityEvent;
-use App\Events\FidelityPointsEvent;
 use App\Form\CardActivityType;
 use App\Repository\ActivityRepository;
 use App\Repository\CardActivityRepository;
@@ -26,13 +25,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Class CardActivityController
  * @package App\Controller
- * @Route("dashboards/carte/activite")
+ * @Route("/dashboards/carte/activite")
  */
 class CardActivityController extends AbstractController
 {
     /**
      * @Route("/", name="card_activity_index")
      * @IsGranted("ROLE_ADMIN")
+     *
      * @param CardActivityRepository $cardActivityRepository
      * @param ActivityRepository $activityRepository
      * @param CardRepository $cardRepository
@@ -89,10 +89,10 @@ class CardActivityController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-
                 // When a client plays a game
                 // Add fidelity points on his card
                 //TODO:Refactorer au niveau de cardController?
+                $beforePoints = $cardActivity->getCard()->getFidelityPoint();
                 $fidelityPoint = $fidelityPointGenerator->sumFidelityPoint($cardActivity);
                 $cardActivity->getCard()->setFidelityPoint($fidelityPoint);
 
@@ -107,12 +107,10 @@ class CardActivityController extends AbstractController
                 $entityManager->persist($cardActivity);
                 $entityManager->flush();
 
-                //On déclenche les événements correspondants
+                //On déclenche l'événement' correspondant
                 $event = new CardActivityEvent($cardActivity);
+                $event->setBeforePoints($beforePoints);
                 $eventDispatcher->dispatch($event, AppEvents::CARD_NEW_ACTIVITY);
-
-                $event = new FidelityPointsEvent($cardActivity->getCard());
-                $eventDispatcher->dispatch($event, AppEvents::CARD_FIDELITY_POINTS_CHANGED);
 
                 $this->addFlash('success', $translator->trans('new.success', [], 'crud'));
 

@@ -8,7 +8,6 @@
 
 namespace App\EventListeners;
 
-use App\Events\FidelityPointsEvent;
 use App\Service\Mailer\MailerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -16,16 +15,36 @@ use Symfony\Component\Workflow\Event\Event as WorkflowEvent;
 use App\Events\AppEvents;
 use App\Events\CardActivityEvent;
 use App\Events\UserAccountEvent;
+use App\Events\CardFidelityPointEvent;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * Class NotificationSubscriber
+ * @package App\EventListeners
+ */
 class NotificationSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
+    /**
+     * @var MailerService
+     */
     private $mailer;
 
+    /**
+     * @var Security
+     */
     private $security;
 
+    /**
+     * NotificationSubscriber constructor.
+     * @param MailerService $mailer
+     * @param LoggerInterface $logger
+     * @param Security $security
+     */
     public function __construct(MailerService $mailer,
                                 LoggerInterface $logger,
                                 Security $security)
@@ -35,20 +54,25 @@ class NotificationSubscriber implements EventSubscriberInterface
         $this->security = $security;
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents(): array
     {
         return [
-            'workflow.ordering_workflow.completed.to_activating' => 'onCardActivated',
-            'workflow.ordering_workflow.completed.to_deactivating' => 'onCardDeactivated',
+            'workflow.card_status.completed.to_activating' => 'onCardActivated',
+            'workflow.card_status.completed.to_deactivating' => 'onCardDeactivated',
             AppEvents::USER_ACCOUNT_CREATED =>  'onUserAccountCreated',
             AppEvents::CARD_NEW_ACTIVITY => 'onNewCardActivity',
-            AppEvents::STORE_NEW_ACTIVITY => 'onNewStoreActivity',
-            AppEvents::CARD_FIDELITY_POINTS_CHANGED => 'onFidelityPointChanged',
+            AppEvents::CARD_FIDELITY_POINTS => 'onCardFidelityPoints'
         ];
     }
 
     /**
      * @param UserAccountEvent $event
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function onUserAccountCreated(UserAccountEvent $event)
     {
@@ -60,13 +84,13 @@ class NotificationSubscriber implements EventSubscriberInterface
 
     /**
      * @param WorkflowEvent $event
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function onCardActivated(WorkflowEvent $event)
     {
         $card = $event->getSubject();
-
-        $this->logger->info('Nouvelle carte activée : '
-            . $card->getCompleteCode());
 
         /*Notification au client - MAIL (Notification push) */
         $this->mailer->notifAddCard($card);
@@ -74,13 +98,13 @@ class NotificationSubscriber implements EventSubscriberInterface
 
     /**
      * @param WorkflowEvent $event
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function onCardDeactivated(WorkflowEvent $event)
     {
         $card = $event->getSubject();
-
-        $this->logger->info('Carte désactivée : '
-            . $card->getCompleteCode());
 
         /*Notification au client - MAIL (Notification push) */
         $this->mailer->notifLostCard($card);
@@ -88,43 +112,34 @@ class NotificationSubscriber implements EventSubscriberInterface
 
     /**
      * @param CardActivityEvent $event
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function onNewCardActivity(CardActivityEvent $event)
     {
         $cardActivity = $event->getCardActivity();
-
-        $this->logger->info('Ajout nouvelle activité ');
+        $beforePoints = $event->getBeforePoints();
 
         /*Notification au client - MAIL (Notification push) */
-        $this->mailer->notifNewCardActivity($cardActivity);
+        $this->mailer->notifNewCardActivity($cardActivity, $beforePoints);
     }
 
     /**
-     * @param FidelityPointsEvent $event
+     * @param CardFidelityPointEvent $event
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function onFidelityPointChanged(FidelityPointsEvent $event)
+    public function onCardFidelityPoints(CardFidelityPointEvent $event)
     {
         $card = $event->getCard();
 
-        $this->logger->info('Points de fidélité changés : '
+        $this->logger->info('Points de fidélité à 500 : '
             . $card->getCompleteCode());
 
         /*Notification au client - MAIL (Notification push) */
-        $this->mailer->notifFidelityPoint($card);
-    }
-
-    /**
-     * @param FidelityPointsEvent $event
-     */
-    public function onNewStoreActivity(FidelityPointsEvent $event)
-    {
-        $card = $event->getCard();
-
-        $this->logger->info('Points de fidélité changés : '
-            . $card->getCompleteCode());
-
-        /*Notification au client - MAIL (Notification push) */
-        $this->mailer->notifNewUserActivity($card);
+        $this->mailer->notifFidelityPoints($card);
     }
 
 }

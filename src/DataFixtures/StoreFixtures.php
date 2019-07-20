@@ -33,6 +33,7 @@ class StoreFixtures extends Fixture implements DependentFixtureInterface
         $myStore->setNumberStreet($faker->numberBetween(1,30));
         $myStore->setNameStreet($faker->streetName);
         $myStore->setZipCode($faker->postcode);
+        $myStore->addUser($this->getReference('admin_'.rand(1, EmployeeFixtures::NB_ADMINS -1)));
         $manager->persist($myStore);
         $this->addReference('mystore', $myStore);
 
@@ -41,9 +42,9 @@ class StoreFixtures extends Fixture implements DependentFixtureInterface
             $store = new Store();
             $store->setName("LaserGame ".$faker->lastName);
             for ($y = 1; $y < CustomerFixtures::COUNT; $y ++) {
-                $store->addUser($this->getReference('customer_'.rand(0, CustomerFixtures::COUNT - 1)));
+                $store->addUser($this->getReference('customer_'.rand(1, CustomerFixtures::COUNT - 1)));
             }
-            $store->addUser($this->getReference('admin_'.rand(0, EmployeeFixtures::NB_ADMINS -1)));
+            $store->addUser($this->getReference('admin_'.rand(1, EmployeeFixtures::NB_ADMINS -1)));
             $store->setCenterCode($faker->numberBetween(100, 999));
             $store->setCity($faker->city);
             $store->setCountry('France');

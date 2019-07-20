@@ -26,7 +26,7 @@ use Symfony\Component\Workflow\Registry;
 /**
  * Class CardController
  * @package App\Controller
- * @Route("dashboards/carte")
+ * @Route("/dashboards/carte")
  */
 class CardController extends AbstractController
 {
@@ -61,9 +61,7 @@ class CardController extends AbstractController
         Request $request): Response
     {
         $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
-
         $lastCard = $cardRepository->findLastRecord();
-
 
         return $this->render(
             'card/index.html.twig',
@@ -226,7 +224,9 @@ class CardController extends AbstractController
         $form->handleRequest($request);
 
         if (isset($request->request->get('lost_type_card')['customers'])
-            && $request->request->get('lost_type_card')['customers'] !== null ) {
+            && ($request->request->get('lost_type_card')['customers'] !== null
+            && !empty($request->request->get('lost_type_card')['customers'])))
+            {
             $customerId = intval($request->request->get('lost_type_card')['customers']);
             $customer = $userRepository->findOneById(intval($customerId));
             $cards = $customer->getCards();
