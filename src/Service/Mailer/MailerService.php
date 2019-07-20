@@ -13,6 +13,8 @@ use Swift_Mailer;
 use Twig\Environment;
 use App\Entity\Card;
 use App\Events\AppEvents;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Entity\CardActivity;
 
 class MailerService
 {
@@ -20,12 +22,18 @@ class MailerService
      * @var Swift_Mailer
      */
     private $mailer;
+
     private $twig;
 
-    public function __construct(Swift_Mailer $mailer, Environment $twig)
+    private $translator;
+
+    public function __construct(Swift_Mailer $mailer,
+                                Environment $twig,
+                                TranslatorInterface $translator)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
+        $this->translator = $translator;
     }
 
     public function sendEmailAction($subject, $to, $body)
@@ -43,12 +51,12 @@ class MailerService
 
     public function notifCreatedUserAccount(User $user)
     {
-        $subject = "Votre compte a été créé";
+        $subject = $this->translator->trans('user.account.subject', [], 'mail');
         $to = $user->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [
                 'type_notification' => AppEvents::USER_ACCOUNT_CREATED,
-                'name' => $user->getLastname(). ' ' .$user->getFirstname(),
+                'subject' => $subject,
                 'user' => $user
             ]
         );
@@ -57,12 +65,11 @@ class MailerService
 
     public function notifAddCard(Card $card)
     {
-        $subject = "Nouvelle commande";
+        $subject = $this->translator->trans('user.card.add', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/new_order.html.twig', [
                 'type_notification' => 'workflow.ordering_workflow.completed.to_activating',
-                'name' => $card->getUser()->getLastname(). ' ' .$card->getUser()->getFirstname(),
                 'card' => $card
             ]
         );
@@ -71,7 +78,7 @@ class MailerService
 
     public function notifLostCard(Card $card)
     {
-        $subject = "Nouvelle commande";
+        $subject = $this->translator->trans('user.card.deactivated', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/new_order.html.twig', [
@@ -85,11 +92,11 @@ class MailerService
 
     public function notifNewStoreActivity(Card $card)
     {
-        $subject = "Nouvelle commande";
+        $subject = $this->translator->trans('store.new.activity', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/new_order.html.twig', [
-                'type_notification' => AppEvents::CARD_NEW_ACTIVITY,
+                'type_notification' => AppEvents::STORE_NEW_ACTIVITY,
                 'name' => $card->getUser()->getLastname(). ' ' .$card->getUser()->getFirstname(),
                 'card' => $card
             ]
@@ -97,15 +104,14 @@ class MailerService
         $this->sendEmailAction($subject, $to, $body);
     }
 
-    public function notifNewUserActivity(Card $card)
+    public function notifNewCardActivity(CardActivity $cardActivity)
     {
-        $subject = "Nouvelle commande";
-        $to = $card->getUser()->getEmail();
+        $subject = $this->translator->trans('card.new.activity', [], 'mail');
+        $to = $cardActivity->getCard()->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/new_order.html.twig', [
-                'type_notification' => AppEvents::USER_NEW_ACTIVITY,
-                'name' => $card->getUser()->getLastname(). ' ' .$card->getUser()->getFirstname(),
-                'card' => $card
+                'type_notification' => AppEvents::CARD_NEW_ACTIVITY,
+                'card' => $cardActivity
             ]
         );
         $this->sendEmailAction($subject, $to, $body);
@@ -113,12 +119,11 @@ class MailerService
 
     public function notifFidelityPoint(Card $card)
     {
-        $subject = "Nouvelle commande";
+        $subject = $this->translator->trans('card.fidelity_points_changed', [], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/new_order.html.twig', [
                 'type_notification' => AppEvents::CARD_FIDELITY_POINTS_CHANGED,
-                'name' => $card->getUser()->getLastname(). ' ' .$card->getUser()->getFirstname(),
                 'card' => $card
             ]
         );

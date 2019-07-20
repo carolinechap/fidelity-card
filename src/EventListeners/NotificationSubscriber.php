@@ -14,8 +14,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event as WorkflowEvent;
 use App\Events\AppEvents;
-use App\Events\UserActivityEvent;
+use App\Events\CardActivityEvent;
 use App\Events\UserAccountEvent;
+use Symfony\Component\Security\Core\Security;
 
 class NotificationSubscriber implements EventSubscriberInterface
 {
@@ -23,10 +24,15 @@ class NotificationSubscriber implements EventSubscriberInterface
 
     private $mailer;
 
-    public function __construct(MailerService $mailer, LoggerInterface $logger)
+    private $security;
+
+    public function __construct(MailerService $mailer,
+                                LoggerInterface $logger,
+                                Security $security)
     {
         $this->mailer = $mailer;
         $this->logger = $logger;
+        $this->security = $security;
     }
 
     public static function getSubscribedEvents(): array
@@ -35,7 +41,7 @@ class NotificationSubscriber implements EventSubscriberInterface
             'workflow.ordering_workflow.completed.to_activating' => 'onCardActivated',
             'workflow.ordering_workflow.completed.to_deactivating' => 'onCardDeactivated',
             AppEvents::USER_ACCOUNT_CREATED =>  'onUserAccountCreated',
-            AppEvents::USER_NEW_ACTIVITY => 'onNewUserActivity',
+            AppEvents::CARD_NEW_ACTIVITY => 'onNewCardActivity',
             AppEvents::STORE_NEW_ACTIVITY => 'onNewStoreActivity',
             AppEvents::CARD_FIDELITY_POINTS_CHANGED => 'onFidelityPointChanged',
         ];
@@ -48,11 +54,8 @@ class NotificationSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
 
-        $this->logger->info('Nouveau compte : '
-            . $user->getLastname());
-
         /*Notification au client - MAIL (Notification push) */
-//        $this->mailer->notifCreatedUserAccount($user);
+        $this->mailer->notifCreatedUserAccount($user);
     }
 
     /**
@@ -84,17 +87,16 @@ class NotificationSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param UserActivityEvent $event
+     * @param CardActivityEvent $event
      */
-    public function onNewUserActivity(UserActivityEvent $event)
+    public function onNewCardActivity(CardActivityEvent $event)
     {
-        $user = $event->getUser();
+        $cardActivity = $event->getCardActivity();
 
-        $this->logger->info('Ajout nouvelle activité : '
-            . $user->getLastname());
+        $this->logger->info('Ajout nouvelle activité ');
 
         /*Notification au client - MAIL (Notification push) */
-        $this->mailer->notifNewUserActivity($user);
+        $this->mailer->notifNewCardActivity($cardActivity);
     }
 
     /**
@@ -108,7 +110,7 @@ class NotificationSubscriber implements EventSubscriberInterface
             . $card->getCompleteCode());
 
         /*Notification au client - MAIL (Notification push) */
-        $this->mailer->notifNewUserActivity($card);
+        $this->mailer->notifFidelityPoint($card);
     }
 
     /**

@@ -1,12 +1,29 @@
+{% trans_default_domain 'mail' %}
+
 <h3>{{ subject }}</h3>
 
-{% if  %}
-<p>Bonjour {{ name }}</p>
+<p>Bonjour {{ user.firstname }} {{ user.lastname }}</p>
 
+{{ type_notification }}
+{% if type_notification == 'user.account' %}
+    <p>{{ 'user.account.message'|trans }}</p>
+{% elseif type_notification == 'workflow.ordering_workflow.completed.to_activating' %}
+    <p>{{ 'user.card.added'|trans({'%number_card%': card.getCompleteCode()}) }}</p>
+{% elseif type_notification == 'workflow.ordering_workflow.completed.to_deactivating' %}
+    <p>{{ 'user.card.deactivated'|trans({'%number_card%': card.getCompleteCode()}) }}</p>
+{% elseif type_notification == 'card.activity' %}
+    <p>{{ 'card.new.activity'|trans({'%activity%': cardActivity.activity}) }}</p>
+{% elseif type_notification == 'store.activity' %}
+    <p>{{ 'store.new.activity'|trans({'%activity%': cardActivity.activity}) }}</p>
+{% elseif type_notification == 'card.fidelity_points' %}
+    <p>{{ 'card.fidelity_points.changed'|trans(
+            {'%ancien_points%': ancientPoints, '%new_points%': card.fidelityPoints}
+        ) }}</p>
+{% endif %}
 {#<ul>#}
     {#{% for product in products %}#}
         {#<li>{{ product.name }}</li>#}
     {#{% endfor %}#}
 {#</ul>#}
 
-<a href="{{ path('home') }}">Aller sur le site du lasergame</a>
+<a href="{{ path('home') }}">{{ 'goto.site'|trans }}</a>

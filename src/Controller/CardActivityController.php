@@ -6,6 +6,7 @@ use App\Activity\FidelityPointGenerator;
 use App\Activity\CalculatePersonalScore;
 use App\Entity\CardActivity;
 use App\Events\AppEvents;
+use App\Events\CardActivityEvent;
 use App\Events\FidelityPointsEvent;
 use App\Form\CardActivityType;
 use App\Repository\ActivityRepository;
@@ -107,8 +108,10 @@ class CardActivityController extends AbstractController
                 $entityManager->flush();
 
                 //On déclenche les événements correspondants
+                $event = new CardActivityEvent($cardActivity);
+                $eventDispatcher->dispatch($event, AppEvents::CARD_NEW_ACTIVITY);
+
                 $event = new FidelityPointsEvent($cardActivity->getCard());
-                $eventDispatcher->dispatch($event, AppEvents::USER_NEW_ACTIVITY);
                 $eventDispatcher->dispatch($event, AppEvents::CARD_FIDELITY_POINTS_CHANGED);
 
                 $this->addFlash('success', $translator->trans('new.success', [], 'crud'));

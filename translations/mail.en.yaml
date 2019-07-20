@@ -1,0 +1,17 @@
+user:
+  account:
+    subject: Your account has been successfully created !
+    message: Welcome in the lasergame !
+  card:
+    added: Your card (n° {number_card} has been successfully added to your account.
+    deactivated: Your card (n° {number_card} has been successfully deactivated.
+store:
+  new:
+    activity: We add this new activity to our store : {activity} !
+card:
+  new:
+    activity: You added {activity} to your card !
+  fidelity_points:
+    changed:
+goto:
+  site: Go to the site

@@ -22,13 +22,13 @@ final class AppEvents
      *
      * @Event("App\Events\StoreActivityEvent")
      * @Event("App\Events\UserAccountEvent")
-     * @Event("App\Events\UserActivityEvent")
+     * @Event("App\Events\CardActivityEvent")
      * @Event("App\Events\FidelityPointsEvent")
      *
      * @var string
      */
     const USER_ACCOUNT_CREATED = 'user.account';
-    const USER_NEW_ACTIVITY = 'user.activity';
+    const CARD_NEW_ACTIVITY = 'card.activity';
     const STORE_NEW_ACTIVITY = 'store.activity';
     const CARD_FIDELITY_POINTS_CHANGED = 'card.fidelity_points';
 }
