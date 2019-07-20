@@ -7,6 +7,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Events\UserAccountEvent;
+use App\Events\AppEvents;
 
 /**
  * Class CustomerFixtures
@@ -19,15 +22,19 @@ class CustomerFixtures extends Fixture
      */
     private $encoder;
 
+    private $eventDispatcher;
+
     const COUNT = 50;
 
     /**
      * CustomerFixtures constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder,
+                                EventDispatcherInterface $eventDispatcher)
     {
         $this->encoder = $passwordEncoder;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -54,7 +61,6 @@ class CustomerFixtures extends Fixture
 
         $manager->persist($oneCustomer);
         $this->addReference('customer1', $oneCustomer);
-        //end of customer demo
 
         //This customer is for test and demo purposes, login with email 'customer@email.com' and password customer
         $secondCustomer = new User();

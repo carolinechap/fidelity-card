@@ -256,7 +256,7 @@ class User implements UserInterface
     /**
      * @return Collection|Store[]
      */
-    public function getStore(): Collection
+    public function getStores(): Collection
     {
         return $this->stores;
     }

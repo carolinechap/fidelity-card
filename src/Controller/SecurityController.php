@@ -2,35 +2,40 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\EventListeners\LoginListener;
 use App\Form\UserType;
 use App\User\UserRequest;
 use App\User\UserRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Events\AppEvents;
+use App\Events\UserAccountEvent;
 
 class SecurityController extends AbstractController
 {
     /**
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param EntityManagerInterface $entityManager
+     * @param UserRequestHandler $userRequestHandler
+     * @param TranslatorInterface $translator
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     *
      * @Route("/inscription", name="signup_route", methods={"GET", "POST"})
      */
     public function register(Request $request,
                              UserPasswordEncoderInterface $passwordEncoder,
                              EntityManagerInterface $entityManager,
                              UserRequestHandler $userRequestHandler,
-                             TranslatorInterface $translator)
+                             TranslatorInterface $translator,
+                             EventDispatcherInterface $eventDispatcher)
     {
 
         $user = new UserRequest();
@@ -42,11 +47,15 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $user = $userRequestHandler->registerAsUser($user);
+
+                //On déclenche l'événement correspondant
+                $event = new UserAccountEvent($user);
+                $eventDispatcher->dispatch($event, AppEvents::USER_ACCOUNT_CREATED);
+
                 $this->addFlash('success', $translator->trans('registration.success', [], 'messages'));
                 return $this->redirectToRoute('login_route');
             } else {
                 $this->addFlash('error', $translator->trans('registration.failed', [], 'messages'));
-
             }
 
         }
@@ -60,6 +69,9 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     *
      * @Route("/connexion" , name="login_route")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response

@@ -2,16 +2,18 @@
 
 namespace App\Controller\Admin;
 
-use App\Activity\FidelityPointGenerator;
 use App\Entity\Activity;
+use App\Events\StoreActivityEvent;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Events\AppEvents;
 
 /**
  * Class ActivityController
@@ -35,13 +37,16 @@ class ActivityController extends AbstractController
     }
 
     /**
-     * @Route("/creation", name="activity_new", methods={"GET", "POST"})
      * @param Request $request
      * @param TranslatorInterface $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
+     *
+     * @Route("/creation", name="activity_new", methods={"GET", "POST"})
      */
     public function new(Request $request,
-                        TranslatorInterface $translator): Response
+                        TranslatorInterface $translator,
+                        EventDispatcherInterface $eventDispatcher): Response
     {
         $activity = new Activity();
 
@@ -53,6 +58,11 @@ class ActivityController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($activity);
             $entityManager->flush();
+
+            //On déclenche l'événement correspondant
+            $event = new StoreActivityEvent($this->getUser());
+            $eventDispatcher->dispatch($event, AppEvents::STORE_NEW_ACTIVITY);
+
             $this->addFlash('success', $translator->trans('add_activity.success', [], 'messages'));
 
             return $this->redirectToRoute('activity_index');

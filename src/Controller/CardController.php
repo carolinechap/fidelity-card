@@ -196,8 +196,8 @@ class CardController extends AbstractController
                                     UserRepository $userRepository,
                                     CardRepository $cardRepository): Response
     {
-        if (!$store = $this->getUser()->getStore()[0]) {
-            throw new HttpException(401,
+        if (!$store = $userRepository->findStoreForEmployee($this->getUser())) {
+            throw new HttpException(403,
                 $translator->trans('access.forbidden', [], 'messages'));
         }
 

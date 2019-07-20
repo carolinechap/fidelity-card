@@ -15,11 +15,19 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * UserRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * @param array $roles
+     * @return Query
+     */
     public function searchByRoles($roles = []) : Query
     {
         $roles = serialize($roles);
@@ -32,6 +40,10 @@ class UserRepository extends ServiceEntityRepository
         return $query;
     }
 
+    /**
+     * @param array $roles
+     * @return mixed
+     */
     public function findLastRecordByRole($roles = [])
     {
         $roles = serialize($roles);
@@ -45,6 +57,10 @@ class UserRepository extends ServiceEntityRepository
         return $query;
     }
 
+    /**
+     * @param $store
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function getCustomersByStore($store)
     {
         $roles = ['ROLE_USER'];
@@ -63,6 +79,11 @@ class UserRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * @param array $roles
+     * @param array $filters
+     * @return Query
+     */
     public function searchUser($roles = [], array $filters = []) : Query
     {
         $roles = serialize($roles);
@@ -88,6 +109,22 @@ class UserRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
         return $query;
+    }
+
+    public function findStoreForEmployee(User $user)
+    {
+        $roles = ['ROLE_ADMIN'];
+        $roles = serialize($roles);
+
+        $qb = $this->createQueryBuilder('e');
+
+        $qb
+            ->andWhere('u.roles = :roles')
+            ->join('u.stores', 'ust')
+            ->setParameter(':user', $user)
+            ;
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
 

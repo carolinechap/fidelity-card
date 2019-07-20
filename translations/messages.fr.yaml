@@ -6,4 +6,4 @@ registration:
   success: Votre compte est créé !
   failed : Une erreur est survenu, votre compte n'a pas été crée, veuillez recommencer
 access:
-  forbidden: You cannot access this part of the site !
+  forbidden: Vous ne pouvez pas accéder à cette partie du site !

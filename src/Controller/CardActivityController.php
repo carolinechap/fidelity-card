@@ -4,17 +4,14 @@ namespace App\Controller;
 
 use App\Activity\FidelityPointGenerator;
 use App\Activity\CalculatePersonalScore;
-use App\Entity\Activity;
-use App\Entity\Card;
 use App\Entity\CardActivity;
-use App\Entity\User;
-use App\Form\ActivityType;
+use App\Events\AppEvents;
+use App\Events\FidelityPointsEvent;
 use App\Form\CardActivityType;
 use App\Repository\ActivityRepository;
 use App\Repository\CardActivityRepository;
 use App\Repository\CardRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class CardActivityController
@@ -68,17 +65,21 @@ class CardActivityController extends AbstractController
     }
 
     /**
-     * @Route("/creation", name="card_activity_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param FidelityPointGenerator $fidelityPointGenerator
-     * @param CalculatePersonalScore $sumPersonalScore
+     * @param CalculatePersonalScore $calculatePersonalScore
      * @param TranslatorInterface $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
+     *
+     * @Route("/creation", name="card_activity_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request,
                         FidelityPointGenerator $fidelityPointGenerator,
-                        CalculatePersonalScore $calculatePersonalScore, TranslatorInterface $translator): Response
+                        CalculatePersonalScore $calculatePersonalScore,
+                        TranslatorInterface $translator,
+                        EventDispatcherInterface $eventDispatcher): Response
     {
         $cardActivity = new CardActivity();
 
@@ -100,11 +101,16 @@ class CardActivityController extends AbstractController
                 $personalScore = $calculatePersonalScore->sumPersonalScore($cardActivity, $personalScoreFromForm);
                 $cardActivity->getCard()->setPersonalScore($personalScore);
 
-
                 $entityManager = $this->getDoctrine()->getManager();
 
                 $entityManager->persist($cardActivity);
                 $entityManager->flush();
+
+                //On déclenche les événements correspondants
+                $event = new FidelityPointsEvent($cardActivity->getCard());
+                $eventDispatcher->dispatch($event, AppEvents::USER_NEW_ACTIVITY);
+                $eventDispatcher->dispatch($event, AppEvents::CARD_FIDELITY_POINTS_CHANGED);
+
                 $this->addFlash('success', $translator->trans('new.success', [], 'crud'));
 
                 return $this->redirectToRoute('card_activity_index');
@@ -113,7 +119,6 @@ class CardActivityController extends AbstractController
 
             }
         }
-
 
         return $this->render('admin/card_activity/new.html.twig', [
             'cardActivity' => $cardActivity,
