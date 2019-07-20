@@ -7,9 +7,54 @@ deal:
       description: Description
       costpoint: Cost (fidelity points)
 card:
+  remove:
+    success: The card was successfully removed
   add:
     invalid_number: Invalid card number
     user:
       error: Error while trying to add this card to your account.
       success: The card has been successfully added to your account !
       label : Please write your card number
+  form:
+    label:
+      store_name: Store's name
+activity:
+  form:
+    label:
+      fidelityPoint: Fidelity points
+      gameName: Game name
+user:
+  form:
+    label:
+      lastname: Lastname
+      firstname: Firstname
+      email: Email address
+      password: Password
+      confirmation_password: Confirm
+      number_street: Street number
+      name_street: Street name
+      zip_code: Zip code
+      city: City
+      country: Country
+cardactivity:
+  form:
+    label:
+      is_the_winner: Winning game
+      personal_score: Personal score
+      card_number : Card's number
+      game_name: Game name
+      game_date: Game date
+lost_card:
+  inactive:
+    success: The card was successfully inactivated !
+    error: There was an error trying to inactivate the card.
+  select:
+    label:
+      customer: Select the customer
+      card: Select the card
+      button: Select
+      submit: Deactivate
+      cancel: Reinitialize
+    placeholder:
+      customer: Choice in the list
+      card: Choice in the list

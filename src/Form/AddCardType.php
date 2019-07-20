@@ -45,7 +45,6 @@ class AddCardType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->setAction($this->urlGenerator->generate('card_add_user'))
             ->add('card_number', TextType::class, [
@@ -56,9 +55,9 @@ class AddCardType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                     new NotNull(),
-                    new IsValidCardNumber(),
                     new Length(['min' => 10,
-                        'max' => 12])
+                        'max' => 12]),
+                    new IsValidCardNumber()
                 ],
                 'translation_domain' => 'forms',
                 'label' => 'card.add.user.label'
@@ -74,5 +73,4 @@ class AddCardType extends AbstractType
             'data_class' => null,
         ]);
     }
-
 }

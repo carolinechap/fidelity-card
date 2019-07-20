@@ -17,8 +17,8 @@ class UserRequest
     private $roles = [];
 
     /**
-     * @Assert\NotBlank(message="L'email est obligatoire")
-     * @Assert\Email(message="L'email n'est pas valide")
+     * @Assert\NotBlank(message="user.email.blank")
+     * @Assert\Email(message="user.email.message")
      */
     private $email;
 
@@ -27,33 +27,33 @@ class UserRequest
     private $password;
 
     /**
-     * @Assert\NotBlank(message="Le mot de passe est obligatoire")
-     * @Assert\Length(min="6", minMessage="Le mot de passe doit faire au moins {{ limit }} caractères")
+     * @Assert\NotBlank(message="user.password.blank")
+     * @Assert\Length(min="6", minMessage="user.password.min", max="255", maxMessage="user.password.max")
      */
     private $plainPassword;
 
     /**
-     * @Assert\Length(max="6", maxMessage="Le numéro de rue ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Positive(message="user.street_number.positive")
      */
     private $numberStreet;
 
     /**
-     * @Assert\Length(max="150", maxMessage="Le nom de la rue ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="150", maxMessage="user.street_name.max")
      */
     private $nameStreet;
 
     /**
-     * @Assert\Length(max="20", maxMessage="Le code postal ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="20", maxMessage="user.zip_code.max")
      */
     private $zipCode;
 
     /**
-     * @Assert\Length(max="100", maxMessage="La ville ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="100", maxMessage="user.city.max")
      */
     private $city;
 
     /**
-     * @Assert\Length(max="100", maxMessage="Le pays ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="100", maxMessage="user.country.max")
      */
     private $country;
 
@@ -62,12 +62,12 @@ class UserRequest
     private $customerCode;
 
     /**
-     * @Assert\Length(max="100", maxMessage="Le prénom ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="100", maxMessage="user.lastname.max")
      */
     private $lastname;
 
     /**
-     * @Assert\Length(max="100", maxMessage="Le nom ne doit pas dépasser {{ limit }} caractères")
+     * @Assert\Length(max="100", maxMessage="user.fistname.max")
      */
     private $firstname;
 

@@ -25,10 +25,10 @@
                 </thead>
                 <tbody>
                 {% for card in cards %}
-                    <tr>
-                        <th scope="row">{{ card.code }}</th>
-                        <td>{{ card.store }}</td>
-                        <td>{{ card.status.0 }}</td>
+                    <tr class="{% if card.id == last_card.0.id %} bg-secondary {% endif %}">
+                        <th scope="row" {% if card.id == last_card.0.id %}style="color:white" {% endif %}>{{ card.code }}</th>
+                        <td {% if card.id == last_card.0.id %}style="color:white" {% endif %}>{{ card.store }}</td>
+                        <td {% if card.id == last_card.0.id %}style="color:white" {% endif %}>{{ card.status.0 }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

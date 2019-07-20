@@ -52,7 +52,7 @@ class CardActivity
     private $card;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="cards", cascade={"persist"})
      * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      * @Groups({"card_listening:read"})
 

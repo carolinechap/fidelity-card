@@ -19,6 +19,15 @@
         "/build/vendors~api.js",
         "/build/api.js"
       ]
+    },
+    "error": {
+      "js": [
+        "/build/runtime.js",
+        "/build/error.js"
+      ],
+      "css": [
+        "/build/error.css"
+      ]
     }
   }
 }
