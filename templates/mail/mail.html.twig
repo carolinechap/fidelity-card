@@ -7,9 +7,9 @@
 {{ type_notification }}
 {% if type_notification == 'user.account' %}
     <p>{{ 'user.account.message'|trans }}</p>
-{% elseif type_notification == 'workflow.ordering_workflow.completed.to_activating' %}
+{% elseif type_notification == 'user.card.added' %}
     <p>{{ 'user.card.added'|trans({'%number_card%': card.getCompleteCode()}) }}</p>
-{% elseif type_notification == 'workflow.ordering_workflow.completed.to_deactivating' %}
+{% elseif type_notification == 'user.card.deactivated' %}
     <p>{{ 'user.card.deactivated'|trans({'%number_card%': card.getCompleteCode()}) }}</p>
 {% elseif type_notification == 'card.activity' %}
     <p>{{ 'card.new.activity'|trans({'%activity%': cardActivity.activity}) }}</p>
@@ -20,10 +20,5 @@
             {'%ancien_points%': ancientPoints, '%new_points%': card.fidelityPoints}
         ) }}</p>
 {% endif %}
-{#<ul>#}
-    {#{% for product in products %}#}
-        {#<li>{{ product.name }}</li>#}
-    {#{% endfor %}#}
-{#</ul>#}
 
 <a href="{{ path('home') }}">{{ 'goto.site'|trans }}</a>

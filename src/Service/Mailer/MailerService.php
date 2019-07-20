@@ -46,7 +46,6 @@ class MailerService
         $message->setBody($body);
 
         return $this->mailer->send($message);
-
     }
 
     public function notifCreatedUserAccount(User $user)
@@ -69,7 +68,7 @@ class MailerService
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [
-                'type_notification' => 'workflow.ordering_workflow.completed.to_activating',
+                'type_notification' => 'user.card.added',
                 'card' => $card,
                 'user' => $card->getUser(),
                 'subject' => $subject
@@ -84,7 +83,7 @@ class MailerService
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [
-                'type_notification' => 'workflow.ordering_workflow.completed.to_deactivating',
+                'type_notification' => 'user.card.deactivated',
                 'card' => $card,
                 'subject' => $subject,
                 'user' => $card->getUser()
@@ -100,7 +99,6 @@ class MailerService
         $body = $this->twig->render(
             'mail/mail.html.twig', [
                 'type_notification' => AppEvents::STORE_NEW_ACTIVITY,
-                'name' => $card->getUser()->getLastname(). ' ' .$card->getUser()->getFirstname(),
                 'card' => $card,
                 'subject' => $subject,
                 'user' => $card->getUser()
