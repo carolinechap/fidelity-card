@@ -7,6 +7,8 @@ deal:
       description: Description
       costpoint: Coût (en pts de fidélité)
 card:
+  remove:
+    success: La carte a bien été supprimée.
   add:
     invalid_number: Numéro de carte invalide
     user:

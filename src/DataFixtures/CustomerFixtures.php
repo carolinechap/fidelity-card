@@ -8,28 +8,42 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class CustomerFixtures
+ * @package App\DataFixtures
+ */
 class CustomerFixtures extends Fixture
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $encoder;
 
     const COUNT = 50;
 
+    /**
+     * CustomerFixtures constructor.
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->encoder = $passwordEncoder;
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
 
         //This customer is for test and demo purposes, login with email 'customer@email.com' and password customer
         $oneCustomer = new User();
-        $oneCustomer->setFirstname("Customer");
-        $oneCustomer->setLastname("Customer");
-        $oneCustomer->setEmail('customer@email.com');
+        $oneCustomer->setFirstname("Customer1");
+        $oneCustomer->setLastname("Customer1");
+        $oneCustomer->setEmail('customer1@email.com');
 
-        $oneCustomer->setPassword($this->encoder->encodePassword($oneCustomer, 'customer'));
+        $oneCustomer->setPassword($this->encoder->encodePassword($oneCustomer, 'customer1'));
 
         $oneCustomer->setNumberStreet($faker->buildingNumber);
         $oneCustomer->setNameStreet($faker->streetName);
@@ -39,16 +53,36 @@ class CustomerFixtures extends Fixture
         $oneCustomer->setRoles(['ROLE_USER']);
 
         $manager->persist($oneCustomer);
-        $this->addReference('mycustomer', $oneCustomer);
+        $this->addReference('customer1', $oneCustomer);
+        //end of customer demo
+
+        //This customer is for test and demo purposes, login with email 'customer@email.com' and password customer
+        $secondCustomer = new User();
+        $secondCustomer->setFirstname("Customer2");
+        $secondCustomer->setLastname("Customer2");
+        $secondCustomer->setEmail('customer2@email.com');
+
+        $secondCustomer->setPassword($this->encoder->encodePassword($secondCustomer, 'customer2'));
+
+        $secondCustomer->setNumberStreet($faker->buildingNumber);
+        $secondCustomer->setNameStreet($faker->streetName);
+        $secondCustomer->setZipCode($faker->postcode);
+        $secondCustomer->setCity($faker->city);
+        $secondCustomer->setCountry('France');
+        $secondCustomer->setRoles(['ROLE_USER']);
+
+        $manager->persist($secondCustomer);
+        $this->addReference('customer2', $secondCustomer);
         //end of customer demo
 
         for($c = 0; $c<self::COUNT; $c++){
             $customer = new User();
-            $customer->setFirstname($faker->firstName);
+            $fakerFirstName = $faker->firstName;
+            $customer->setFirstname($fakerFirstName);
             $customer->setLastname($faker->lastName);
-            $customer->setEmail($faker->email);
+            $customer->setEmail($fakerFirstName.'@email.com');
 
-            $customer->setPassword($this->encoder->encodePassword($customer, $faker->password));
+            $customer->setPassword($this->encoder->encodePassword($customer, $fakerFirstName));
 
             $customer->setNumberStreet($faker->buildingNumber);
             $customer->setNameStreet($faker->streetName);

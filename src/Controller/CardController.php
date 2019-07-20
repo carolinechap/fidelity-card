@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Workflow\Exception\LogicException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Workflow\Registry;
 
 /**
  * Class CardController
@@ -30,15 +31,36 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CardController extends AbstractController
 {
     /**
+     * @var Registry
+     */
+    private $registry;
+
+    private $entityManager;
+
+    /**
+     * CardController constructor.
+     * @param Registry $registry
+     */
+    public function __construct(Registry $registry, EntityManagerInterface $entityManager)
+    {
+        $this->registry = $registry;
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @param CardRepository $cardRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     *
      * @Route("/", name="card_index")
      */
     public function index(
         CardRepository $cardRepository,
         PaginatorInterface $paginator,
-        Request $request
-            ) {
+        Request $request): Response
+    {
         $cards = $paginator->paginate($cardRepository->findCardByOrderStore(), $request->query->getInt('page', 1), 10);
-
 
         return $this->render(
             'card/index.html.twig',
@@ -67,16 +89,8 @@ class CardController extends AbstractController
             # Process de création d'une carte ...
             $card = $cardGenerator->generateCard($card);
 
-            # Handle Workflow
-            $workflow = $this->registry->get($card);
-            if ($workflow->can($card, 'preactivating')) {
-                try {
-                    $workflow->apply($card, 'preactivating');
-                } catch (LogicException $e) {
-                    # Transition non autorisé
-                    $e->getMessage();
-                }
-            }
+            # Handle workflow
+            $this->updateWorkflow($card, 'to_creating');
 
             # Sauvegarde de la carte
             $entityManager = $this->getDoctrine()->getManager();
@@ -93,24 +107,23 @@ class CardController extends AbstractController
 
     /**
      * @param Card $card
-     * @param EntityManagerInterface $entityManager
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param TranslatorInterface $translator
+     * @return RedirectResponse
      *
      * @Route("/suppression/{id}", name="card_delete")
      */
-    public function delete(Card $card, EntityManagerInterface $entityManager) : RedirectResponse
+    public function delete(Card $card, TranslatorInterface $translator): RedirectResponse
     {
-        $entityManager->remove($card);
-        $entityManager->flush();
+        $this->entityManager->remove($card);
+        $this->entityManager->flush();
 
-        $this->addFlash('success', "La carte est supprimée");
+        $this->addFlash('success', $translator->trans('card.remove.success', [], 'forms'));
 
         return $this->redirectToRoute('card_index');
     }
 
     /**
      * @param Request $request
-     * @param EntityManagerInterface $entityManager
      * @param CardRepository $cardRepository
      * @param TranslatorInterface $translator
      * @param CardNumberExtractor $cardNumberExtractor
@@ -120,13 +133,12 @@ class CardController extends AbstractController
      * @Route("/ajouter-client", name="card_add_user", methods={"GET", "POST"})
      */
     public function addCardToUser(Request $request,
-                                  EntityManagerInterface $entityManager,
                                   CardRepository $cardRepository,
                                   TranslatorInterface $translator,
-                                  CardNumberExtractor $cardNumberExtractor)
+                                  CardNumberExtractor $cardNumberExtractor): Response
     {
         if (!$user = $this->getUser()) {
-            throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à afficher cette page.");
+            throw new UnauthorizedHttpException($translator->trans('access.forbidden', [], 'messages'));
         }
 
         $form = $this->createForm(AddCardType::class);
@@ -142,7 +154,11 @@ class CardController extends AbstractController
                     'customerCode' => $customerCode
                 ]);
                 $card->setUser($user);
-                $entityManager->flush();
+
+                # Handle Workflow
+                $this->updateWorkflow($card, 'to_activating');
+
+                $this->entityManager->flush();
                 $message = $translator->trans('card.add.user.success', [], 'forms');
                 $typeMessage = 'success';
                 if (!$request->isXmlHttpRequest()) {
@@ -169,16 +185,16 @@ class CardController extends AbstractController
      * @param TranslatorInterface $translator
      * @param Request $request
      * @param UserRepository $userRepository
+     * @param CardRepository $cardRepository
      * @return Response
      *
      * @IsGranted("ROLE_ADMIN")
      * @Route("/declarer-perdue", name="card_lost", methods={"GET", "POST"})
-     *
      */
     public function declareLostCard(TranslatorInterface $translator,
                                     Request $request,
                                     UserRepository $userRepository,
-                                    CardRepository $cardRepository)
+                                    CardRepository $cardRepository): Response
     {
         if (!$store = $this->getUser()->getStore()[0]) {
             throw new HttpException(401,
@@ -214,11 +230,14 @@ class CardController extends AbstractController
                 $typeMessage = "error";
             } else {
                 $customer->removeCard($card);
+                # Handle Workflow
+                $this->updateWorkflow($card, 'to_deactivating');
+
+                $this->entityManager->flush();
                 $message = $translator->trans('lost_card.inactive.success', [], 'forms');
                 $typeMessage = "success";
-            }
 
-            //Workflow here, inactivating
+            }
         }
 
         if (!$request->isXmlHttpRequest() && $form->isSubmitted()) {
@@ -234,5 +253,23 @@ class CardController extends AbstractController
             'cards' => $cards,
             'labelButton' => $labelButton
         ]);
+    }
+
+    /**
+     * @param $card
+     * @param $status
+     */
+    private function updateWorkflow($card, $status)
+    {
+        # Handle Workflow
+        $workflow = $this->registry->get($card);
+        if ($workflow->can($card, $status)) {
+            try {
+                $workflow->apply($card, $status);
+            } catch (LogicException $e) {
+                # Transition non autorisé
+                $e->getMessage();
+            }
+        }
     }
 }
