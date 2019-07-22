@@ -19,9 +19,7 @@ use Symfony\Component\Workflow\Registry;
  */
 class CardFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     *
-     */
+
     const NB_CARDS = 12;
 
     /**

@@ -6,10 +6,20 @@ use App\Entity\Activity;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Class ActivityFixtures
+ * @package App\DataFixtures
+ */
 class ActivityFixtures extends Fixture
 {
+    /**
+     *
+     */
     const COUNT = 10;
 
+    /**
+     * @return mixed
+     */
     private function getActivityName()
     {
         $activityName = [
@@ -23,6 +33,9 @@ class ActivityFixtures extends Fixture
         return $randActivityName;
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         // Demo and test purposes
@@ -30,8 +43,6 @@ class ActivityFixtures extends Fixture
         $oneActivity->setFidelityPoint(100);
         $oneActivity->setGameName('ActivityTest');
         $this->addReference('myactivity', $oneActivity);
-
-
 
         for($a = 0; $a<self::COUNT; $a++){
             $fidelityPoint = $a + rand($a, 200);

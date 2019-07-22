@@ -17,14 +17,17 @@ use App\Events\AppEvents;
  */
 class CustomerFixtures extends Fixture
 {
+    const COUNT = 50;
+
     /**
      * @var UserPasswordEncoderInterface
      */
     private $encoder;
 
+    /**
+     * @var EventDispatcherInterface
+     */
     private $eventDispatcher;
-
-    const COUNT = 50;
 
     /**
      * CustomerFixtures constructor.
