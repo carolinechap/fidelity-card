@@ -37,6 +37,6 @@ class CardFidelityPointEvent extends Event
     
     public function fidelityPointsAttained()
     {
-        return $this->getCard()->getFidelityPoint() >= 500;
+        return $this->getCard()->getFidelityPoint() >= 1000;
     }
 }
