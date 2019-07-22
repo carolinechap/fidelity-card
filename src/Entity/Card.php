@@ -40,13 +40,11 @@ class Card
 
     /**
      * @ORM\Column(type="array")
-     * @Assert\NotBlank(message="card.status.blank")
      */
     private $status = [];
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="card.check_sum.blank")
      */
     private $checkSum;
 
