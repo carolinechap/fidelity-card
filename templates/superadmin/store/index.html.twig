@@ -6,20 +6,15 @@
         {% include('admin/menu.html.twig') %}
 <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Magasins</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Partager</button>
-                <button class="btn btn-sm btn-outline-secondary">Exporter</button>
-            </div>
-        </div>
+        <h1 class="h2">Centres</h1>
     </div>
-        <a href="{{ path('crud_new', { 'class': 'store' }) }}"
-           class="btn btn-outline-primary mb-3">
-            Ajouter un magasin
-        </a>
+    <a href="{{ path('store_edition') }}"
+       class="btn btn-outline-primary mb-3">
+        Ajouter un centre
+    </a>
 
-        <table class="table">
+
+    <table class="table">
             <tr>
                 <th>Numéro de centre</th>
                 <th>Nom du centre</th>
