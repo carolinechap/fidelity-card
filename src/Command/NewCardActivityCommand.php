@@ -9,12 +9,16 @@ use App\Activity\CalculatePersonalScore;
 use App\Entity\Activity;
 use App\Entity\Card;
 use App\Entity\CardActivity;
+use App\Events\AppEvents;
+use App\Events\CardActivityEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 
 class NewCardActivityCommand extends Command
 {
@@ -24,14 +28,18 @@ class NewCardActivityCommand extends Command
     private $manager;
     private $generator;
     private $calculatePersonalScore;
+    private $eventDispatcher;
 
 
-    public function __construct(EntityManagerInterface $manager, FidelityPointGenerator $fidelityPointGenerator, CalculatePersonalScore $calculatePersonalScore)
+    public function __construct(EntityManagerInterface $manager,
+                                FidelityPointGenerator $fidelityPointGenerator,
+                                CalculatePersonalScore $calculatePersonalScore, EventDispatcherInterface $eventDispatcher)
     {
         parent::__construct();
         $this->manager = $manager;
         $this->generator = $fidelityPointGenerator;
         $this->calculatePersonalScore = $calculatePersonalScore;
+        $this->eventDispatcher = $eventDispatcher;
 
     }
 
@@ -61,6 +69,7 @@ class NewCardActivityCommand extends Command
 
 
         // Fidelity points on cardActivity and Card
+        $beforePoints=  $oneCardActivity->getCard()->getFidelityPoint();
         $fidelityPoint = $this->generator->sumFidelityPoint($oneCardActivity);
         $oneCardActivity->getCard()->setFidelityPoint($fidelityPoint);
 
@@ -69,6 +78,12 @@ class NewCardActivityCommand extends Command
 
         // Set the total into Card
         $oneCardActivity->getCard()->setPersonalScore($personalScoreSum);
+
+
+        //On déclenche l'événement' correspondant
+        $event = new CardActivityEvent($oneCardActivity);
+        $event->setBeforePoints($beforePoints);
+        $this->eventDispatcher->dispatch($event, AppEvents::CARD_NEW_ACTIVITY);
 
 
         try {
