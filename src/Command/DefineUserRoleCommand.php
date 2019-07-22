@@ -11,14 +11,35 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class DefineUserRoleCommand
+ * @package App\Command
+ */
 class DefineUserRoleCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'app:define-role';
 
+    /**
+     * @var
+     */
     private $io;
+    /**
+     * @var EntityManagerInterface
+     */
     private $em;
+    /**
+     * @var User[]|object[]
+     */
     private $users;
 
+    /**
+     * DefineUserRoleCommand constructor.
+     * @param string|null $name
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(string $name = null, EntityManagerInterface $entityManager)
     {
         parent::__construct($name);
@@ -35,6 +56,11 @@ class DefineUserRoleCommand extends Command
         ;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void|null
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
@@ -42,6 +68,7 @@ class DefineUserRoleCommand extends Command
 
         $this->displayMenu();
     }
+
 
     private function displayMenu()
     {
@@ -130,10 +157,10 @@ class DefineUserRoleCommand extends Command
         }
     }
 
-        /**
-         * Find a user identification and allows to add a user's role
-         */
-        private function removeUserRole()
+    /**
+     * Find a user identification and allows to add a user's role
+     */
+    private function removeUserRole()
     {
         // Récuperation de l'id user
         $id = $this->io->ask('Saisissez un Utilisateur id');
@@ -161,7 +188,6 @@ class DefineUserRoleCommand extends Command
             $this->em->flush();
 
             $this->io->success("Le rôle $role a bien été retiré à " . $user->getEmail());
-        //}
     }
 
 }

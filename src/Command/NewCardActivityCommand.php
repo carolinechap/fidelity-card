@@ -20,17 +20,43 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
+/**
+ * Class NewCardActivityCommand
+ * @package App\Command
+ */
 class NewCardActivityCommand extends Command
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'app:new-card-activity';
 
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
+    /**
+     * @var FidelityPointGenerator
+     */
     private $generator;
+    /**
+     * @var CalculatePersonalScore
+     */
     private $calculatePersonalScore;
+    /**
+     * @var EventDispatcherInterface
+     */
     private $eventDispatcher;
 
 
+    /**
+     * NewCardActivityCommand constructor.
+     * @param EntityManagerInterface $manager
+     * @param FidelityPointGenerator $fidelityPointGenerator
+     * @param CalculatePersonalScore $calculatePersonalScore
+     * @param EventDispatcherInterface $eventDispatcher
+     */
     public function __construct(EntityManagerInterface $manager,
                                 FidelityPointGenerator $fidelityPointGenerator,
                                 CalculatePersonalScore $calculatePersonalScore, EventDispatcherInterface $eventDispatcher)
@@ -48,6 +74,12 @@ class NewCardActivityCommand extends Command
         $this->setDescription('Generate a new random activity for an client');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void|null
+     * @throws \Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

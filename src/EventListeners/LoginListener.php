@@ -14,13 +14,36 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
+/**
+ * Class LoginListener
+ * @package App\EventListeners
+ */
 class LoginListener implements EventSubscriberInterface
 {
+    /**
+     * @var UrlGeneratorInterface
+     */
     private $router;
+    /**
+     * @var EventDispatcherInterface
+     */
     private $eventDispatcher;
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
+    /**
+     * @var Security
+     */
     private $security;
 
+    /**
+     * LoginListener constructor.
+     * @param UrlGeneratorInterface $router
+     * @param LoggerInterface $logger
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param Security $security
+     */
     public function __construct(UrlGeneratorInterface $router, LoggerInterface $logger, EventDispatcherInterface $eventDispatcher, Security $security)
     {
         $this->router = $router;
@@ -30,6 +53,9 @@ class LoginListener implements EventSubscriberInterface
 
     }
 
+    /**
+     * @param ResponseEvent $responseEvent
+     */
     public function onKernelResponse(ResponseEvent $responseEvent){
 
         //this->logger->info('ok');
@@ -41,6 +67,9 @@ class LoginListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param InteractiveLoginEvent $event
+     */
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event){
 
        $this->eventDispatcher->addListener(KernelEvents::RESPONSE, [$this, 'onKernelResponse']);

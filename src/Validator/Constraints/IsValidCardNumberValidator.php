@@ -106,7 +106,4 @@ class IsValidCardNumberValidator extends ConstraintValidator
             }
     }
 
-
-
-
 }

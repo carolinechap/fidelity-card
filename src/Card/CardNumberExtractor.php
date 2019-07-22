@@ -4,8 +4,16 @@
 namespace App\Card;
 
 
+/**
+ * Class CardNumberExtractor
+ * @package App\Card
+ */
 class CardNumberExtractor
 {
+    /**
+     * @param $value
+     * @return array
+     */
     public function evaluate($value) {
         if (strpos($value, '-') !== false) {
             //enter a code with delimiter like in placeholder
