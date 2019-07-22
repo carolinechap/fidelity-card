@@ -15,6 +15,9 @@ class UserRequest
 {
 
 
+    /**
+     * @var array
+     */
     private $roles = [];
 
     /**
@@ -73,17 +76,28 @@ class UserRequest
      */
     private $firstname;
 
+    /**
+     * UserRequest constructor.
+     * @param string $role
+     */
 public function __construct(string $role = 'ROLE_USER')
 {
     $this->roles[] = $role;
 }
 
 
+    /**
+     * @return array|null
+     */
     public function getRoles(): ?array
     {
         return $this->roles;
     }
 
+    /**
+     * @param $roles
+     * @return $this
+     */
     public function setRoles($roles)
     {
         $this->roles[] = $roles;
