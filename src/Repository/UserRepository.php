@@ -111,6 +111,11 @@ class UserRepository extends ServiceEntityRepository
         return $query;
     }
 
+    /**
+     * @param User $user
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findStoreForEmployee(User $user)
     {
         $roles = serialize(['ROLE_ADMIN']);

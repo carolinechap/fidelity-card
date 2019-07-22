@@ -46,7 +46,9 @@ class DealController extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @return Response
+     *
      * @Route("/", name="deal_display_all", methods={"GET", "POST"})
      */
     public function displayAllDeals(Request $request)
@@ -71,6 +73,10 @@ class DealController extends AbstractController
     }
 
     /**
+     * @param Deal $deal
+     * @param Card $card
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @Route("/offre/{deal}/{card}", name="deal_add_card", methods={"GET"})
      * @ParamConverter("deal", options={"mapping": {"deal": "id"}})
      * @ParamConverter("card", options={"mapping": {"card": "id"}})
@@ -96,6 +102,8 @@ class DealController extends AbstractController
     }
 
     /**
+     * @return Response
+     *
      * @Route("/client", name="deal_display_user", methods={"GET"})
      */
     public function displayDeals()
@@ -109,6 +117,9 @@ class DealController extends AbstractController
     }
 
     /**
+     * @param Deal $deal
+     * @return Response
+     *
      * @Route("/{id}", name="deal_show", methods={"GET"})
      */
     public function show(Deal $deal): Response

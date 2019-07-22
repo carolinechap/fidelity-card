@@ -14,6 +14,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class DealRepository extends ServiceEntityRepository
 {
+    /**
+     * DealRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Deal::class);
@@ -34,7 +38,6 @@ class DealRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
 
     /*
     public function findOneBySomeField($value): ?Deal

@@ -19,6 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class StoreController extends AbstractController
 {
     /**
+     * @param StoreRepository $storeRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @Route("/", name="store_index")
      */
     public function index(
@@ -101,10 +104,13 @@ class StoreController extends AbstractController
     }
 
     /**
+     * @param Store $store
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @Route("/suppression/{id}", name="store_delete")
      */
-    public function delete(Store $store
-    ) {
+    public function delete(Store $store) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($store);
             $entityManager->flush();
