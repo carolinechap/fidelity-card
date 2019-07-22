@@ -134,6 +134,14 @@ class UserRepository extends ServiceEntityRepository
     }
 
 
+    public function findByEmail($email){
+        $qb = $this->createQueryBuilder('u');
+        $qb->andWhere('u.email = :email')
+            ->setParameter(':email', $email);
+
+        return $qb->getQuery()->getResult();
+    }
+
 
 
     // /**

@@ -3,6 +3,7 @@
 
 namespace App\User;
 
+use App\Validator\Constraints\IsUniqueUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -19,6 +20,7 @@ class UserRequest
     /**
      * @Assert\NotBlank(message="user.email.blank")
      * @Assert\Email(message="user.email.message")
+     * @IsUniqueUser()
      */
     private $email;
 
