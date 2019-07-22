@@ -7,8 +7,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use App\Entity\Deal;
 
+/**
+ * Class DealFixtures
+ * @package App\DataFixtures
+ */
 class DealFixtures extends Fixture
 {
+    /**
+     * @param ObjectManager $manager
+     * @throws \Exception
+     */
     public function load(ObjectManager $manager)
     {
 

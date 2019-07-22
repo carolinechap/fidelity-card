@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 /**
  * @method Card|null find($id, $lockMode = null, $lockVersion = null)
  * @method Card|null findOneBy(array $criteria, array $orderBy = null)
@@ -19,18 +20,36 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class CardRepository extends ServiceEntityRepository
 {
 
+    /**
+     * @var
+     */
     private $user;
 
+    /**
+     * @var TokenStorageInterface
+     */
     private $tokenStorage;
 
+    /**
+     *
+     */
     const ITEMS_PER_PAGE = 5;
 
+    /**
+     * CardRepository constructor.
+     * @param RegistryInterface $registry
+     * @param TokenStorageInterface $tokenStorage
+     */
     public function __construct(RegistryInterface $registry, TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
         parent::__construct($registry, Card::class);
     }
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
     public function findCardByUser(User $user){
         $qb = $this->createQueryBuilder('c')
             ->join('c.user', 'cu')
@@ -40,6 +59,9 @@ class CardRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @return Query
+     */
     public function findCardByOrderStore(): Query
     {
         $qb = $this->createQueryBuilder('c');
@@ -50,6 +72,9 @@ class CardRepository extends ServiceEntityRepository
         return $query;
     }
 
+    /**
+     * @return mixed
+     */
     public function findLastRecord()
     {
         $qb = $this->createQueryBuilder('c');

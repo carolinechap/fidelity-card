@@ -8,18 +8,32 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class EmployeeFixtures
+ * @package App\DataFixtures
+ */
 class EmployeeFixtures extends Fixture
 {
-    private $encoder;
 
     const NB_ADMINS = 10;
 
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $encoder;
 
+    /**
+     * EmployeeFixtures constructor.
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->encoder = $passwordEncoder;
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');

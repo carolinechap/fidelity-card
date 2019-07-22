@@ -16,11 +16,19 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class StoreRepository extends ServiceEntityRepository
 {
+    /**
+     * StoreRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Store::class);
     }
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
     public function findStoreByUser(User $user)
     {
         $qb = $this->createQueryBuilder('s');

@@ -52,6 +52,9 @@ class CrudController extends AbstractController
      * CrudController constructor.
      * @param RegistryInterface $registry
      * @param CaseString $caseString
+     * @param TranslatorInterface $translator
+     * @param ListDatabaseProvider $listProvider
+     * @param $crudAuthorizedClasses
      */
     public function __construct(RegistryInterface $registry,
                                 CaseString $caseString,
@@ -73,6 +76,8 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @return Response
+     *
      * @Route("/", name="crud_dashboard", methods={"GET"})
      */
     public function dashboard()
@@ -81,6 +86,10 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @param string $class
+     * @param array|null $params
+     * @return Response
+     *
      * @Route("/{class}", name="crud_index", methods={"GET"})
      */
     public function index(string $class, ?array $params): Response
@@ -107,6 +116,12 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param $class
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route("/{class}/new", name="crud_new", methods={"GET","POST"})
      */
     public function new(Request $request, $class): Response
@@ -146,6 +161,10 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @param $class
+     * @param $id
+     * @return Response
+     *
      * @Route("/{class}/{id}", name="crud_show", methods={"GET"})
      */
     public function show($class, $id): Response
@@ -171,6 +190,13 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param $class
+     * @param $id
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route("/{class}/{id}/edit", name="crud_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, $class, $id): Response
@@ -208,6 +234,13 @@ class CrudController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param $class
+     * @param $id
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route("{class}/{id}", name="crud_delete", methods={"DELETE"})
      */
     public function delete(Request $request, $class, $id): Response

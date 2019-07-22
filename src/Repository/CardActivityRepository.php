@@ -18,12 +18,20 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class CardActivityRepository extends ServiceEntityRepository
 {
+    /**
+     * CardActivityRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, CardActivity::class);
     }
 
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
     public function findActivityByUser(User $user)
     {
         $qb = $this->createQueryBuilder('ca');
@@ -35,6 +43,9 @@ class CardActivityRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @return Query
+     */
     public function findByGameDate() : Query
     {
         $qb = $this->createQueryBuilder('ca');
@@ -43,6 +54,9 @@ class CardActivityRepository extends ServiceEntityRepository
         return $query;
     }
 
+    /**
+     * @return mixed
+     */
     public function findLastRecord()
     {
         $qb = $this->createQueryBuilder('ca');

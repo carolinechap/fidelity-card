@@ -10,6 +10,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use App\Entity\Store;
 
+/**
+ * Class StoreFixtures
+ * @package App\DataFixtures
+ */
 class StoreFixtures extends Fixture implements DependentFixtureInterface
 {
 

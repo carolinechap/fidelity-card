@@ -14,6 +14,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * Class UserType
+ * @package App\Form
+ */
 class UserType extends AbstractType
 {
     private $security;
@@ -23,6 +27,10 @@ class UserType extends AbstractType
         $this->security = $security;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $required = true;
@@ -110,6 +118,9 @@ class UserType extends AbstractType
         ;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

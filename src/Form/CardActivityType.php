@@ -14,8 +14,16 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class CardActivityType
+ * @package App\Form
+ */
 class CardActivityType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -27,7 +35,6 @@ class CardActivityType extends AbstractType
                         'Oui' => 1,
                         'Non' => 0
                     ]
-
                 ])
             ->add('personalScore', IntegerType::class,
                 [
@@ -66,6 +73,9 @@ class CardActivityType extends AbstractType
         ;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
