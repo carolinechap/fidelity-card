@@ -245,7 +245,7 @@ class Card
         return $this;
     }
 
-    public function getCode(): int
+    public function getCode()
     {
         return $this->getStore()->getCenterCode() .
             $this->getCustomerCode() . $this->getCheckSum();
