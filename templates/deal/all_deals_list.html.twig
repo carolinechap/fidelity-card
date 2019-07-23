@@ -20,11 +20,11 @@
                 <a href="#" class="btn btn-outline-primary mb-3">
                     Rattacher une carte
                 </a>
-            {# le custumer possède une seule carte #}
+                {# le customer possède une seule carte #}
             {% elseif cards|length == 1 %}
                 {% set card = cards[0] %}
                 {% set enabled = 1 %}
-            {# le custumer possède plusieurs cartes #}
+                {# le customer possède plusieurs cartes #}
             {% elseif (cards|length > 1) or (card is defined and card is not null) %}
                 {# il faut choisir d'abord une carte pour rattacher un deal #}
                 {% set enabled = (card is defined and card is not null)? 1: 0 %}
@@ -35,13 +35,16 @@
             {% if card is defined and card is not null %}
                 <div class="alert alert-secondary text-center m-1">
                     Carte n°<br>{{ card.code }}<br><b>{{ card.fidelityPoint }} points</b>
-
             {% endif %}
             {% if cards is not empty %}
-                <p><a class="btn btn-secondary m-2" href="{{path('deal_display_user')}}">Voir tous vos deals</a></p>
+                    <p><a class="btn btn-secondary m-2" href="{{ path('deal_display_user') }}">Voir tous mes deals</a>
+                    </p>
             {% endif %}
                 </div>
         </div>
-        {% include'deal/_tab_deals.html.twig' %}
     </div>
+<div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+
+{% include'deal/_tab_deals.html.twig' %}
+</div>
 {% endblock %}
