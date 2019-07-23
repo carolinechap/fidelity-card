@@ -33,7 +33,7 @@ class LostTypeCard extends AbstractType
             ->add('customers', EntityType::class, [
                 'class' => User::class,
                 'query_builder' => function (UserRepository $er)  {
-                    return $er->getCustomersByStore(null);
+                    return $er->searchByRolesQuery(['ROLE_USER']);
                 },
                 'required' => false,
                 'translation_domain' => 'forms',
