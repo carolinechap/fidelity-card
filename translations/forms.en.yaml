@@ -45,6 +45,7 @@ cardactivity:
       game_name: Game name
       game_date: Game date
 lost_card:
+  no_card: There is no card for this user !
   inactive:
     success: The card was successfully inactivated !
     error: There was an error trying to inactivate the card.

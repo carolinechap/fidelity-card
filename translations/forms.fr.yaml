@@ -45,6 +45,7 @@ cardactivity:
       game_name: Nom de l'activité
       game_date: Date de l'activité
 lost_card:
+  no_card: Il n'y a pas de carte pour cet utilisateur !
   inactive:
     success: La carte a bien été désactivée !
     error: Erreur durant la désactivation.

@@ -20,7 +20,7 @@ use App\Entity\Card;
  * Class LostTypeCard
  * @package App\Form
  */
-class LostTypeCard extends AbstractType
+class LostCardType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -28,11 +28,10 @@ class LostTypeCard extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $store = $options['store'];
         $builder
             ->add('customers', EntityType::class, [
                 'class' => User::class,
-                'query_builder' => function (UserRepository $er) {
+                'query_builder' => function (UserRepository $er)  {
                     return $er->searchByRolesQb(['ROLE_USER']);
                 },
                 'required' => false,
@@ -60,9 +59,6 @@ class LostTypeCard extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
-        ]);
-        $resolver->setRequired([
-            'store'
         ]);
     }
 }

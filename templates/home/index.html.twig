@@ -34,14 +34,10 @@
             </div>
             <div class="col-md-12 col-lg-4">
                 {% if is_granted('ROLE_USER') %}
-                    {% if cards_user is empty %}
-                        <div id="customer-add-card">
-                            {{ render(controller(
-                                'App\\Controller\\CardController::addCardToUser')) }}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-dark px-1">
-                        {% if cards_user|length == 1 %}
+                    <div class="alert alert-dark px-1">
+                        {% if cards_user|length == 0 %}
+                        <p class="font-weight-bold text-center">Pas de carte de fidélité <br> <a href="#add-card" style="color:red">Rattacher une carte</a></p>
+                        {% elseif cards_user|length == 1 %}
                             <p class="font-weight-bold text-center">Ma carte de fidélité</p>
                         {% else %}
                             <p class="font-weight-bold text-center"> Mes cartes de fidélités </p>
@@ -52,7 +48,6 @@
                                 pts</p>
                         {% endfor %}
                     </div>
-                    {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -79,6 +74,15 @@
                 <ul class="pagination">
                 </ul>
             </nav>
+            <hr width="100%" class="mx-5 my-5">
+            <div class="col-12 d-flex align-items-center justify-content-center px-0 mb-5" id="add-card">
+                {% if is_granted('ROLE_USER')%}
+                    <div id="customer-add-card">
+                        {{ render(controller(
+                            'App\\Controller\\CardController::addCardToUser')) }}
+                    </div>
+                {% endif %}
+            </div>
         </div>
         {% endif %}
         {% else %}

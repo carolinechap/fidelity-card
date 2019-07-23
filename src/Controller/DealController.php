@@ -56,7 +56,7 @@ class DealController extends AbstractController
         $card = null;
         $cards = $this->getUserCards();
 
-        if ($request->request->get('cards') !== null) {
+        if ($request->request->get('cards') !== 'null' && $request->request->get('cards') !== null ) {
             $card = $this->cardRepository->find($request->request->get('cards'));
             if ($this->getUser()->getEmail() !== $card->getUser()->getEmail()) {
                 throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à effectuer cette action.");
