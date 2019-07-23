@@ -14,7 +14,9 @@
                 </div>
                 <div class="row">
                     {{ form_start(form, {'action': path('card_lost'), 'method': 'post', 'id': 'form-lost-card'}) }}
-                    <div id="error-ajax" class="d-none">{{ 'lost_card.inactive.error'|trans({}, 'forms') }}</div>
+                    <div id="error-ajax" class="d-none">
+                        {{ 'lost_card.inactive.error'|trans({}, 'forms') }}
+                    </div>
                     <div id="message" class="alert alert-{{ typeMessage }} d-none">{{ message }}</div>
                     <div class="form-row">
                         <div class="form-group">
@@ -23,14 +25,13 @@
                     </div>
                     <div class="form-row">
                         <div id="lost-card-select" class="form-group">
-                            {% if cards is empty %}
-                                {{ form_row(form.cards, {'attr': { 'class' : 'form-control'}}) }}
-                            {% else %}
-                                {% do form.cards.setRendered %}
-                                <label class="" for="lost_type_card_cards">
+                            {% do form.cards.setRendered %}
+                            {{ dump(cards|length) }}
+                            {% if cards is not empty or cards|length > 0 %}
+                                <label class="" for="lost_card_cards">
                                     {{ 'lost_card.select.placeholder.card'|trans({}, 'forms') }}
                                 </label>
-                                <select class="form-control" id="lost_type_card_cards" name="lost_type_card[cards]'">
+                                <select class="form-control" id="lost_card_cards" name="lost_card[cards]'">
                                     <option value="">{{ 'lost_card.select.placeholder.card'|trans({}, 'forms') }}</option>
                                     {% for card in cards %}
                                         <option value="{{ card.id }}">{{ card.getCompleteCode() }}</option>
@@ -62,6 +63,4 @@
             </div>
         </div>
     </div>
-
-
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Card\CardGenerator;
 use App\Card\CardNumberExtractor;
 use App\Form\AddCardType;
 use App\Form\CardType;
+use App\Form\LostCardType;
 use App\Repository\CardRepository;
 use App\Entity\Card;
 use App\Repository\UserRepository;
@@ -213,28 +214,35 @@ class CardController extends AbstractController
         $typeMessage = null;
         $labelButton = null;
 
-        $form = $this->createForm('App\Form\LostTypeCard');
+        $form = $this->createForm(LostCardType::class);
 
         $form->handleRequest($request);
+        # Process list of customer submission (ajax process on change)
+        if (isset($request->request->get('lost_card')['customers'])
+            && ($request->request->get('lost_card')['customers'] !== null
+            && !empty($request->request->get('lost_card')['customers']))) {
 
-        if (isset($request->request->get('lost_type_card')['customers'])
-            && ($request->request->get('lost_type_card')['customers'] !== null
-            && !empty($request->request->get('lost_type_card')['customers'])))
-            {
-            $customerId = intval($request->request->get('lost_type_card')['customers']);
+            $customerId = intval($request->request->get('lost_card')['customers']);
             $customer = $userRepository->findOneById(intval($customerId));
             $cards = $customer->getCards();
-            $labelButton = 1;
+            if (count($cards) === 0 or empty($cards)) {
+                $message = $translator->trans('lost_card.no_card', [], 'forms');
+                $typeMessage = "danger";
+                $labelButton = 0;
+            } else {
+                $labelButton = 1;
+            }
         }
-
-        if (isset($request->request->get('lost_type_card')['cards'])
-            && $request->request->get('lost_type_card')['cards'] !== null ) {
-            $cardId = $request->request->get('lost_type_card')['cards'];
+        # Process list of cards (ajax process)
+        if (isset($request->request->get('lost_card')['cards'])
+            && $request->request->get('lost_card')['cards'] !== null
+            && !empty($request->request->get('lost_card')['cards'])) {
+            $cardId = $request->request->get('lost_card')['cards'];
 
             $card = $cardRepository->findOneById(intval($cardId));
             if (!$customer = $card->getUser()) {
                 $message = $translator->trans('lost_card.inactive.error', [], 'forms');
-                $typeMessage = "error";
+                $typeMessage = "danger";
             } else {
                 $customer->removeCard($card);
                 # Handle Workflow
@@ -243,7 +251,6 @@ class CardController extends AbstractController
                 $this->entityManager->flush();
                 $message = $translator->trans('lost_card.inactive.success', [], 'forms');
                 $typeMessage = "success";
-
             }
         }
 

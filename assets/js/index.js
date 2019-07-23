@@ -17,9 +17,9 @@ $(document).ready(function() {
         });
     });
 
-    var $customers = $('select#lost_type_card_customers');
+    var $customers = $('select#lost_card_customers');
     var $form = $customers.closest('form');
-    $($customers).change(function () {
+    $($customers).change(function (event) {
         event.preventDefault();
         var data = {};
         data[$customers.attr('name')] = $customers.val();
@@ -28,8 +28,8 @@ $(document).ready(function() {
             type: $form.attr('method'),
             data : data,
             success: function(html) {
-                $('#lost_type_card_cards').replaceWith(
-                    $(html).find('#lost_type_card_cards')
+                $('#lost_card_cards').replaceWith(
+                    $(html).find('#lost_card_cards')
                 );
                 $('#btn-select-customer').replaceWith(
                     $(html).find('#btn-select-customer')
