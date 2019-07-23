@@ -225,6 +225,7 @@ class CardController extends AbstractController
             $customerId = intval($request->request->get('lost_card')['customers']);
             $customer = $userRepository->findOneById(intval($customerId));
             $cards = $customer->getCards();
+
             if (count($cards) === 0 or empty($cards)) {
                 $message = $translator->trans('lost_card.no_card', [], 'forms');
                 $typeMessage = "danger";
@@ -233,6 +234,7 @@ class CardController extends AbstractController
                 $labelButton = 1;
             }
         }
+
         # Process list of cards (ajax process)
         if (isset($request->request->get('lost_card')['cards'])
             && $request->request->get('lost_card')['cards'] !== null
@@ -251,12 +253,13 @@ class CardController extends AbstractController
                 $this->entityManager->flush();
                 $message = $translator->trans('lost_card.inactive.success', [], 'forms');
                 $typeMessage = "success";
+                $labelButton = 0;
             }
         }
 
         if (!$request->isXmlHttpRequest() && $form->isSubmitted()) {
             $this->addFlash('success', $message);
-            //Redirect to admin dashboard
+            # Redirect to admin dashboard
             $this->redirectToRoute('admin_dashboard');
         }
 

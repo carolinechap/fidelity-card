@@ -11,8 +11,9 @@
             <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Désactiver une carte</h1>
+                    {% set disableButton = 0 %}
                 </div>
-                <div class="row">
+                <div id="response" class="row">
                     {{ form_start(form, {'action': path('card_lost'), 'method': 'post', 'id': 'form-lost-card'}) }}
                     <div id="error-ajax" class="d-none">
                         {{ 'lost_card.inactive.error'|trans({}, 'forms') }}
@@ -23,27 +24,28 @@
                             {{ form_row(form.customers, {'attr': { 'class': 'form-control'}}) }}
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div id="lost-card-select" class="form-group">
+                    <div class="form-row" id="lost-card-select">
+                        <div class="form-group">
                             {% do form.cards.setRendered %}
-                            {{ dump(cards|length) }}
                             {% if cards is not empty or cards|length > 0 %}
                                 <label class="" for="lost_card_cards">
                                     {{ 'lost_card.select.placeholder.card'|trans({}, 'forms') }}
                                 </label>
-                                <select class="form-control" id="lost_card_cards" name="lost_card[cards]'">
+                                <select class="form-control" id="lost_card_cards" name="lost_card[cards]">
                                     <option value="">{{ 'lost_card.select.placeholder.card'|trans({}, 'forms') }}</option>
                                     {% for card in cards %}
                                         <option value="{{ card.id }}">{{ card.getCompleteCode() }}</option>
                                     {% endfor %}
                                 </select>
+                            {% else %}
+                                {% set disableButton = 1 %}
                             {% endif %}
                         </div>
                     </div>
                     <div class="row">
                         <ul class="list-inline d-flex">
                             <li class="m-2">
-                                <button type="submit" class="btn btn-primary btn-sm" id="btn-select-customer">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn-select-customer" {% if disableButton == 1 %}disabled {% endif %}>
                                     {% if labelButton is same as (null) %}
                                         {{ 'lost_card.select.label.button'|trans({}, 'forms') }}
                                     {% else %}
