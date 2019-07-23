@@ -26,7 +26,6 @@
                     <div class="form-row">
                         <div id="lost-card-select" class="form-group">
                             {% do form.cards.setRendered %}
-                            {{ dump(cards|length) }}
                             {% if cards is not empty or cards|length > 0 %}
                                 <label class="" for="lost_card_cards">
                                     {{ 'lost_card.select.placeholder.card'|trans({}, 'forms') }}

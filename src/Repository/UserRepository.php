@@ -24,7 +24,6 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
-
     /**
      * @param array $roles
      * @return Query
@@ -55,6 +54,7 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter(':roles', $roles);
         return $qb;
     }
+
 
 
 

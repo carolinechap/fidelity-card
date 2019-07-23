@@ -32,8 +32,8 @@ class LostTypeCard extends AbstractType
         $builder
             ->add('customers', EntityType::class, [
                 'class' => User::class,
-                'query_builder' => function (UserRepository $er) use ($store) {
-                    return $er->getCustomersByStore($store);
+                'query_builder' => function (UserRepository $er) {
+                    return $er->searchByRolesQb(['ROLE_USER']);
                 },
                 'required' => false,
                 'translation_domain' => 'forms',
