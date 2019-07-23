@@ -135,7 +135,7 @@ class NotificationSubscriber implements EventSubscriberInterface
     {
         $card = $event->getCard();
 
-        $this->logger->info('Points de fidélité à 500 : '
+        $this->logger->info('Points de fidélité à 1000 : '
             . $card->getCompleteCode());
 
         /*Notification au client - MAIL (Notification push) */
