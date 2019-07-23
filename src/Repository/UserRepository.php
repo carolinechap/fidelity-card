@@ -42,6 +42,22 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param array $roles
+     * @return Query
+     */
+    public function searchByRolesQuery($roles = [])
+    {
+        $roles = serialize($roles);
+
+        $qb = $this->createQueryBuilder('u');
+        $qb->orderBy('u.lastname', 'ASC');
+        $qb->andWhere('u.roles = :roles')
+            ->setParameter(':roles', $roles);
+        return $qb;
+    }
+
+
+    /**
+     * @param array $roles
      * @return mixed
      */
     public function findLastRecordByRole($roles = [])
