@@ -208,19 +208,10 @@ class CardController extends AbstractController
                                     UserRepository $userRepository,
                                     CardRepository $cardRepository): Response
     {
-//        if (!$store = $userRepository->findStoreForEmployee($this->getUser())) {
-//            throw new HttpException(403,
-//                $translator->trans('access.forbidden', [], 'messages'));
-//        }
-
         $message = "";
         $cards = [];
         $typeMessage = null;
         $labelButton = null;
-
-//        $form = $this->createForm('App\Form\LostTypeCard', null, [
-//            'store' => $store
-//        ]);
 
         $form = $this->createForm('App\Form\LostTypeCard');
 

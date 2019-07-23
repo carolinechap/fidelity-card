@@ -28,12 +28,11 @@ class LostTypeCard extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $store = $options['store'];
         $builder
             ->add('customers', EntityType::class, [
                 'class' => User::class,
                 'query_builder' => function (UserRepository $er)  {
-                    return $er->searchByRolesQuery(['ROLE_USER']);
+                    return $er->searchByRoles();
                 },
                 'required' => false,
                 'translation_domain' => 'forms',
@@ -61,8 +60,5 @@ class LostTypeCard extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
         ]);
-//        $resolver->setRequired([
-//            'store'
-//        ]);
     }
 }

@@ -42,22 +42,6 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param array $roles
-     * @return Query
-     */
-    public function searchByRolesQuery($roles = [])
-    {
-        $roles = serialize($roles);
-
-        $qb = $this->createQueryBuilder('u');
-        $qb->orderBy('u.lastname', 'ASC');
-        $qb->andWhere('u.roles = :roles')
-            ->setParameter(':roles', $roles);
-        return $qb;
-    }
-
-
-    /**
-     * @param array $roles
      * @return mixed
      */
     public function findLastRecordByRole($roles = [])
@@ -72,28 +56,6 @@ class UserRepository extends ServiceEntityRepository
         $query = $qb->getQuery()->getResult();
         return $query;
     }
-
-    /**
-     * @param $store
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function getCustomersByStore($store)
-    {
-        $roles = ['ROLE_USER'];
-        $roles = serialize($roles);
-
-        $qb = $this->createQueryBuilder('u');
-        $qb
-            ->andWhere('u.roles = :roles')
-            ->join('u.stores', 'ust')
-            ->orderBy('ust.id', 'DESC')
-            ->andWhere('ust.id = :storeId')
-            ->setParameter(':roles', $roles)
-            ->setParameter(':storeId', $store);
-
-        return $qb;
-    }
-
 
     /**
      * @param array $roles
