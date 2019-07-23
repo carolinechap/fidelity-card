@@ -22,7 +22,6 @@
         "symfony/intl": "4.3.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "*",
-        "symfony/panther": "^0.4.1",
         "symfony/process": "4.3.*",
         "symfony/security-bundle": "4.3.*",
         "symfony/serializer-pack": "*",
@@ -36,12 +35,10 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
-        "symfony/browser-kit": "4.3.*",
-        "symfony/css-selector": "4.3.*",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
-        "symfony/test-pack": "^1.0",
+        "symfony/test-pack": "*",
         "symfony/web-server-bundle": "4.3.*"
     },
     "config": {
