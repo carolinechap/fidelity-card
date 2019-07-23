@@ -31,7 +31,7 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=150, unique=true)
+     * @ORM\Column(type="string", length=150)
      */
     private $email;
 
