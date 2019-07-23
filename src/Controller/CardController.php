@@ -198,6 +198,7 @@ class CardController extends AbstractController
      * @param UserRepository $userRepository
      * @param CardRepository $cardRepository
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @IsGranted("ROLE_ADMIN")
      * @Route("/declarer-perdue", name="card_lost", methods={"GET", "POST"})

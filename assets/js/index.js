@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $(document).on("click", "#btn-add-customer-card", function(event) {
         event.preventDefault();
-        var addCardForm = $("#add-card");
+        var addCardForm = $("#form-add-card");
         var linkSubmit = addCardForm.attr('action');
         $.ajax({
             type: "POST",
