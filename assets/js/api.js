@@ -13,11 +13,11 @@ $(function() {
 
 
     });
-
+    
     // Start ajax call
     function getRankings(page = 1) {
         $.ajax({
-            url : '/api/cards.jsonld?order%5BpersonalScore%5D=desc&pagination=true&page=' + page, // La ressource ciblée
+            url : '/api/cards.jsonld?order%5BpersonalScore%5D=desc&personalScore%5Bgt%5D=0&pagination=true&page=' + page, // La ressource ciblée
             type : 'GET', // Le type de la requête HTTP
 
             success : function(result) {

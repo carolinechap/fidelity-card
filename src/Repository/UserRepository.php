@@ -24,6 +24,21 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+    /**
+     * @param array $roles
+     * @return Query
+     */
+    public function searchByRoles($roles = []) : Query
+    {
+        $roles = serialize($roles);
+
+        $qb = $this->createQueryBuilder('u');
+        $qb->orderBy('u.lastname', 'ASC');
+        $qb->andWhere('u.roles = :roles')
+            ->setParameter(':roles', $roles);
+        $query = $qb->getQuery();
+        return $query;
+    }
 
     /**
      * @param array $roles
@@ -37,17 +52,12 @@ class UserRepository extends ServiceEntityRepository
         $qb->orderBy('u.lastname', 'ASC');
         $qb->andWhere('u.roles = :roles')
             ->setParameter(':roles', $roles);
-
         return $qb;
     }
 
-    public function searchByRoles($roles = []): Query
-    {
-        $qb = $this->searchByRolesQb();
-        $query = $qb->getQuery();
 
-        return $query;
-    }
+
+
 
     /**
      * @param array $roles

@@ -26,7 +26,7 @@
                 <td scope="row" class="text-center">{{ deal.endDate ? deal.endDate|date('d/m/Y') : '' }}</td>
                 <td scope="row" class="text-center">{{ deal.description|length > 30 ? deal.description|slice(0, 25) ~ '...' : deal.description  }}</td>
                 <td scope="row" class="text-center">{{ deal.costPoint }}</td>
-                <td scope="row" width="200" class="text-center">
+                <td scope="row" width="220" class="text-center">
                     <a href="{{ path('deal_show', {'id' : deal.id}) }}" class="btn btn-secondary btn-sm">
                         Voir
                     </a>
