@@ -17,11 +17,9 @@ $(document).ready(function() {
         });
     });
 
-    var $customers = $('select#lost_card_customers');
-
-    $(document).on("click", 'select#lost_card_customers option', function(event) {
+    var $customers = $('#lost_card_customers');
+    $customers.change(function(event) {
         var $form = $customers.closest('form');
-    // $($customers).change(function (event) {
         event.preventDefault();
         var data = {};
         data[$customers.attr('name')] = $customers.val();
