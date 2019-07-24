@@ -4,32 +4,31 @@
 namespace App\Tests\Card;
 
 use App\Entity\Card;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Doctrine\Common\Persistence\ObjectManager;use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Doctrine\Common\Persistence\ObjectRepository;
 
-
-class CardGeneratorTest extends KernelTestCase
+class CardGeneratorTest extends WebTestCase
 {
-
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var ObjectManager
      */
-    private $entityManager;
+    private $objectManager;
+
+    public function __construct(ObjectManager $objectManager, $name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->objectManager = $objectManager;
+    }
 
     /**
      * {@inheritDoc}
      */
     protected function setUp()
     {
-        $kernel = self::bootKernel();
-
-        $this->entityManager = $kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-
         $this->card = new Card();
         $centerCode = '123';
-        $this->card->setCustomerCode($this->generateCustomerCode())
-            ->setCheckSum(($this->card->getStore()->getCenterCode() + $this->card->getCustomerCode()) % 9);
+        $this->card->setCustomerCode($this->generateCustomerCodeTest())
+            ->setCheckSum((intval($centerCode) + intval($this->generateCustomerCodeTest())) % 9);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
