@@ -4,6 +4,8 @@
 namespace App\Tests;
 
 
+use Faker\Factory;
+use Faker\Provider\fr_FR\Person;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SignupTest extends WebTestCase
@@ -12,6 +14,8 @@ class SignupTest extends WebTestCase
     /** @test */
     public function signup()
     {
+
+        $faker = Factory::create('fr_FR');
 
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
@@ -27,11 +31,17 @@ class SignupTest extends WebTestCase
         $form = $crawler->selectButton('Enregistrer')->form();
 
         // Set values
-        $form['user[firstname]'] = 'Caroline';
-        $form['user[lastname]'] = 'Chapeau';
-        $form['user[email]'] = 'caroline2chapeau@gmail.com';
-        $form['user[plainPassword][first]'] = 'caroline';
-        $form['user[plainPassword][second]'] = 'caroline';
+        $fistname = $faker->firstName;
+        $lastname = $faker->lastName;
+
+        $mail = strtolower($lastname) . '.' . strtolower($fistname) . '@email.com';
+
+
+        $form['user[firstname]'] = $fistname;
+        $form['user[lastname]'] = $lastname;
+        $form['user[email]'] = $mail;
+        $form['user[plainPassword][first]'] = 'test123';
+        $form['user[plainPassword][second]'] = 'test123';
         $form['user[numberStreet]'] = '2';
         $form['user[nameStreet]'] = 'Rue du dev';
         $form['user[zipCode]'] = '69009';
@@ -42,24 +52,19 @@ class SignupTest extends WebTestCase
         $client->submit($form);
 
         // Follow the redirection to login
-        $crawler = $client->followRedirect();
-        dump($crawler);
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $client->followRedirect();
 
 
-
-        // Check if the signup form submit successfully
-        $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
-
-        // Check the status of the login page
+        // Check the redirection and the status of the login page
         $crawler = $client->request('GET', '/connexion');
         $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         //Sign in
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['_username'] = 'caroline2chapeau@gmail.com' ;
-        $form['_password'] = 'caroline';
+        $form['_username'] = $mail ;
+        $form['_password'] = 'test123';
         $client->submit($form);
-
 
     }
 }
