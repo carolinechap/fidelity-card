@@ -30,7 +30,7 @@
                         <td {% if card.id == last_card.0.id %}style="color:white" {% endif %}>{{ card.store }}</td>
                         <td {% if card.id == last_card.0.id %}style="color:white" {% endif %}>
                         {% for key, value in card.status %}
-                            {{ key }}
+                            {{ key|trans({}, 'workflow') }}
                         {% endfor %}
                         </td>
                     </tr>
