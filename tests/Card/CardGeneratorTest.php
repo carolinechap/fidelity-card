@@ -27,17 +27,28 @@ class CardGeneratorTest extends KernelTestCase
             ->getManager();
 
         $this->card = new Card();
+        $centerCode = '123';
+        $this->card->setCustomerCode($this->generateCustomerCode())
+            ->setCheckSum(($this->card->getStore()->getCenterCode() + $this->card->getCustomerCode()) % 9);
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function generateCustomerCodeTest()
     {
-        $code = '123';
+        $code = '456789';
 
         $findSameCustomerCodeTest = $this->entityManager
             ->getRepository('App\Entity\Card')
             ->findBy([
             'customerCode' => $code
         ]);
+
+        if ($findSameCustomerCodeTest) {
+            $this->generateCustomerCodeTest();
+        }
+
+        return sprintf("%06s",$code);
     }
 
     /**
