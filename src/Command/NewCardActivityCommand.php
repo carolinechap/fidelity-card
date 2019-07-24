@@ -111,7 +111,6 @@ class NewCardActivityCommand extends Command
         // Set the total into Card
         $oneCardActivity->getCard()->setPersonalScore($personalScoreSum);
 
-
         //On déclenche l'événement' correspondant
         $event = new CardActivityEvent($oneCardActivity);
         $event->setBeforePoints($beforePoints);
@@ -143,7 +142,7 @@ class NewCardActivityCommand extends Command
      */
     private function getRandomCard(): Card
     {
-        $cards = $this->manager->getRepository(Card::class)->findAll();
+        $cards = $this->manager->getRepository(Card::class)->findCardWithUser();
         return $cards[array_rand($cards)];
     }
 

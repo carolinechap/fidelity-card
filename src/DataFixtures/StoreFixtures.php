@@ -33,7 +33,7 @@ class StoreFixtures extends Fixture implements DependentFixtureInterface
         $myStore->setName('LaserGame myStore');
         $myStore->setCenterCode($faker->numberBetween(100, 999));
         $myStore->setCity($faker->city);
-        $myStore->setCountry($faker->country);
+        $myStore->setCountry('France');
         $myStore->setNumberStreet($faker->numberBetween(1,30));
         $myStore->setNameStreet($faker->streetName);
         $myStore->setZipCode($faker->postcode);
