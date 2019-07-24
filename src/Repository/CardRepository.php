@@ -7,7 +7,6 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @method Card|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,28 +18,11 @@ class CardRepository extends ServiceEntityRepository
 {
 
     /**
-     * @var
-     */
-    private $user;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     *
-     */
-    const ITEMS_PER_PAGE = 5;
-
-    /**
      * CardRepository constructor.
      * @param RegistryInterface $registry
-     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(RegistryInterface $registry, TokenStorageInterface $tokenStorage)
+    public function __construct(RegistryInterface $registry)
     {
-        $this->tokenStorage = $tokenStorage;
         parent::__construct($registry, Card::class);
     }
 
@@ -84,6 +66,13 @@ class CardRepository extends ServiceEntityRepository
 
     }
 
+    public function findCardWithUser(){
+        $qb = $this->createQueryBuilder('c')
+            ->join('c.user', 'cu')
+            ->andWhere('c.user is not NULL');
+
+        return $qb->getQuery()->getResult();
+    }
 
 
 

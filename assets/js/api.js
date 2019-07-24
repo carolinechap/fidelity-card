@@ -16,6 +16,7 @@ $(function() {
     
     // Start ajax call
     function getRankings(page = 1) {
+
         $.ajax({
             url : '/api/cards.jsonld?order%5BpersonalScore%5D=desc&personalScore%5Bgt%5D=0&pagination=true&page=' + page, // La ressource ciblée
             type : 'GET', // Le type de la requête HTTP
@@ -46,13 +47,17 @@ $(function() {
 
 
                 $.each(result["hydra:member"], function (i, card) {
-                    //console.log(result);
-                    let classementDatas =
-                        '<tr><td scope="row">' + card.user.firstname + ' ' + card.user.lastname +  '</td> ' +
-                        '<td scope="row" class="text-center">' + card.personalScore + '</td>' +
-                        '<td scope="row" class="text-center">' + card.countVictory  + '/' + card.countGames + '</td>' +
-                        '<td scope="row" class="text-center">' + card.store.name + '</td></tr>';
-                    $("#results").append(classementDatas);
+                    console.log(card);
+
+                    if ( typeof(card.user) !== 'undefined') {
+                        let classementDatas =
+                            '<tr><td scope="row">' + card.user.firstname + ' ' + card.user.lastname +  '</td> ' +
+                            '<td scope="row" class="text-center">' + card.personalScore + '</td>' +
+                            '<td scope="row" class="text-center">' + card.countVictory  + '/' + card.countGames + '</td>' +
+                            '<td scope="row" class="text-center">' + card.store.name + '</td></tr>';
+                        $("#results").append(classementDatas);
+                    }
+
                     //console.log(classementDatas);
                 })
             },
