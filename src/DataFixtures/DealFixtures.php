@@ -19,10 +19,24 @@ class DealFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-
         $faker = Factory::create("fr_FR");
-        $now = new \DateTime('now');
+        $now = new \DateTime('2019/07/30');
         $later =  null;
+
+
+        // This deal is for test and demo purposes
+        $oneDeal = new Deal();
+        $oneDeal->setName('OffreTest');
+        $oneDeal->setDescription('Offre anniversaire');
+        $oneDeal->setStartDate($now);
+        $oneDeal->setEndDate($now);
+        $oneDeal->setCostPoint(50);
+
+        $manager->persist($oneDeal);
+
+
+        $now = new \DateTime('now');
+
 
         for ($x = 0; $x < 7; $x ++) {
             $costPoint = $x + rand($x, 200);
