@@ -27,6 +27,28 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class DealController extends AbstractController
 {
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var CardRepository
+     */
+    private $cardRepository;
+
+    /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
+     * @var DealRepository
+     */
+    private $dealRepository;
+
+
     /**
      * DealController constructor.
      * @param TranslatorInterface $translator
