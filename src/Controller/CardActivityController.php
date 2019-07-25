@@ -91,13 +91,11 @@ class CardActivityController extends AbstractController
             if ($form->isValid()) {
                 // When a client plays a game
                 // Add fidelity points on his card
-                //TODO:Refactorer au niveau de cardController?
                 $beforePoints = $cardActivity->getCard()->getFidelityPoint();
                 $fidelityPoint = $fidelityPointGenerator->sumFidelityPoint($cardActivity);
                 $cardActivity->getCard()->setFidelityPoint($fidelityPoint);
 
                 // Add personal score on his card
-                //TODO:Refactorer au niveau de cardController?
                 $personalScoreFromForm = $form->getData()->getPersonalScore();
                 $personalScore = $calculatePersonalScore->sumPersonalScore($cardActivity, $personalScoreFromForm);
                 $cardActivity->getCard()->setPersonalScore($personalScore);

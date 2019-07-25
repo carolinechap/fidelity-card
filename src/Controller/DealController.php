@@ -10,6 +10,7 @@ use App\Repository\DealRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Void_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -97,7 +98,7 @@ class DealController extends AbstractController
     /**
      * @param Deal $deal
      * @param Card $card
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @Route("/offre/{deal}/{card}", name="deal_add_card", methods={"GET"})
      * @ParamConverter("deal", options={"mapping": {"deal": "id"}})

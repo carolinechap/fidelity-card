@@ -84,7 +84,7 @@ class CardController extends AbstractController
                         CardGenerator $cardGenerator,
                         TranslatorInterface $translator): Response
     {
-        # Création d'une nouvelle carte
+        // Create a new card
         $card = new Card();
 
         $form = $this->createForm(CardType::class, $card)
@@ -93,13 +93,13 @@ class CardController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
 
-                # Process de création d'une carte ...
+                # Generate an random card
                 $card = $cardGenerator->generateCard($card);
 
                 # Handle workflow
                 $this->updateWorkflow($card, 'to_creating');
 
-                # Sauvegarde de la carte
+                # Add card into db
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($card);
                 $entityManager->flush();

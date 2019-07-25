@@ -10,6 +10,7 @@ use App\User\UserRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +27,7 @@ class SecurityController extends AbstractController
      * @param UserRequestHandler $userRequestHandler
      * @param TranslatorInterface $translator
      * @param EventDispatcherInterface $eventDispatcher
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      *
      * @Route("/inscription", name="signup_route", methods={"GET", "POST"})
      */
