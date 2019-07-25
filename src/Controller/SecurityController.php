@@ -2,20 +2,21 @@
 
 namespace App\Controller;
 
+use App\Events\AppEvents;
+use App\Events\UserAccountEvent;
 use App\Form\UserType;
 use App\User\UserRequest;
 use App\User\UserRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use App\Events\AppEvents;
-use App\Events\UserAccountEvent;
 
 class SecurityController extends AbstractController
 {
@@ -26,7 +27,7 @@ class SecurityController extends AbstractController
      * @param UserRequestHandler $userRequestHandler
      * @param TranslatorInterface $translator
      * @param EventDispatcherInterface $eventDispatcher
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      *
      * @Route("/inscription", name="signup_route", methods={"GET", "POST"})
      */
@@ -48,7 +49,7 @@ class SecurityController extends AbstractController
             if ($form->isValid()) {
                 $user = $userRequestHandler->registerAsUser($user);
 
-                //On déclenche l'événement correspondant
+                //Trigger the corresponding event
                 $event = new UserAccountEvent($user);
                 $eventDispatcher->dispatch($event, AppEvents::USER_ACCOUNT_CREATED);
 
@@ -85,8 +86,6 @@ class SecurityController extends AbstractController
                 'error' => $error
             ]
         );
-
-
     }
 
     /**

@@ -9,6 +9,12 @@ use App\Entity\CardActivity;
 class FidelityPointGenerator
 {
 
+    /**
+     * Set fidelity points into the card depending of the result of the activity
+     *
+     * @param CardActivity $cardActivity
+     * @return int
+     */
     public function generateFidelityPoint(CardActivity $cardActivity): int
     {
 
@@ -32,6 +38,12 @@ class FidelityPointGenerator
 
     }
 
+    /**
+     * Search fidelity points on user's card and substract fidelity points from the current activity with the one on card.
+     *
+     * @param CardActivity $cardActivity
+     * @return int
+     */
     public function subFidelityPoint(CardActivity $cardActivity): int
     {
         $fidelityPointOnCard = $cardActivity->getCard()->getFidelityPoint();

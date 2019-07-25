@@ -8,7 +8,7 @@
     {% endif %}
     <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">{{ (class|trans({}, 'crud'))|capitalize }}</h1>
+            <h1 class="h2">{{ (class|trans({}, 'crud'))|capitalize }}</h1>
             {% if is_granted('ROLE_SUPERADMIN') %}
                 <a href="{{ path('crud_index', {'class': class }) }}"
                    class="btn btn-outline-primary mb-3">
@@ -28,7 +28,7 @@
                                 {% endif %}
                             {% else %}
                                 <ul>
-                                    {% for attr in attribute(entity, property_key[0])  %}
+                                    {% for attr in attribute(entity, property_key[0]) %}
                                         <li>{{ attr }}</li>
                                     {% endfor %}
                                 </ul>

@@ -35,8 +35,7 @@ class DealRepository extends ServiceEntityRepository
             ->setParameter(':card', $card)
             ->orderBy('dca.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /*

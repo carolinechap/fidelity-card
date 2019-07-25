@@ -6,7 +6,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.2",
-        "doctrine/doctrine-fixtures-bundle": "^3.2",
         "facebook/webdriver": "^1.7",
         "fzaninotto/faker": "^1.8",
         "knplabs/knp-paginator-bundle": "^4.0",
@@ -37,6 +36,7 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.2",
         "symfony/browser-kit": "4.3.*",
         "symfony/css-selector": "4.3.*",
         "symfony/debug-pack": "*",

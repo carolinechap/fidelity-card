@@ -32,22 +32,27 @@
                 {% for entity in entities %}
                     <tr>
                         <td scope="row" class="text-center">{{ entity.name }}</td>
-                        <td scope="row" class="text-center">{{ entity.startDate ? entity.startDate|date('d/m/Y') : '' }}</td>
-                        <td scope="row" class="text-center">{{ entity.endDate ? entity.endDate|date('d/m/Y') : '' }}</td>
-                        <td scope="row" class="text-center">{{ entity.description|length > 30 ? entity.description|slice(0, 25) ~ '...' : entity.description  }}</td>
+                        <td scope="row"
+                            class="text-center">{{ entity.startDate ? entity.startDate|date('d/m/Y') : '' }}</td>
+                        <td scope="row"
+                            class="text-center">{{ entity.endDate ? entity.endDate|date('d/m/Y') : '' }}</td>
+                        <td scope="row"
+                            class="text-center">{{ entity.description|length > 30 ? entity.description|slice(0, 25) ~ '...' : entity.description }}</td>
                         <td scope="row" class="text-center">{{ entity.costPoint }}</td>
                         <td width="220">
                             {% if is_granted('ROLE_SUPERADMIN') %}
-                            <div class="d-flex justify-content-center">
-                                <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-warning mx-2">
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}"
+                                       class="btn btn-sm btn-warning mx-2">
                                         Modifier
                                     </a>
                                     {#Formulaire de suppression, il n'affiche qu'un bouton défini dans _delete_form.html.twig #}
                                     {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
-                                    <a href="{{ path('crud_show', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-secondary ml-2">
+                                    <a href="{{ path('crud_show', {'id': entity.id, 'class': class }) }}"
+                                       class="btn btn-sm btn-secondary ml-2">
                                         Voir
                                     </a>
-                            </div>
+                                </div>
                             {% endif %}
                         </td>
                     </tr>

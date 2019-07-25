@@ -101,8 +101,8 @@ class CrudController extends AbstractController
         $entities = $this->listProvider->getListForClass($className);
 
         $templateDir = $this->evalTemplateDir($class);
-        $template = $this->get('twig')->getLoader()->exists('superadmin/'.$templateDir.'/index.html.twig')
-            ? 'superadmin/'.$templateDir.'/index.html.twig'
+        $template = $this->get('twig')->getLoader()->exists('superadmin/' . $templateDir . '/index.html.twig')
+            ? 'superadmin/' . $templateDir . '/index.html.twig'
             : 'superadmin/crud/index.html.twig';
 
 
@@ -129,10 +129,10 @@ class CrudController extends AbstractController
         $this->checkIfCrudClassAuthorized($class);
         $className = $this->getClassName($class);
         $this->checkIfCrudClassExist($className);
-        $this->checkIfCrudClassExist($this->formNamespace.ucfirst($class).'Type');
+        $this->checkIfCrudClassExist($this->formNamespace . ucfirst($class) . 'Type');
 
         $entity = new $className;
-        $form = $this->createForm($this->formNamespace.ucfirst($class).'Type', $entity);
+        $form = $this->createForm($this->formNamespace . ucfirst($class) . 'Type', $entity);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -149,8 +149,8 @@ class CrudController extends AbstractController
         }
 
         $templateDir = $this->evalTemplateDir($class);
-        $template = $this->get('twig')->getLoader()->exists('superadmin/'.$templateDir.'/new.html.twig')
-            ? 'superadmin/'.$templateDir.'/new.html.twig'
+        $template = $this->get('twig')->getLoader()->exists('superadmin/' . $templateDir . '/new.html.twig')
+            ? 'superadmin/' . $templateDir . '/new.html.twig'
             : 'superadmin/crud/new.html.twig';
 
         return $this->render($template, [
@@ -178,8 +178,8 @@ class CrudController extends AbstractController
         $entity = $repository->find($id);
 
         $templateDir = $this->evalTemplateDir($class);
-        $template = $this->get('twig')->getLoader()->exists('superadmin/'.$templateDir.'/show.html.twig')
-            ? 'superadmin/'.$templateDir.'/show.html.twig'
+        $template = $this->get('twig')->getLoader()->exists('superadmin/' . $templateDir . '/show.html.twig')
+            ? 'superadmin/' . $templateDir . '/show.html.twig'
             : 'superadmin/crud/show.html.twig';
 
         return $this->render($template, [
@@ -204,10 +204,10 @@ class CrudController extends AbstractController
         $this->checkIfCrudClassAuthorized($class);
         $className = $this->getClassName($class);
         $this->checkIfCrudClassExist($className);
-        $this->checkIfCrudClassExist($this->formNamespace.ucfirst($class).'Type');
+        $this->checkIfCrudClassExist($this->formNamespace . ucfirst($class) . 'Type');
 
         $entity = $this->getEntity($className, $id);
-        $form = $this->createForm($this->formNamespace.ucfirst($class).'Type', $entity);
+        $form = $this->createForm($this->formNamespace . ucfirst($class) . 'Type', $entity);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -222,8 +222,8 @@ class CrudController extends AbstractController
         }
 
         $templateDir = $this->evalTemplateDir($class);
-        $template = $this->get('twig')->getLoader()->exists('superadmin/'.$templateDir.'/edit.html.twig')
-            ? 'superadmin/'.$templateDir.'/edit.html.twig'
+        $template = $this->get('twig')->getLoader()->exists('superadmin/' . $templateDir . '/edit.html.twig')
+            ? 'superadmin/' . $templateDir . '/edit.html.twig'
             : 'superadmin/crud/edit.html.twig';
 
         return $this->render($template, [
@@ -250,11 +250,11 @@ class CrudController extends AbstractController
         $this->checkIfCrudClassExist($className);
 
         $entity = $this->getEntity($className, $id);
-        if ($this->isCsrfTokenValid('delete'.$entity->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $entity->getId(), $request->request->get('_token'))) {
             $this->registry->getEntityManager()->remove($entity);
             $this->registry->getEntityManager()->flush();
             $this->addFlash('success', $this->translator->trans('remove.success', [], 'crud'));
-        } else  {
+        } else {
             $this->addFlash('error', $this->translator->trans('remove.error', [], 'crud'));
         }
 
@@ -267,19 +267,21 @@ class CrudController extends AbstractController
      * @param $class
      * @return string
      */
-    private function getClassName($class): string {
+    private function getClassName($class): string
+    {
         $class = $this->evalClassInUrl($class);
-        return $this->entityNamespace.ucfirst($class);
+        return $this->entityNamespace . ucfirst($class);
     }
 
     /**
      * @param $className
      */
-    private function checkIfCrudClassExist($className):void {
+    private function checkIfCrudClassExist($className): void
+    {
         if (!class_exists($className)) {
             throw new FileException($this->translator->trans('class.not_found', [], 'crud'));
         }
-        return ;
+        return;
     }
 
     /**
@@ -297,7 +299,8 @@ class CrudController extends AbstractController
      * @param $id
      * @return null|object
      */
-    private function getEntity($className, $id) {
+    private function getEntity($className, $id)
+    {
         $repository = $this->registry->getRepository($className);
         return $repository->find($id);
     }
@@ -306,7 +309,8 @@ class CrudController extends AbstractController
      * @param $class
      * @return string
      */
-    private function evalClassInUrl($class):string {
+    private function evalClassInUrl($class): string
+    {
         if (strpos($class, '-')) {
             $class = $this->caseString::kebab($class)->camel();
         }
@@ -317,7 +321,7 @@ class CrudController extends AbstractController
      * @param $className
      * @return array
      */
-    private function getClassProperties($className):array
+    private function getClassProperties($className): array
     {
         return $this->propertyInfo->getProperties($className);
     }
@@ -326,7 +330,8 @@ class CrudController extends AbstractController
      * @param $class
      * @return string
      */
-    private function evalTemplateDir($class):string {
+    private function evalTemplateDir($class): string
+    {
         if (strpos($class, '-')) {
             $class = $this->caseString::kebab($class)->snake();
         } else {
@@ -339,7 +344,7 @@ class CrudController extends AbstractController
      * @param $className
      * @return array
      */
-    private function propertyNameToDotKey($className):array
+    private function propertyNameToDotKey($className): array
     {
         $properties = $this->getClassProperties($className);
         foreach ($properties as $property) {
@@ -356,7 +361,7 @@ class CrudController extends AbstractController
     {
         $properties = $this->getClassProperties($className);
         foreach ($properties as $property) {
-            $tabPropertiesAndKeys[] =  [$property, $this->caseString::camel($property)->dot()];
+            $tabPropertiesAndKeys[] = [$property, $this->caseString::camel($property)->dot()];
         }
         return $tabPropertiesAndKeys;
     }

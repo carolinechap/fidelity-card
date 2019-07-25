@@ -12,14 +12,6 @@
             <h1 class="text-color">{{ app.user }}</h1>
         </div>
         <div class="row">
-            {# <div class="col-md-12 col-lg-4">
-                <h5 class="text-color text-center">Ma carte</h5>
-                <p class="text-color text-center">Numéro de carte <br><span class="font-weight-bold">{{ card.0.code }}</span></p>
-                <h5 class="text-color text-center">Mes points</h5>
-                <p class="text-color text-center">Points de fidélité : <span class="font-weight-bold">{{ card.0.fidelityPoint }} pts</span></p>
-                <p class="text-color text-center">Score personnel : <span class="font-weight-bold">{{ card.0.personalScore }} pts</span></p>
-            </div>
-        #}
             <div class="col-md-6 col-lg-4">
                 <h5 class="text-color text-center">Mon historique de jeu</h5>
                 <p class="text-color text-center mb-md-0">Toutes mes activités</p>
@@ -36,7 +28,9 @@
                 {% if is_granted('ROLE_USER') %}
                     <div class="alert alert-dark px-1">
                         {% if cards_user|length == 0 %}
-                        <p class="font-weight-bold text-center">Pas de carte de fidélité <br> <a href="#add-card" style="color:red">Rattacher une carte</a></p>
+                            <p class="font-weight-bold text-center">Pas de carte de fidélité <br> <a href="#add-card"
+                                                                                                     style="color:red">Rattacher
+                                    une carte</a></p>
                         {% elseif cards_user|length == 1 %}
                             <p class="font-weight-bold text-center">Ma carte de fidélité</p>
                         {% else %}
@@ -76,7 +70,7 @@
             </nav>
             <hr width="100%" class="mx-5 my-5">
             <div class="col-12 d-flex align-items-center justify-content-center px-0 mb-5" id="add-card">
-                {% if is_granted('ROLE_USER')%}
+                {% if is_granted('ROLE_USER') %}
                     <div id="customer-add-card">
                         {{ render(controller(
                             'App\\Controller\\CardController::addCardToUser')) }}
@@ -91,7 +85,8 @@
                     <div class="col-12 col-md-4 mt-2 mt-md-0">
                         <div class="card bg-light mb-3 connection-card">
                             <div class="card-body">
-                                <a class="btn btn-dark btn-lg btn-block" href="{{ path('signup_route') }}">S'inscrire</a>
+                                <a class="btn btn-dark btn-lg btn-block"
+                                   href="{{ path('signup_route') }}">S'inscrire</a>
                                 <a class="btn btn-secondary btn-lg btn-block" href="{{ path('login_route') }}">Se
                                     connecter</a>
                             </div>

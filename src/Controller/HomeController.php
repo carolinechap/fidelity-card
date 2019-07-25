@@ -6,6 +6,7 @@ use App\Entity\Card;
 use App\Events\AppEvents;
 use App\Events\CardFidelityPointEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -18,7 +19,7 @@ class HomeController extends AbstractController
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @Route("/", name="home")
      */
@@ -33,7 +34,7 @@ class HomeController extends AbstractController
             $cardsUser = $cardRepository->findCardByUser($user);
 
             foreach ($cardsUser as $cardUser) {
-                //On déclenche l'événement' correspondant
+                //Trigger the corresponding event
                 $event = new CardFidelityPointEvent($cardUser);
                 if ($event->fidelityPointsAttained() === true) {
                     $eventDispatcher->dispatch($event, AppEvents::CARD_FIDELITY_POINTS);

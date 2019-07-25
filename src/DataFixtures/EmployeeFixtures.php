@@ -36,7 +36,7 @@ class EmployeeFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
+        $faker = Factory::create('en_US');
 
 
         //This superadmin is for test and demo purposes, login with email 'superadmin@email.com' and password superadmin
@@ -61,9 +61,6 @@ class EmployeeFixtures extends Fixture
         $superAdmin->setPassword($passwordAdmin);
 
         $manager->persist($superAdmin);
-
-
-
 
         //Store admins for demo/test and dev fixtures
         for ($i = 0; $i < self::NB_ADMINS; $i ++) {

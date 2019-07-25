@@ -50,7 +50,7 @@ class DefineUserRoleCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Gestion des rôles utilisateurs')
+            ->setDescription('Manage roles for users ')
             ->setHelp('Cette commande permet de gérer les utilisateurs et de leur attribuer des rôles');
 
         ;
@@ -70,6 +70,9 @@ class DefineUserRoleCommand extends Command
     }
 
 
+    /**
+     * Displays menu into console
+     */
     private function displayMenu()
     {
         while (true) {
@@ -123,7 +126,7 @@ class DefineUserRoleCommand extends Command
      */
     private function addUserRole()
     {
-        // Récuperation de l'id user
+        // Find user's id
         $id = $this->io->ask('Saisissez un Utilisateur id');
         $user = $this->em->getRepository(User::class)->find($id);
 
@@ -132,24 +135,24 @@ class DefineUserRoleCommand extends Command
             return;
         }
 
-        // Définition des rôles
+        // Define roles
         $roles = [
             'ROLE_USER',
             'ROLE_ADMIN',
             'ROLE_SUPERADMIN'
         ];
 
-        // Attribution des rôles
+        // Assignment roles
         $role = $this->io->choice(
             'Quel rôle souhaitez-vous attribuer ?',
             array_diff($roles, $user->getRoles()));
 
-        // Si un user dispose déjà de ce rôle:
+        // If a user already have a role
         if (!$user->addRole($role)) {
             $this->io->caution('Cet utilisateur à déjà ce rôle.');
         } else {
 
-            // Ajouter en db le rôle lié à l'user
+            // Add user's role in db
             $user->addRole($role);
             $this->em->flush();
             
@@ -162,7 +165,7 @@ class DefineUserRoleCommand extends Command
      */
     private function removeUserRole()
     {
-        // Récuperation de l'id user
+        // Find user's id
         $id = $this->io->ask('Saisissez un Utilisateur id');
         $user = $this->em->getRepository(User::class)->find($id);
 
@@ -171,19 +174,19 @@ class DefineUserRoleCommand extends Command
             return;
         }
 
-        // Définition des rôles
+        // Define roles
         $roles = [
             'ROLE_USER',
             'ROLE_ADMIN',
             'ROLE_SUPERADMIN'
         ];
 
-        // Attribution des rôles
+        // Unset a role
         $role = $this->io->choice(
             'Quel rôle souhaitez-vous retirer ?',
             array_intersect($roles, $user->getRoles()));
 
-        // Retirer en db le rôle lié à l'user
+
             $user->removeRole($role);
             $this->em->flush();
 

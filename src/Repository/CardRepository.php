@@ -30,7 +30,8 @@ class CardRepository extends ServiceEntityRepository
      * @param User $user
      * @return mixed
      */
-    public function findCardByUser(User $user){
+    public function findCardByUser(User $user)
+    {
         $qb = $this->createQueryBuilder('c')
             ->join('c.user', 'cu')
             ->andWhere('c.user = :user')
@@ -66,6 +67,9 @@ class CardRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @return mixed
+     */
     public function findCardWithUser(){
         $qb = $this->createQueryBuilder('c')
             ->join('c.user', 'cu')

@@ -59,10 +59,6 @@ class ActivityController extends AbstractController
             $entityManager->persist($activity);
             $entityManager->flush();
 
-            //On déclenche l'événement correspondant
-            $event = new CardFidelityPointEvent($this->getUser());
-            $eventDispatcher->dispatch($event, AppEvents::STORE_NEW_ACTIVITY);
-
             $this->addFlash('success', $translator->trans('add_activity.success', [], 'messages'));
 
             return $this->redirectToRoute('activity_index');

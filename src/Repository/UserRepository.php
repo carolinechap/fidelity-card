@@ -24,11 +24,12 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
     /**
      * @param array $roles
      * @return Query
      */
-    public function searchByRoles($roles = []) : Query
+    public function searchByRoles($roles = []): Query
     {
         $roles = serialize($roles);
 
@@ -44,7 +45,7 @@ class UserRepository extends ServiceEntityRepository
      * @param array $roles
      * @return QueryBuilder
      */
-    public function searchByRolesQb($roles = []) : QueryBuilder
+    public function searchByRolesQb($roles = []): QueryBuilder
     {
         $roles = serialize($roles);
 
@@ -54,9 +55,6 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter(':roles', $roles);
         return $qb;
     }
-
-
-
 
 
     /**
@@ -81,22 +79,22 @@ class UserRepository extends ServiceEntityRepository
      * @param array $filters
      * @return Query
      */
-    public function searchUser($roles = [], array $filters = []) : Query
+    public function searchUser($roles = [], array $filters = []): Query
     {
         $roles = serialize($roles);
 
         $qb = $this->createQueryBuilder('u');
         $qb->orderBy('u.lastname', 'ASC');
 
-        if (!empty($filters['lastname'])){
+        if (!empty($filters['lastname'])) {
             $qb->andWhere('u.lastname LIKE :lastname')
                 ->setParameter(':lastname', '%' . $filters['lastname'] . '%');
         }
-        if (!empty($filters['firstname'])){
+        if (!empty($filters['firstname'])) {
             $qb->andWhere('u.firstname LIKE :firstname')
                 ->setParameter(':firstname', '%' . $filters['firstname'] . '%');
         }
-        if (!empty($filters['email'])){
+        if (!empty($filters['email'])) {
             $qb->andWhere('u.email LIKE :email')
                 ->setParameter(':email', '%' . $filters['email'] . '%');
         }
@@ -124,14 +122,14 @@ class UserRepository extends ServiceEntityRepository
             ->andWhere('e.id = :user')
             ->join('e.stores', 'ust')
             ->setParameter(':user', $user)
-            ->setParameter(':roles', $roles)
-            ;
+            ->setParameter(':roles', $roles);
 
         return $qb->getQuery()->getOneOrNullResult();
     }
 
 
-    public function findByEmail($email){
+    public function findByEmail($email)
+    {
         $qb = $this->createQueryBuilder('u');
         $qb->andWhere('u.email = :email')
             ->setParameter(':email', $email);

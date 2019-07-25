@@ -18,20 +18,22 @@
                     {% set in_card = deal in card.deals ? true : false %}
                 {% endfor %}
             {% elseif card is defined %}
-                {%  set in_card = deal in card.deals ? true : false %}
+                {% set in_card = deal in card.deals ? true : false %}
             {% endif %}
             <tr>
                 <td scope="row" class="text-center">{{ deal.name }}</td>
                 <td scope="row" class="text-center">{{ deal.startDate ? deal.startDate|date('d/m/Y') : '' }}</td>
                 <td scope="row" class="text-center">{{ deal.endDate ? deal.endDate|date('d/m/Y') : '' }}</td>
-                <td scope="row" class="text-center">{{ deal.description|length > 30 ? deal.description|slice(0, 25) ~ '...' : deal.description  }}</td>
+                <td scope="row"
+                    class="text-center">{{ deal.description|length > 30 ? deal.description|slice(0, 25) ~ '...' : deal.description }}</td>
                 <td scope="row" class="text-center">{{ deal.costPoint }}</td>
                 <td scope="row" width="220" class="text-center">
                     <a href="{{ path('deal_show', {'id' : deal.id}) }}" class="btn btn-secondary btn-sm">
                         Voir
                     </a>
                     {% if in_card is same as(false)  and (card is defined and card is not null ) %}
-                        <a href="{{ path('deal_add_card', {'deal': deal.id, 'card': card.id }) }}" class="btn btn-success btn-sm">
+                        <a href="{{ path('deal_add_card', {'deal': deal.id, 'card': card.id }) }}"
+                           class="btn btn-success btn-sm">
                             Ajouter
                         </a>
                     {% elseif in_card == true and (card is defined and card is not null ) %}

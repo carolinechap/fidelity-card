@@ -46,27 +46,43 @@ class Activity
     private $gameName;
 
 
+    /**
+     * Activity constructor.
+     */
     public function __construct()
     {
         $this->cards = new ArrayCollection();
     }
 
+    /**
+     * @return mixed
+     */
     public function __toString()
     {
         return $this->gameName;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
 
+    /**
+     * @return int|null
+     */
     public function getFidelityPoint(): ?int
     {
         return $this->fidelityPoint;
     }
 
+    /**
+     * @param int|null $fidelityPoint
+     * @return Activity
+     */
     public function setFidelityPoint(?int $fidelityPoint): self
     {
         $this->fidelityPoint = $fidelityPoint;
@@ -82,6 +98,10 @@ class Activity
         return $this->cards;
     }
 
+    /**
+     * @param CardActivity $card
+     * @return Activity
+     */
     public function addCard(CardActivity $card): self
     {
         if (!$this->cards->contains($card)) {
@@ -92,6 +112,10 @@ class Activity
         return $this;
     }
 
+    /**
+     * @param CardActivity $card
+     * @return Activity
+     */
     public function removeActivity(CardActivity $card): self
     {
         if($this->cards->contains($card)){
@@ -104,20 +128,22 @@ class Activity
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getGameName(): ?string
     {
         return $this->gameName;
     }
 
+    /**
+     * @param string $gameName
+     * @return Activity
+     */
     public function setGameName(string $gameName): self
     {
         $this->gameName = $gameName;
 
         return $this;
     }
-
-
-
-
-
 }

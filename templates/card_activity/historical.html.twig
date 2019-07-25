@@ -17,10 +17,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for card in cards  %}
+                    {% for card in cards %}
                         <tr>
                             <td scope="row" class="text-center">{{ card.getCode }}</td>
-                            <td scope="row" class="text-center" >{{ card.personalScore }}</td>
+                            <td scope="row" class="text-center">{{ card.personalScore }}</td>
                             <td scope="row" class="text-center">{{ card.fidelityPoint }}</td>
                         </tr>
                     {% endfor %}
@@ -43,11 +43,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for act in activities  %}
+                    {% for act in activities %}
                         <tr>
-                            <td scope="row" class="text-center">{{ act.gameDate  | date('d/m/Y')}}</td>
+                            <td scope="row" class="text-center">{{ act.gameDate  | date('d/m/Y') }}</td>
                             <td scope="row" class="text-center">{{ act.activity.gameName }}</td>
-                            <td scope="row" class="text-center">{% if act.isTheWinner == 1  %} Match gagné {% else %} Match perdu {% endif %}</td>
+                            <td scope="row"
+                                class="text-center">{% if act.isTheWinner == 1 %} Match gagné {% else %} Match perdu {% endif %}</td>
                             <td scope="row" class="text-center">{{ act.personalScore }}</td>
                         </tr>
                     {% else %}

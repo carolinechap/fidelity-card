@@ -102,22 +102,35 @@ class Card
     private $countGames;
 
 
+    /**
+     * Card constructor.
+     */
     public function __construct()
     {
         $this->activities = new ArrayCollection();
         $this->deals = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return array|null
+     */
     public function getStatus(): ?array
     {
         return $this->status;
     }
 
+    /**
+     * @param array $status
+     * @return Card
+     */
     public function setStatus(array $status): self
     {
         $this->status = $status;
@@ -143,11 +156,18 @@ class Card
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User $user
+     * @return Card
+     */
     public function setUser(User $user): self
     {
         $this->user = $user;
@@ -155,11 +175,18 @@ class Card
         return $this;
     }
 
+    /**
+     * @return Store|null
+     */
     public function getStore(): ?Store
     {
         return $this->store;
     }
 
+    /**
+     * @param Store|null $store
+     * @return Card
+     */
     public function setStore(?Store $store): self
     {
         $this->store = $store;
@@ -175,6 +202,10 @@ class Card
         return $this->activities;
     }
 
+    /**
+     * @param CardActivity $activity
+     * @return Card
+     */
     public function addActivity(CardActivity $activity): self
     {
         if (!$this->activities->contains($activity)) {
@@ -185,6 +216,10 @@ class Card
         return $this;
     }
 
+    /**
+     * @param CardActivity $activity
+     * @return Card
+     */
     public function removeActivity(CardActivity $activity): self
     {
         if($this->activities->contains($activity)){
@@ -207,6 +242,10 @@ class Card
         return $this->deals;
     }
 
+    /**
+     * @param Deal $deal
+     * @return Card
+     */
     public function addDeal(Deal $deal): self
     {
         if (!$this->deals->contains($deal)) {
@@ -216,6 +255,10 @@ class Card
         return $this;
     }
 
+    /**
+     * @param Deal $deal
+     * @return Card
+     */
     public function removeDeal(Deal $deal): self
     {
         if ($this->deals->contains($deal)) {
@@ -243,6 +286,9 @@ class Card
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getCode()
     {
         return $this->getStore()->getCenterCode() .
@@ -250,16 +296,26 @@ class Card
 
     }
 
+    /**
+     * @return string
+     */
     public function getCardOwnerName()
     {
         return $this->customerCode . ' - ' . $this->getUser()->getFullName();
     }
 
+    /**
+     * @return int|null
+     */
     public function getFidelityPoint(): ?int
     {
         return $this->fidelityPoint;
     }
 
+    /**
+     * @param int|null $fidelityPoint
+     * @return Card
+     */
     public function setFidelityPoint(?int $fidelityPoint): self
     {
         $this->fidelityPoint = $fidelityPoint;
@@ -267,11 +323,18 @@ class Card
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getPersonalScore(): ?int
     {
         return $this->personalScore;
     }
 
+    /**
+     * @param int|null $personalScore
+     * @return Card
+     */
     public function setPersonalScore(?int $personalScore): self
     {
         $this->personalScore = $personalScore;

@@ -10,6 +10,7 @@ use App\Repository\DealRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Void_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -27,6 +28,28 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class DealController extends AbstractController
 {
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var CardRepository
+     */
+    private $cardRepository;
+
+    /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
+     * @var DealRepository
+     */
+    private $dealRepository;
+
+
     /**
      * DealController constructor.
      * @param TranslatorInterface $translator
@@ -56,7 +79,7 @@ class DealController extends AbstractController
         $card = null;
         $cards = $this->getUserCards();
 
-        if ($request->request->get('cards') !== 'null' && $request->request->get('cards') !== null ) {
+        if ($request->request->get('cards') !== 'null' && $request->request->get('cards') !== null) {
             $card = $this->cardRepository->find($request->request->get('cards'));
             if ($this->getUser()->getEmail() !== $card->getUser()->getEmail()) {
                 throw new UnauthorizedHttpException("Vous n'êtes pas autorisé à effectuer cette action.");
@@ -75,7 +98,7 @@ class DealController extends AbstractController
     /**
      * @param Deal $deal
      * @param Card $card
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @Route("/offre/{deal}/{card}", name="deal_add_card", methods={"GET"})
      * @ParamConverter("deal", options={"mapping": {"deal": "id"}})
@@ -86,7 +109,7 @@ class DealController extends AbstractController
         $costPoint = $deal->getCostPoint();
         $fidelityPoint = $card->getFidelityPoint();
 
-        if ( $fidelityPoint >= $costPoint ) {
+        if ($fidelityPoint >= $costPoint) {
             $updatedFidelityPoint = $this->updatefidelityPoint($fidelityPoint, $costPoint);
 
             $card->addDeal($deal);
@@ -134,14 +157,16 @@ class DealController extends AbstractController
      * @param $dealCost
      * @return int
      */
-    private function updatefidelityPoint($fidelityPoint, $dealCost){
+    private function updatefidelityPoint($fidelityPoint, $dealCost)
+    {
         return $fidelityPoint - $dealCost < 0 ? 0 : $fidelityPoint - $dealCost;
     }
 
     /**
      * @return Card[]
      */
-    private function getUserCards(){
+    private function getUserCards()
+    {
         $user = $this->getUser();
         $cards = $this->cardRepository->findBy(['user' => $user]);
 

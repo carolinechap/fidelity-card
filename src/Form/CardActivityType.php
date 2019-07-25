@@ -47,13 +47,13 @@ class CardActivityType extends AbstractType
                     'class' => Card::class,
                     'translation_domain' => 'forms',
                     'label' => 'cardactivity.form.label.card_number',
-                    'query_builder' => function(CardRepository $cardRepository){
-                    return $cardRepository->createQueryBuilder('c')
-                        ->join('c.user','cu' );
+                    'query_builder' => function (CardRepository $cardRepository) {
+                        return $cardRepository->createQueryBuilder('c')
+                            ->join('c.user', 'cu');
                     },
                     'choice_label' => 'CardOwnerName'
                 ]
-                )
+            )
             ->add('activity', EntityType::class,
                 [
                     'class' => Activity::class,
@@ -69,8 +69,7 @@ class CardActivityType extends AbstractType
                     'widget' => 'single_text',
                     'format' => 'dd/MM/yyyy',
                     'html5' => true
-                ])
-        ;
+                ]);
     }
 
     /**

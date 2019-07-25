@@ -111,7 +111,7 @@ class NewCardActivityCommand extends Command
         // Set the total into Card
         $oneCardActivity->getCard()->setPersonalScore($personalScoreSum);
 
-        //On déclenche l'événement' correspondant
+        //Trigger the corresponding event
         $event = new CardActivityEvent($oneCardActivity);
         $event->setBeforePoints($beforePoints);
         $this->eventDispatcher->dispatch($event, AppEvents::CARD_NEW_ACTIVITY);

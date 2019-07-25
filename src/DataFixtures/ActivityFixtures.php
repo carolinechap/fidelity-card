@@ -45,7 +45,6 @@ class ActivityFixtures extends Fixture
         $this->addReference('myactivity', $oneActivity);
         $manager->persist($oneActivity);
 
-
         for($a = 0; $a<self::COUNT; $a++){
             $fidelityPoint = $a + rand($a, 200);
             $activity = new Activity();

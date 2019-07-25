@@ -78,6 +78,9 @@ class Store
      */
     private $cards;
 
+    /**
+     * Store constructor.
+     */
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -85,21 +88,34 @@ class Store
         $this->centerCode = $this->defineCenterCode();
     }
 
+    /**
+     * @return mixed
+     */
     public function __toString()
     {
         return $this->name;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return int|null
+     */
     public function getNumberStreet(): ?int
     {
         return $this->numberStreet;
     }
 
+    /**
+     * @param int $numberStreet
+     * @return Store
+     */
     public function setNumberStreet(int $numberStreet): self
     {
         $this->numberStreet = $numberStreet;
@@ -107,11 +123,18 @@ class Store
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getNameStreet(): ?string
     {
         return $this->nameStreet;
     }
 
+    /**
+     * @param string $nameStreet
+     * @return Store
+     */
     public function setNameStreet(string $nameStreet): self
     {
         $this->nameStreet = $nameStreet;
@@ -119,11 +142,18 @@ class Store
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getZipCode(): ?string
     {
         return $this->zipCode;
     }
 
+    /**
+     * @param string $zipCode
+     * @return Store
+     */
     public function setZipCode(string $zipCode): self
     {
         $this->zipCode = $zipCode;
@@ -131,11 +161,18 @@ class Store
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * @param string $city
+     * @return Store
+     */
     public function setCity(string $city): self
     {
         $this->city = $city;
@@ -143,11 +180,18 @@ class Store
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
+    /**
+     * @param string $country
+     * @return Store
+     */
     public function setCountry(string $country): self
     {
         $this->country = $country;
@@ -155,11 +199,18 @@ class Store
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Store
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -193,6 +244,10 @@ class Store
         return $this->users;
     }
 
+    /**
+     * @param User $user
+     * @return Store
+     */
     public function addUser(User $user): self
     {
         if (!$this->users->contains($user)) {
@@ -203,6 +258,10 @@ class Store
         return $this;
     }
 
+    /**
+     * @param User $user
+     * @return Store
+     */
     public function removeUser(User $user): self
     {
         if ($this->users->contains($user)) {
@@ -221,6 +280,10 @@ class Store
         return $this->cards;
     }
 
+    /**
+     * @param Card $card
+     * @return Store
+     */
     public function addCard(Card $card): self
     {
         if (!$this->cards->contains($card)) {
@@ -231,6 +294,10 @@ class Store
         return $this;
     }
 
+    /**
+     * @param Card $card
+     * @return Store
+     */
     public function removeCard(Card $card): self
     {
         if ($this->cards->contains($card)) {
@@ -244,6 +311,9 @@ class Store
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function defineCenterCode(){
         $randCode = mt_rand(1,999);
         $centerCode = sprintf("%03s",$randCode);

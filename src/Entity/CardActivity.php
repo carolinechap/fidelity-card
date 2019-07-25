@@ -160,10 +160,4 @@ class CardActivity
         return $this;
     }
 
-
-
-
-
-
-
 }

@@ -55,21 +55,34 @@ class Deal
      */
     private $cards;
 
+    /**
+     * Deal constructor.
+     */
     public function __construct()
     {
         $this->cards = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Deal
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -77,11 +90,18 @@ class Deal
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getStartDate(): ?\DateTimeInterface
     {
         return $this->startDate;
     }
 
+    /**
+     * @param \DateTimeInterface $startDate
+     * @return Deal
+     */
     public function setStartDate(\DateTimeInterface $startDate): self
     {
         $this->startDate = $startDate;
@@ -89,11 +109,18 @@ class Deal
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getEndDate(): ?\DateTimeInterface
     {
         return $this->endDate;
     }
 
+    /**
+     * @param \DateTimeInterface $endDate
+     * @return Deal
+     */
     public function setEndDate(\DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
@@ -101,11 +128,18 @@ class Deal
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return Deal
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -113,11 +147,18 @@ class Deal
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getCostPoint(): ?int
     {
         return $this->costPoint;
     }
 
+    /**
+     * @param int $costPoint
+     * @return Deal
+     */
     public function setCostPoint(int $costPoint): self
     {
         $this->costPoint = $costPoint;
@@ -133,6 +174,10 @@ class Deal
         return $this->cards;
     }
 
+    /**
+     * @param Card $card
+     * @return Deal
+     */
     public function addCard(Card $card): self
     {
         if (!$this->cards->contains($card)) {
@@ -143,6 +188,10 @@ class Deal
         return $this;
     }
 
+    /**
+     * @param Card $card
+     * @return Deal
+     */
     public function removeCard(Card $card): self
     {
         if ($this->cards->contains($card)) {
