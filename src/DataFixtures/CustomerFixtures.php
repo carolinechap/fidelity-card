@@ -45,7 +45,7 @@ class CustomerFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
+        $faker = Factory::create('en_US');
 
         //This customer is for test and demo purposes, login with email 'customer@email.com' and password customer
         $oneCustomer = new User();
@@ -89,7 +89,7 @@ class CustomerFixtures extends Fixture
             $fakerFirstName = $faker->firstName;
             $customer->setFirstname($fakerFirstName);
             $customer->setLastname($faker->lastName);
-            $customer->setEmail($fakerFirstName.'@email.com');
+            $customer->setEmail(strtolower($fakerFirstName).'@email.com');
 
             $customer->setPassword($this->encoder->encodePassword($customer, $fakerFirstName));
 

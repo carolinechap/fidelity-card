@@ -36,7 +36,7 @@ class EmployeeFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
+        $faker = Factory::create('en_US');
 
 
         //This superadmin is for test and demo purposes, login with email 'superadmin@email.com' and password superadmin
