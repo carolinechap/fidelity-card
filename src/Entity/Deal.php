@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,7 +45,8 @@ class Deal
 
     /**
      * @ORM\Column(type="integer")
-     * @todo assert for costPoint range ?
+     * @Assert\Positive(message="deal.cost_point.positive")
+     * @Assert\Range(min=1, minMessage="deal.cost_point.min", max=10000, maxMessage="deal.cost_point.max")
      */
     private $costPoint;
 

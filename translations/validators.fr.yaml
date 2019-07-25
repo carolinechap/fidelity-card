@@ -8,6 +8,11 @@ deal:
   description:
     max: La description ne peut pas dépasser {{ limit }} caractères.
     min: La description doit être au minimun de {{ limit }} caractères.
+  cost_point:
+    type: Le type de la valeur n'est pas valide
+    positive: La valeur du point ne peut pas être négative
+    min: La valeur du point ne peut pas être inférieur à {{ limit }}
+    max: La valeur du point ne peut pas être supérieur à {{ limit }}
 activity:
   fidelitypoint:
     positive: Les points de fidélités ne doivent pas être négatif
