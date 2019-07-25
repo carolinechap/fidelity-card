@@ -13,7 +13,7 @@
         </div>
         {% for card in cards %}
             <h3>Carte n° {{ card.code }}</h3>
-            {% include 'deal/_tab_deals.html.twig' with {'deals': card.deals, 'enabled': 0}%}
+            {% include 'deal/_tab_deals.html.twig' with {'deals': card.deals, 'enabled': 0} %}
         {% endfor %}
     </div>
 {% endblock %}

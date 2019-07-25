@@ -24,11 +24,11 @@ class StoreType extends AbstractType
             ->add('centerCode',
                 TextType::class,
                 [
-                'label' => 'Code centre',
-                'attr' => [
-                    'readonly' => true
-                ]
-            ])
+                    'label' => 'Code centre',
+                    'attr' => [
+                        'readonly' => true
+                    ]
+                ])
             ->add('numberStreet',
                 TextType::class,
                 [
@@ -59,8 +59,7 @@ class StoreType extends AbstractType
                 TextType::class,
                 [
                     'label' => 'Nom du centre'
-                ])
-        ;
+                ]);
     }
 
     /**

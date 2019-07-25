@@ -20,16 +20,20 @@
                     <p class="card-text"><span class="font-weight-bold">Adresse :</span> <br>
                         {{ user.numberStreet }} {{ user.nameStreet }} <br>
                         {{ user.zipCode }}  {{ user.city }}<br> {{ user.country }}</p>
-                    <p class="card-text"> <span class="font-weight-bold">Adresse email :</span> {{ user.email }}</p>
+                    <p class="card-text"><span class="font-weight-bold">Adresse email :</span> {{ user.email }}</p>
 
                     {% for store in stores %}
-                    <p class="card-text"><span class="font-weight-bold"> Magasin préféré :</span> {{ store.name }}</p>
+                        <p class="card-text"><span class="font-weight-bold"> Magasin préféré :</span> {{ store.name }}
+                        </p>
                     {% endfor %}
 
                     {% for card in cards %}
-                    <p class="card-text"><span class="font-weight-bold">Points de fidélité :</span> {{ card.fidelityPoint }}</p>
-                    <p class="card-text"><span class="font-weight-bold">Numéro de la carte :</span> {{ card.code }}</p>
-                    <p class="card-text"><span class="font-weight-bold">Score personnel :</span> {{ card.personalScore }}</p>
+                        <p class="card-text"><span
+                                    class="font-weight-bold">Points de fidélité :</span> {{ card.fidelityPoint }}</p>
+                        <p class="card-text"><span class="font-weight-bold">Numéro de la carte :</span> {{ card.code }}
+                        </p>
+                        <p class="card-text"><span
+                                    class="font-weight-bold">Score personnel :</span> {{ card.personalScore }}</p>
                     {% endfor %}
                     <div class="d-flex justify-content-end">
                         <a href="{{ path('admin_user_index', {'id' : user.id}) }}" class="btn btn-danger">

@@ -26,7 +26,8 @@
 
             {% if card is defined and card is not null %}
                 <div class="alert alert-secondary text-center m-1">
-                    Carte n°<br>{{ card.code }}<br><b>{% if card.fidelityPoint == 0 %} 0 {% else %}{{ card.fidelityPoint }} {% endif %}points</b>
+                    Carte n°<br>{{ card.code }}
+                    <br><b>{% if card.fidelityPoint == 0 %} 0 {% else %}{{ card.fidelityPoint }} {% endif %}points</b>
                 </div>
             {% endif %}
             <p><a class="btn btn-secondary m-2" href="{{ path('deal_display_user') }}">Voir tous mes deals</a></p>

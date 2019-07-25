@@ -93,16 +93,16 @@ class CardController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
 
-            # Process de création d'une carte ...
-            $card = $cardGenerator->generateCard($card);
+                # Process de création d'une carte ...
+                $card = $cardGenerator->generateCard($card);
 
-            # Handle workflow
-            $this->updateWorkflow($card, 'to_creating');
+                # Handle workflow
+                $this->updateWorkflow($card, 'to_creating');
 
-            # Sauvegarde de la carte
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($card);
-            $entityManager->flush();
+                # Sauvegarde de la carte
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($card);
+                $entityManager->flush();
 
                 $this->addFlash('success', $translator->trans('new.success', [], 'crud'));
 
@@ -158,7 +158,7 @@ class CardController extends AbstractController
         $message = null;
         $typeMessage = null;
 
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $cardNumber = $form->getData()['card_number'];
             if ($form->isValid()) {
                 $customerCode = $cardNumberExtractor->evaluate($cardNumber);
@@ -176,8 +176,7 @@ class CardController extends AbstractController
                 if (!$request->isXmlHttpRequest()) {
                     $this->addFlash('success', $message);
                 }
-            }
-            else {
+            } else {
                 $message = $translator->trans('card.add.user.error', [], 'forms');
                 $typeMessage = 'danger';
                 if (!$request->isXmlHttpRequest()) {
@@ -220,7 +219,7 @@ class CardController extends AbstractController
         # Process list of customer submission (ajax process on change)
         if (isset($request->request->get('lost_card')['customers'])
             && ($request->request->get('lost_card')['customers'] !== null
-            && !empty($request->request->get('lost_card')['customers']))) {
+                && !empty($request->request->get('lost_card')['customers']))) {
 
             $customerId = intval($request->request->get('lost_card')['customers']);
             $customer = $userRepository->findOneById(intval($customerId));

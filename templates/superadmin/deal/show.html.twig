@@ -20,9 +20,11 @@
         <div class="card">
             <h5 class="card-header text-center">{{ entity.name }}</h5>
             <div class="card-body">
-                <p class="card-title text-muted">Valide {{ entity.startDate ? entity.startDate|date('d/m/Y') : '' }} au {{ entity.endDate ? entity.endDate|date('d/m/Y') : '' }}</p>
+                <p class="card-title text-muted">Valide {{ entity.startDate ? entity.startDate|date('d/m/Y') : '' }}
+                    au {{ entity.endDate ? entity.endDate|date('d/m/Y') : '' }}</p>
                 <p class="card-text">{{ entity.description }}</p>
-                <p class="card-text">Points de fidélité nécessaires : <span class="font-weight-bold">{{ entity.costPoint }}</span> pts </p>
+                <p class="card-text">Points de fidélité nécessaires : <span
+                            class="font-weight-bold">{{ entity.costPoint }}</span> pts </p>
 
                 <div class="d-flex justify-content-end">
                     {% if is_granted('ROLE_SUPERADMIN') %}

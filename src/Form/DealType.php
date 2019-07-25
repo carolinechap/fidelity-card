@@ -28,7 +28,7 @@ class DealType extends AbstractType
                 'translation_domain' => 'forms',
                 'label' => 'deal.form.label.name'
             ])
-            ->add('startDate',DateType::class, [
+            ->add('startDate', DateType::class, [
                 'label' => 'deal.form.label.startdate',
                 'required' => false,
                 'widget' => 'single_text',
@@ -36,7 +36,7 @@ class DealType extends AbstractType
                 'html5' => false,
                 'translation_domain' => 'forms'
             ])
-            ->add('endDate',DateType::class, [
+            ->add('endDate', DateType::class, [
                 'label' => 'deal.form.label.enddate',
                 'required' => false,
                 'widget' => 'single_text',
@@ -51,8 +51,7 @@ class DealType extends AbstractType
             ->add('costPoint', NumberType::class, [
                 'label' => 'deal.form.label.costpoint',
                 'translation_domain' => 'forms'
-            ])
-        ;
+            ]);
     }
 
     /**

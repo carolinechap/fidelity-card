@@ -36,8 +36,7 @@ class SearchUserType extends AbstractType
                 [
                     'label' => 'Email',
                     'required' => false
-                ])
-        ;
+                ]);
     }
 
     /**

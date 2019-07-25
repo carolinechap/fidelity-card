@@ -24,7 +24,6 @@ class ActivityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             ->add('fidelityPoint', IntegerType::class,
                 [
                     'translation_domain' => 'forms',
@@ -36,8 +35,7 @@ class ActivityType extends AbstractType
                     'translation_domain' => 'forms',
                     'label' => 'activity.form.label.gameName',
                     'required' => true
-                ])
-        ;
+                ]);
     }
 
     /**

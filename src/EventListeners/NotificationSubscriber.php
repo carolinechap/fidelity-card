@@ -62,7 +62,7 @@ class NotificationSubscriber implements EventSubscriberInterface
         return [
             'workflow.card_status.completed.to_activating' => 'onCardActivated',
             'workflow.card_status.completed.to_deactivating' => 'onCardDeactivated',
-            AppEvents::USER_ACCOUNT_CREATED =>  'onUserAccountCreated',
+            AppEvents::USER_ACCOUNT_CREATED => 'onUserAccountCreated',
             AppEvents::CARD_NEW_ACTIVITY => 'onNewCardActivity',
             AppEvents::CARD_FIDELITY_POINTS => 'onCardFidelityPoints'
         ];

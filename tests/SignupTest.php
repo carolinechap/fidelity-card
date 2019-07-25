@@ -3,12 +3,8 @@
 
 namespace App\Tests;
 
-
-use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Faker\Factory;
-use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SignupTest extends WebTestCase
@@ -52,7 +48,7 @@ class SignupTest extends WebTestCase
             ->willReturn($mail);
 
 
-        if ($mail == $userMailIntoDb){
+        if ($mail == $userMailIntoDb) {
             $mail = strtolower($lastname) . '.' . strtolower($fistname) . rand(1, 10000) . '@email.com';
             $form['user[email]'] = $mail;
         }

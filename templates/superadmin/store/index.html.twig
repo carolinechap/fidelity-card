@@ -12,44 +12,42 @@
        class="btn btn-outline-primary mb-3">
         Ajouter un centre
     </a>
-
-
     <table class="table">
+        <tr>
+            <th>Numéro de centre</th>
+            <th>Nom du centre</th>
+            <th>Numéro de rue</th>
+            <th>Rue</th>
+            <th>Code postal</th>
+            <th>Ville</th>
+            <th>Pays</th>
+            <th width="300px">Actions</th>
+        </tr>
+        {% for entity in entities %}
             <tr>
-                <th>Numéro de centre</th>
-                <th>Nom du centre</th>
-                <th>Numéro de rue</th>
-                <th>Rue</th>
-                <th>Code postal</th>
-                <th>Ville</th>
-                <th>Pays</th>
-                <th width="300px">Actions</th>
+                <td>{{ entity.centerCode }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.numberStreet }}</td>
+                <td>{{ entity.nameStreet }}</td>
+                <td>{{ entity.zipCode }}</td>
+                <td>{{ entity.city }}</td>
+                <td>{{ entity.country }}</td>
+                <td>
+                    <div class="d-flex justify-content-center">
+                        <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}"
+                           class="btn btn-sm mx-2 btn-warning">
+                            Modifier
+                        </a>
+                        {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
+                    </div>
+                </td>
             </tr>
-            {% for entity in entities %}
-                <tr>
-                    <td>{{ entity.centerCode }}</td>
-                    <td>{{ entity.name }}</td>
-                    <td >{{ entity.numberStreet }}</td>
-                    <td >{{ entity.nameStreet }}</td>
-                    <td >{{ entity.zipCode }}</td>
-                    <td >{{ entity.city }}</td>
-                    <td >{{ entity.country }}</td>
-                    <td>
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}"
-                               class="btn btn-sm mx-2 btn-warning">
-                                Modifier
-                            </a>
-                            {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}
-                        </div>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4" class="text-center">
-                        Aucun résultat
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">
+                    Aucun résultat
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
     {% endblock %}

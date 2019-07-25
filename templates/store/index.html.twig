@@ -8,49 +8,49 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Centres</h1>
     </div>
-        <a href="{{ path('store_edition') }}"
-           class="btn btn-outline-primary mb-3">
-            Ajouter un centre
-        </a>
+    <a href="{{ path('store_edition') }}"
+       class="btn btn-outline-primary mb-3">
+        Ajouter un centre
+    </a>
 
-        <table class="table">
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Numéro de centre</th>
+            <th>Nom du centre</th>
+            <th>Numéro de rue</th>
+            <th>Code postal</th>
+            <th>Ville</th>
+            <th>Pays</th>
+            <th width="250px"></th>
+        </tr>
+        {% for store in stores %}
             <tr>
-                <th>Id</th>
-                <th>Numéro de centre</th>
-                <th>Nom du centre</th>
-                <th>Numéro de rue</th>
-                <th>Code postal</th>
-                <th>Ville</th>
-                <th>Pays</th>
-                <th width="250px"></th>
+                <td>{{ store.id }}</td>
+                <td>{{ store.centerCode }}</td>
+                <td>{{ store.name }}</td>
+                <td>{{ store.numberStreet }}</td>
+                <td>{{ store.nameStreet }}</td>
+                <td>{{ store.zipCode }}</td>
+                <td>{{ store.city }}</td>
+                <td>{{ store.country }}</td>
+                <td>
+                    <a href="{{ path('store_edition', {'id': store.id}) }}"
+                       class="btn btn-primary">
+                        Modifier
+                    </a>
+                    <a href="{{ path('store_edition', {'id': store.id}) }}"
+                       class="btn btn-danger">
+                        Supprimer
+                    </a>
+                </td>
             </tr>
-            {% for store in stores %}
-                <tr>
-                    <td>{{ store.id }}</td>
-                    <td>{{ store.centerCode }}</td>
-                    <td>{{ store.name }}</td>
-                    <td >{{ store.numberStreet }}</td>
-                    <td >{{ store.nameStreet }}</td>
-                    <td >{{ store.zipCode }}</td>
-                    <td >{{ store.city }}</td>
-                    <td >{{ store.country }}</td>
-                    <td>
-                        <a href="{{ path('store_edition', {'id': store.id}) }}"
-                           class="btn btn-primary">
-                            Modifier
-                        </a>
-                        <a href="{{ path('store_edition', {'id': store.id}) }}"
-                           class="btn btn-danger">
-                            Supprimer
-                        </a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4" class="text-center">
-                        Aucun résultat
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">
+                    Aucun résultat
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
     {% endblock %}

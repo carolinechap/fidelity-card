@@ -29,7 +29,8 @@
                             <td scope="row" class="text-center">{{ entity.fidelityPoint }}</td>
                             <td width="250">
                                 <div class="d-flex justify-content-center">
-                                    <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}" class="btn btn-sm btn-warning mx-2">
+                                    <a href="{{ path('crud_edit', {'id': entity.id, 'class': class }) }}"
+                                       class="btn btn-sm btn-warning mx-2">
                                         Modifier
                                     </a>
                                     {{ include('superadmin/crud/_delete_form.html.twig', {'class': class }) }}

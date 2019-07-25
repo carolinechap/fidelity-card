@@ -18,28 +18,28 @@ class ApplicationAvailabilityFunctionalTest extends PantherTestCase
         $crawler = $client->request('GET', $url);
 
         switch ($crawler) {
-            case $crawler = $client->request('GET', '/' ):
+            case $crawler = $client->request('GET', '/'):
                 $this->assertContains('Classement', $crawler->filter('h1')->text());
                 break;
             case $crawler = $client->request('GET', '/dashboards/clients'):
                 $this->assertContains('Liste des clients', $crawler->filter('h1')->text());
                 break;
-            case $crawler = $client->request('GET', '/dashboards/employes' ):
+            case $crawler = $client->request('GET', '/dashboards/employes'):
                 $this->assertContains('Liste des employés', $crawler->filter('h1')->text());
                 break;
-            case $crawler = $client->request('GET', '/dashboards/carte/activite' ):
+            case $crawler = $client->request('GET', '/dashboards/carte/activite'):
                 $this->assertContains('Activités Client', $crawler->filter('h1')->text());
                 break;
-            case $crawler = $client->request('GET', '/dashboards/carte' ):
+            case $crawler = $client->request('GET', '/dashboards/carte'):
                 $this->assertContains('Cartes de fidélités', $crawler->filter('h1')->text());
                 break;
-            case $crawler = $client->request('GET', '/dashboard/store' ):
+            case $crawler = $client->request('GET', '/dashboard/store'):
                 $this->assertContains('Centres', $crawler->filter('h1')->text());
                 break;
-            case $crawler = $client->request('GET', '/dashboard/deal' ):
+            case $crawler = $client->request('GET', '/dashboard/deal'):
                 $this->assertContains('Offres commerciales', $crawler->filter('h1')->text());
                 break;
-            case $crawler = $client->request('GET', '/dashboard/activity' ):
+            case $crawler = $client->request('GET', '/dashboard/activity'):
                 $this->assertContains('Activités du laser game', $crawler->filter('h1')->text());
                 break;
         }

@@ -56,7 +56,8 @@ class LoginListener implements EventSubscriberInterface
     /**
      * @param ResponseEvent $responseEvent
      */
-    public function onKernelResponse(ResponseEvent $responseEvent){
+    public function onKernelResponse(ResponseEvent $responseEvent)
+    {
 
         //this->logger->info('ok');
 
@@ -70,9 +71,10 @@ class LoginListener implements EventSubscriberInterface
     /**
      * @param InteractiveLoginEvent $event
      */
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event){
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    {
 
-       $this->eventDispatcher->addListener(KernelEvents::RESPONSE, [$this, 'onKernelResponse']);
+        $this->eventDispatcher->addListener(KernelEvents::RESPONSE, [$this, 'onKernelResponse']);
 
     }
 
@@ -98,7 +100,7 @@ class LoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-           'security.interactive_login' => ['onSecurityInteractiveLogin']
+            'security.interactive_login' => ['onSecurityInteractiveLogin']
         ];
 
     }

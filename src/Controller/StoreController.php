@@ -26,7 +26,8 @@ class StoreController extends AbstractController
      */
     public function index(
         StoreRepository $storeRepository
-    ) {
+    )
+    {
         $stores = $storeRepository->findBy(
             [],
             [
@@ -54,7 +55,8 @@ class StoreController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         $id
-    ) {
+    )
+    {
         if (is_null($id)) { // création
 
             $store = new Store();
@@ -81,7 +83,7 @@ class StoreController extends AbstractController
         // si le formulaire a été soumis
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                               // enregistrement en bdd
+                // enregistrement en bdd
                 $em->persist($store);
                 $em->flush();
 
@@ -109,13 +111,14 @@ class StoreController extends AbstractController
      *
      * @Route("/suppression/{id}", name="store_delete")
      */
-    public function delete(Store $store) {
+    public function delete(Store $store)
+    {
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($store);
-            $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($store);
+        $entityManager->flush();
 
-            $this->addFlash('success', "Le magasin est supprimée");
+        $this->addFlash('success', "Le magasin est supprimée");
 
         return $this->redirectToRoute('store_index');
     }

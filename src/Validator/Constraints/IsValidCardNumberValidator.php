@@ -94,16 +94,15 @@ class IsValidCardNumberValidator extends ConstraintValidator
         $codeCentre = $this->cardNumberExtractor->evaluate($value)['code_centre'];
         $checkSum = $this->cardNumberExtractor->evaluate($value)['checksum'];
         if (
-                (strlen($codeCentre) !== 3) || (strlen($customerCode)) !== 6 ||
-                (!$this->storeRepository->findOneBy(['centerCode' => $codeCentre])) ||
-                (!$this->cardRepository->findOneBy(['customerCode' => $customerCode])) ||
-                $checkSum !== ((intval($codeCentre) + intval($customerCode))% 9)
-        )
-            {
-                $this->context->buildViolation('card.number.not_valid')
-                    ->setParameter('{{ string }}', $value)
-                    ->addViolation();
-            }
+            (strlen($codeCentre) !== 3) || (strlen($customerCode)) !== 6 ||
+            (!$this->storeRepository->findOneBy(['centerCode' => $codeCentre])) ||
+            (!$this->cardRepository->findOneBy(['customerCode' => $customerCode])) ||
+            $checkSum !== ((intval($codeCentre) + intval($customerCode)) % 9)
+        ) {
+            $this->context->buildViolation('card.number.not_valid')
+                ->setParameter('{{ string }}', $value)
+                ->addViolation();
+        }
     }
 
 }
