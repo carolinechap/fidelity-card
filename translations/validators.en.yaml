@@ -10,6 +10,9 @@ deal:
     min: Description must be {{ limit }} characters minimum.
   cost_point:
     type: The type is not valid
+    positive: The costPoint must be a positive number
+    min: The costPoint cannot be inferior than {{ limit }}
+    max: The costPoint cannot be superior than {{ limit }}
 activity:
   fidelitypoint:
     positive: Fidelity points can not be negative
