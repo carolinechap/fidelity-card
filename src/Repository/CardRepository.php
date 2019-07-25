@@ -66,6 +66,9 @@ class CardRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @return mixed
+     */
     public function findCardWithUser(){
         $qb = $this->createQueryBuilder('c')
             ->join('c.user', 'cu')

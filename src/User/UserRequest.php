@@ -28,6 +28,7 @@ class UserRequest
     private $email;
 
     /**
+     * @var $password
      */
     private $password;
 

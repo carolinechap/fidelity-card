@@ -11,8 +11,15 @@ namespace App\Events;
 use Symfony\Contracts\EventDispatcher\Event;
 use App\Entity\Card;
 
+/**
+ * Class CardFidelityPointEvent
+ * @package App\Events
+ */
 class CardFidelityPointEvent extends Event
 {
+    /**
+     *
+     */
     public const NAME = 'card.fidelity_point';
 
     /** @var Card */
@@ -34,7 +41,10 @@ class CardFidelityPointEvent extends Event
     {
         return $this->card;
     }
-    
+
+    /**
+     * @return bool
+     */
     public function fidelityPointsAttained()
     {
         return $this->getCard()->getFidelityPoint() >= 1000;

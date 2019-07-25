@@ -284,7 +284,7 @@ class CardController extends AbstractController
             try {
                 $workflow->apply($card, $status);
             } catch (LogicException $e) {
-                # Transition non autorisé
+                # Non authorized transition
                 $e->getMessage();
             }
         }

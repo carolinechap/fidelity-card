@@ -13,7 +13,7 @@ class UserFactory
 
     /**
      * UserFactory constructor.
-     * @param PasswordEncoderInterface $passwordEncoder
+     * @param UserPasswordEncoderInterface $passwordEncoder
      */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -41,9 +41,7 @@ class UserFactory
         $user->setZipCode($userRequest->getZipCode());
         $user->setCountry($userRequest->getCountry());
 
-        //TODO: Ajouter le CustomerCode
-
-
         return $user;
+
     }
 }

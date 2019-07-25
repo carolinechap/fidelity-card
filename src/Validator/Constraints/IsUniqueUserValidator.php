@@ -50,10 +50,5 @@ class IsUniqueUserValidator extends ConstraintValidator
                 ->setParameter('{{ email }}', $value)
                 ->addViolation();
         }
-
-
-
-
-
     }
 }
