@@ -1,6 +1,6 @@
 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN') %}
     <nav class="col-md-2 d-none d-md-block bg-light sidebar ">
-        <div class="sidebar-sticky">
+        <div class="sidebar-sticky pb-5">
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link {{ app.request.attributes.get('_route') == 'crud_dashboard' ? 'active' }}"
@@ -17,7 +17,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ app.request.attributes.get('_route') == 'activity_index' ? 'active' }}"
+                    <a class="nav-link {{ app.request.get('class') == 'activity' ? 'active' }}"
                        href="{{ path('crud_index', {'class': 'activity' }) }}">
                         <span data-feather="box"></span>
                         Activités du laser game
@@ -60,14 +60,14 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'store_index' ? 'active' }}"
+                        <a class="nav-link {{ app.request.get('class') == 'store' ? 'active' }}"
                            href="{{ path('crud_index', {'class': 'store' }) }}">
                             <span data-feather="map"></span>
                             Magasins
                         </a>
                         <ul class="nav flex-column nested-list">
                             <li class="nav-item">
-                                <a class="nav-link {{ app.request.attributes.get('_route') == 'store_edition' ? 'active' }}"
+                                <a class="nav-link {{ app.request.get('class') == 'store' and app.request.attributes.get('_route') == 'crud_new' ? 'active' }}"
                                    href="{{ path('crud_new', { 'class': 'store' }) }}">
                                     <span data-feather="plus-circle"></span>
                                     Ajouter un magasin
@@ -76,14 +76,14 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_index' ? 'active' }}"
+                        <a class="nav-link {{ app.request.get('class') == 'deal' ? 'active' }}"
                            href="{{ path('crud_index', {'class': 'deal' }) }}">
                             <span data-feather="shopping-cart"></span>
                             Offres
                         </a>
                         <ul class="nav flex-column nested-list">
                             <li class="nav-item">
-                                <a class="nav-link {{ app.request.attributes.get('_route') == 'deal_new' ? 'active' }}"
+                                <a class="nav-link {{ app.request.get('class') == 'deal' and app.request.attributes.get('_route') == 'crud_new' ? 'active' }}"
                                    href="{{ path('crud_new', { 'class': 'deal' }) }}">
                                     <span data-feather="plus-circle"></span>
                                     Ajouter un offre
