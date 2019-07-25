@@ -31,16 +31,17 @@ class CardGenerator
      */
     public function generateCard(Card $card): Card
     {
-        # Génération de la carte
+        # Set customer code and checksum on card
         $card->setCustomerCode($this->generateCustomerCode())
             ->setCheckSum(($card->getStore()->getCenterCode() + $card->getCustomerCode()) % 9);
 
-        # Retour de la carte mise à jour
+        # Return the card instance
         return $card;
     }
 
     /**
-     * Générer un code client aléatoire
+     * Generate a random customer code
+     * 
      * @return string
      */
     public function generateCustomerCode(): string
