@@ -34,9 +34,7 @@ class DealFixtures extends Fixture
 
         $manager->persist($oneDeal);
 
-
         $now = new \DateTime('now');
-
 
         for ($x = 0; $x < 7; $x ++) {
             $costPoint = $x + rand($x, 200);

@@ -107,7 +107,7 @@ class CardActivityController extends AbstractController
                 $entityManager->persist($cardActivity);
                 $entityManager->flush();
 
-                //On déclenche l'événement' correspondant
+                //Trigger the corresponding event
                 $event = new CardActivityEvent($cardActivity);
                 $event->setBeforePoints($beforePoints);
                 $eventDispatcher->dispatch($event, AppEvents::CARD_NEW_ACTIVITY);

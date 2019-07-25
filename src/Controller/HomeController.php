@@ -33,7 +33,7 @@ class HomeController extends AbstractController
             $cardsUser = $cardRepository->findCardByUser($user);
 
             foreach ($cardsUser as $cardUser) {
-                //On déclenche l'événement' correspondant
+                //Trigger the corresponding event
                 $event = new CardFidelityPointEvent($cardUser);
                 if ($event->fidelityPointsAttained() === true) {
                     $eventDispatcher->dispatch($event, AppEvents::CARD_FIDELITY_POINTS);

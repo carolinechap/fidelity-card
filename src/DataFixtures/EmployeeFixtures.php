@@ -62,9 +62,6 @@ class EmployeeFixtures extends Fixture
 
         $manager->persist($superAdmin);
 
-
-
-
         //Store admins for demo/test and dev fixtures
         for ($i = 0; $i < self::NB_ADMINS; $i ++) {
             $admin = new User();

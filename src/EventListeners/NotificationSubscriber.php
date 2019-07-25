@@ -78,7 +78,7 @@ class NotificationSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
 
-        /*Notification au client - MAIL (Notification push) */
+        /*Client push notification - Mail */
         $this->mailer->notifCreatedUserAccount($user);
     }
 
@@ -92,7 +92,7 @@ class NotificationSubscriber implements EventSubscriberInterface
     {
         $card = $event->getSubject();
 
-        /*Notification au client - MAIL (Notification push) */
+        /*Client push notification - Mail */
         $this->mailer->notifAddCard($card);
     }
 
@@ -106,7 +106,7 @@ class NotificationSubscriber implements EventSubscriberInterface
     {
         $card = $event->getSubject();
 
-        /*Notification au client - MAIL (Notification push) */
+        /*Client push notification - Mail */
         $this->mailer->notifLostCard($card);
     }
 
@@ -121,7 +121,7 @@ class NotificationSubscriber implements EventSubscriberInterface
         $cardActivity = $event->getCardActivity();
         $beforePoints = $event->getBeforePoints();
 
-        /*Notification au client - MAIL (Notification push) */
+        /*Client push notification - Mail */
         $this->mailer->notifNewCardActivity($cardActivity, $beforePoints);
     }
 
@@ -138,7 +138,7 @@ class NotificationSubscriber implements EventSubscriberInterface
         $this->logger->info('Points de fidélité à 1000 : '
             . $card->getCompleteCode());
 
-        /*Notification au client - MAIL (Notification push) */
+        /*Client push notification - Mail */
         $this->mailer->notifFidelityPoints($card);
     }
 

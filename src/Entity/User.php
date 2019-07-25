@@ -92,32 +92,51 @@ class User implements UserInterface
      */
     private $cards;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->stores = new ArrayCollection();
         $this->cards = new ArrayCollection();
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    /**
+     * @return string
+     */
     public function getFullname()
     {
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return array|null
+     */
     public function getRoles(): ?array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array $roles
+     * @return User
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -125,6 +144,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param string $role
+     * @return bool
+     */
     public function addRole(string $role): bool
     {
         if(!in_array($role, $this->roles)) {
@@ -135,6 +158,10 @@ class User implements UserInterface
         }
     }
 
+    /**
+     * @param string $role
+     * @return bool
+     */
     public function removeRole(string $role): bool
     {
         if (($key = array_search($role, $this->roles)) !== false) {
@@ -145,11 +172,18 @@ class User implements UserInterface
         }
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return User
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -157,11 +191,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return User
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -169,11 +210,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getNumberStreet(): ?int
     {
         return $this->numberStreet;
     }
 
+    /**
+     * @param int|null $numberStreet
+     * @return User
+     */
     public function setNumberStreet(?int $numberStreet): self
     {
         $this->numberStreet = $numberStreet;
@@ -181,11 +229,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getNameStreet(): ?string
     {
         return $this->nameStreet;
     }
 
+    /**
+     * @param string|null $nameStreet
+     * @return User
+     */
     public function setNameStreet(?string $nameStreet): self
     {
         $this->nameStreet = $nameStreet;
@@ -193,11 +248,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getZipCode(): ?string
     {
         return $this->zipCode;
     }
 
+    /**
+     * @param string|null $zipCode
+     * @return User
+     */
     public function setZipCode(?string $zipCode): self
     {
         $this->zipCode = $zipCode;
@@ -205,11 +267,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * @param string|null $city
+     * @return User
+     */
     public function setCity(?string $city): self
     {
         $this->city = $city;
@@ -217,11 +286,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
+    /**
+     * @param string|null $country
+     * @return User
+     */
     public function setCountry(?string $country): self
     {
         $this->country = $country;
@@ -229,11 +305,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastname(): ?string
     {
         return $this->lastname;
     }
 
+    /**
+     * @param string $lastname
+     * @return User
+     */
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
@@ -241,11 +324,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstname(): ?string
     {
         return $this->firstname;
     }
 
+    /**
+     * @param string $firstname
+     * @return User
+     */
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
@@ -261,6 +351,10 @@ class User implements UserInterface
         return $this->stores;
     }
 
+    /**
+     * @param Store $store
+     * @return User
+     */
     public function addStore(Store $store): self
     {
         if (!$this->stores->contains($store)) {
@@ -270,6 +364,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Store $store
+     * @return User
+     */
     public function removeStore(Store $store): self
     {
         if ($this->stores->contains($store)) {
@@ -287,6 +385,10 @@ class User implements UserInterface
         return $this->cards;
     }
 
+    /**
+     * @param Card $card
+     * @return User
+     */
     public function addCard(Card $card): self
     {
         if (!$this->cards->contains($card)) {
@@ -297,6 +399,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Card $card
+     * @return User
+     */
     public function removeCard(Card $card): self
     {
         if ($this->cards->contains($card)) {
