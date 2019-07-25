@@ -33,7 +33,7 @@ class CardGeneratorTest extends WebTestCase
             ->method('getRepository')
             ->willReturn($cardRepository);
 
-
+        $this->assertEquals('456789', $card->getCustomerCode());
     }
 
 }
