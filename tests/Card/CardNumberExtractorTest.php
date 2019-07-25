@@ -10,7 +10,6 @@ class CardNumberExtractorTest extends TestCase
 {
     /**
      * @test
-     *
      */
     public function evaluateNumberWithDash()
     {
@@ -27,7 +26,6 @@ class CardNumberExtractorTest extends TestCase
 
     /**
      * @test
-     *
      */
     public function evaluateNumberWithoutDash()
     {

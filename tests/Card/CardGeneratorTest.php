@@ -4,62 +4,36 @@
 namespace App\Tests\Card;
 
 use App\Entity\Card;
-use Doctrine\Common\Persistence\ObjectManager;use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 class CardGeneratorTest extends WebTestCase
 {
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    public function __construct(ObjectManager $objectManager, $name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        $this->objectManager = $objectManager;
-    }
 
     /**
-     * {@inheritDoc}
+     * @test
      */
-    protected function setUp()
-    {
-        $this->card = new Card();
-        $centerCode = '123';
-        $this->card->setCustomerCode($this->generateCustomerCodeTest())
-            ->setCheckSum((intval($centerCode) + intval($this->generateCustomerCodeTest())) % 9);
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
-    }
-
     public function generateCustomerCodeTest()
     {
+        $card = new Card();
         $code = '456789';
 
-        $findSameCustomerCodeTest = $this->entityManager
-            ->getRepository('App\Entity\Card')
-            ->findBy([
-            'customerCode' => $code
-        ]);
+        $card->setCustomerCode($code);
 
-        if ($findSameCustomerCodeTest) {
-            $this->generateCustomerCodeTest();
-        }
+        $cardRepository = $this->createMock(ObjectRepository::class);
 
-        return sprintf("%06s",$code);
+        $cardRepository->expects($this->any())
+            ->method('find')
+            ->willReturn($card);
+
+        $objectManager = $this->createMock(ObjectManager::class);
+
+        $objectManager->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($cardRepository);
+
+
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->entityManager->close();
-        $this->entityManager = null; // avoid memory leaks
-    }
-
 
 }
