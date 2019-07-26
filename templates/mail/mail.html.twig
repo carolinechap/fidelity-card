@@ -7,9 +7,9 @@
 {% if type_notification == 'user.account' %}
     <p>{{ 'user.account.message'|trans }}</p>
 {% elseif type_notification == 'user.card.added' %}
-    <p>{{ 'user.card.added'|trans({'%number_card%': card.getCompleteCode()}) }}</p>
+    <p>{{ 'user.card.added'|trans({'%number_card%': card.getCode()}) }}</p>
 {% elseif type_notification == 'user.card.deactivated' %}
-    <p>{{ 'user.card.deactivated'|trans({'%number_card%': card.getCompleteCode()}) }}</p>
+    <p>{{ 'user.card.deactivated'|trans({'%number_card%': card.getCode()}) }}</p>
 {% elseif type_notification == 'card.activity' %}
     <p>{{ 'card.new.activity'|trans({'%activity%': cardActivity.activity}) }}</p>
     <p>{{ 'card.new.fidelity_points'|trans(

@@ -102,7 +102,7 @@ class MailerService
      */
     public function notifAddCard(Card $card)
     {
-        $subject = $this->translator->trans('user.card.added', ['%number_card%' => $card->getCompleteCode()], 'mail');
+        $subject = $this->translator->trans('user.card.added', ['%number_card%' => $card->getCode()], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [
@@ -125,7 +125,7 @@ class MailerService
      */
     public function notifLostCard(Card $card)
     {
-        $subject = $this->translator->trans('user.card.deactivated', ['%number_card%' => $card->getCompleteCode()], 'mail');
+        $subject = $this->translator->trans('user.card.deactivated', ['%number_card%' => $card->getCode()], 'mail');
         $to = $card->getUser()->getEmail();
         $body = $this->twig->render(
             'mail/mail.html.twig', [

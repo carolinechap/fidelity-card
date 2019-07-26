@@ -47,7 +47,7 @@ class LostCardType extends AbstractType
                 'label' => 'lost_card.select.label.card',
                 'placeholder' => 'lost_card.select.placeholder.card',
                 'choice_label' => function ($card) {
-                    return $card->getCompleteCode();
+                    return $card->getCode();
                 }
             ]);
     }

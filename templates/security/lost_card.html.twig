@@ -35,7 +35,7 @@
                                     <option value=""
                                             disabled>{{ 'lost_card.select.placeholder.card'|trans({}, 'forms') }}</option>
                                     {% for card in cards %}
-                                        <option value="{{ card.id }}">{{ card.getCompleteCode() }}</option>
+                                        <option value="{{ card.id }}">{{ card.getCode() }}</option>
                                     {% endfor %}
                                 </select>
                             {% else %}

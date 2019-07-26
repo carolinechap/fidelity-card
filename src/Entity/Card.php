@@ -390,16 +390,5 @@ class Card
     {
         return $this->getCountGamePlayed();
     }
-
-
-    /**
-     * @return string
-     */
-    public function getCompleteCode()
-    {
-        $concatCode = $this->getStore()->getCenterCode() .$this->getCustomerCode();
-        $checksum = intval($concatCode) % 9;
-        return $concatCode.$checksum;
-    }
-
+    
 }
