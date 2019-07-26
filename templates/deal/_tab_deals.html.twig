@@ -12,14 +12,6 @@
         </thead>
         <tbody>
         {% for deal in deals %}
-            {% set in_card = false %}
-            {% if cards is defined %}
-                {% for card in cards %}
-                    {% set in_card = deal in card.deals ? true : false %}
-                {% endfor %}
-            {% elseif card is defined %}
-                {% set in_card = deal in card.deals ? true : false %}
-            {% endif %}
             <tr>
                 <td scope="row" class="text-center">{{ deal.name }}</td>
                 <td scope="row" class="text-center">{{ deal.startDate ? deal.startDate|date('d/m/Y') : '' }}</td>
@@ -31,16 +23,19 @@
                     <a href="{{ path('deal_show', {'id' : deal.id}) }}" class="btn btn-secondary btn-sm">
                         Voir
                     </a>
-                    {% if in_card is same as(false)  and (card is defined and card is not null ) %}
-                        <a href="{{ path('deal_add_card', {'deal': deal.id, 'card': card.id }) }}"
-                           class="btn btn-success btn-sm">
-                            Ajouter
-                        </a>
-                    {% elseif in_card == true and (card is defined and card is not null ) %}
-                        <a href="{{ path('deal_display_user') }}" class="btn btn-sm btn-info">
-                            Déjà dans mes deals
-                        </a>
+                    {% if card is defined and card is not null %}
+                        {% if deal not in card.deals %}
+                            <a href="{{ path('deal_add_card', {'deal': deal.id, 'card': card.id }) }}"
+                               class="btn btn-success btn-sm">
+                                Ajouter
+                            </a>
+                        {% elseif deal in card.deals %}
+                            <a href="{{ path('deal_display_user') }}" class="btn btn-sm btn-info">
+                                Déjà dans mes deals
+                            </a>
+                        {% endif %}
                     {% endif %}
+
                 </td>
             </tr>
         {% else %}
