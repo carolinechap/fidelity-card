@@ -301,7 +301,7 @@ class Card
      */
     public function getCardOwnerName()
     {
-        return $this->customerCode . ' - ' . $this->getUser()->getFullName();
+        return $this->getCode() . ' - ' . $this->getUser()->getFullName();
     }
 
     /**
