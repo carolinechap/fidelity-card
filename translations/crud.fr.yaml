@@ -1,0 +1,38 @@
+link:
+  dashboard: Tableau de bord
+  back: Retour
+  new: Nouveau
+  show: Voir
+  edit: Modifier
+list: Liste
+actions: Actions
+empty:
+  list: Aucun enregistrement !
+title:
+  new: Nouveau
+  edit: Modifier
+delete:
+  confirmation: La suppression est définitive, êtes-vous sûr(e) ?
+  button: Supprimer
+save: Enregistrer
+add: Ajouter
+new:
+  success: L'élément a bien été ajouté !
+  error: Erreur durant l'enregistrement !
+edit:
+  success: L'élément a bien été modifié !
+  error: Erreur durant la modification !
+remove:
+  success: L'élément a bien été supprimé !
+  error: Erreur durant la suppression !
+class:
+  not_found: Cette entité n'existe pas dans l'administration
+update:
+  button: Modifier
+fidelity:
+  point: Point de fidélité
+
+game:
+  name: Nom de l'activité
+
+

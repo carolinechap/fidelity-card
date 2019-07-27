@@ -1,0 +1,61 @@
+deal:
+  form:
+    label:
+      name: Nom de l'offre
+      startdate: Date de début
+      enddate: Date de fin
+      description: Description
+      costpoint: Coût (en pts de fidélité)
+card:
+  remove:
+    success: La carte a bien été supprimée.
+  add:
+    invalid_number: Numéro de carte invalide
+    user:
+      error: Erreur à l'ajout de la carte à votre compte.
+      success: La carte a bien été ajoutée à votre compte !
+      label : Entrez votre numéro de carte
+  form:
+    label:
+      store_name: Nom du centre
+activity:
+  form:
+    label:
+      fidelityPoint: Points de fidélité
+      gameName: Nom de l'activité
+user:
+  form:
+    label:
+      lastname: Nom
+      firstname: Prénom
+      email: Adresse email
+      password: Mot de passe
+      confirmation_password: Confirmation du mot de passe
+      number_street: Numéro de rue
+      name_street: Nom de la rue
+      zip_code: Code postal
+      city: Ville
+      country: Pays
+cardactivity:
+  form:
+    label:
+      is_the_winner: Match gagnant
+      personal_score: Score personnel
+      card_number : Carte de fidélité
+      game_name: Nom de l'activité
+      game_date: Date de l'activité
+lost_card:
+  no_card: Il n'y a pas de carte pour cet utilisateur !
+  inactive:
+    success: La carte a bien été désactivée !
+    error: Erreur durant la désactivation.
+  select:
+    label:
+      customer: Sélectionnez le client
+      card: Sélectionnez la carte
+      button: Chercher
+      submit: Désactiver
+      cancel: Réinitialiser
+    placeholder:
+      customer: Choisir dans la liste
+      card: Choisir dans la liste

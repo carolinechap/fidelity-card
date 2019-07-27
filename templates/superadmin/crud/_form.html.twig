@@ -1,0 +1,19 @@
+{% if (entity is defined) and (entity.id is not null) %}²
+    {{ form_start(form, {'action': path('crud_edit', {'class': class, 'id': entity.id }), 'method': 'POST'}) }}
+{% else %}
+    {{ form_start(form, {'action': path('crud_new', {'class': class }), 'method': 'POST'}) }}
+{% endif %}
+    {% for field in form.children %}
+        <div class="form-row">
+        <div class="form-group">
+            {{ form_row(field) }}
+        </div>
+        {% if loop.index is divisible by(2) %}
+            </div><div class="form-row col-md-6">
+
+        {% endif %}
+        </div>
+    {% endfor %}
+
+<button class="btn btn-success">{{ button_label|default( 'save'|trans({}, 'crud') ) }}</button>
+{{ form_end(form) }}

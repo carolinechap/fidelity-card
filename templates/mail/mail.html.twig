@@ -1,0 +1,22 @@
+{% trans_default_domain 'mail' %}
+
+<h3>{{ subject }}</h3>
+
+<p>Bonjour {{ user.firstname }} {{ user.lastname }}</p>
+
+{% if type_notification == 'user.account' %}
+    <p>{{ 'user.account.message'|trans }}</p>
+{% elseif type_notification == 'user.card.added' %}
+    <p>{{ 'user.card.added'|trans({'%number_card%': card.getCode()}) }}</p>
+{% elseif type_notification == 'user.card.deactivated' %}
+    <p>{{ 'user.card.deactivated'|trans({'%number_card%': card.getCode()}) }}</p>
+{% elseif type_notification == 'card.activity' %}
+    <p>{{ 'card.new.activity'|trans({'%activity%': cardActivity.activity}) }}</p>
+    <p>{{ 'card.new.fidelity_points'|trans(
+            {'%before_points%': before_points, '%after_points%': after_points}
+        ) }}</p>
+{% elseif type_notification == 'card.fidelity_points' %}
+    <p>{{ 'card.fidelity_points'|trans({'%fidelity_points%': fidelity_points}) }}</p>
+{% endif %}
+
+<a href="{{ path('home') }}">{{ 'goto.site'|trans }}</a>

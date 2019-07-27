@@ -1,0 +1,26 @@
+framework:
+  workflows:
+    card_status:
+      type: 'workflow'
+      marking_store:
+        type: 'multiple_state'
+        arguments:
+          - 'status'
+      supports:
+        - App\Entity\Card
+      initial_place: precreated
+      places:
+        - precreated
+        - created
+        - activated
+        - deactivated
+      transitions:
+        to_creating:
+          from: [precreated]
+          to: [created]
+        to_activating:
+          from: [created]
+          to: [activated]
+        to_deactivating:
+          from: [activated]
+          to: [deactivated]

@@ -1,0 +1,47 @@
+<div class="table-responsive table-hover">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center">Date de début</th>
+            <th scope="col" class="text-center">Date de fin</th>
+            <th scope="col" class="text-center">Description</th>
+            <th scope="col" class="text-center">Pts de fidélité</th>
+            <th scope="col" class="text-center" width="200">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for deal in deals %}
+            <tr>
+                <td scope="row" class="text-center">{{ deal.name }}</td>
+                <td scope="row" class="text-center">{{ deal.startDate ? deal.startDate|date('d/m/Y') : '' }}</td>
+                <td scope="row" class="text-center">{{ deal.endDate ? deal.endDate|date('d/m/Y') : '' }}</td>
+                <td scope="row"
+                    class="text-center">{{ deal.description|length > 30 ? deal.description|slice(0, 25) ~ '...' : deal.description }}</td>
+                <td scope="row" class="text-center">{{ deal.costPoint }}</td>
+                <td scope="row" width="220" class="text-center">
+                    <a href="{{ path('deal_show', {'id' : deal.id}) }}" class="btn btn-secondary btn-sm">
+                        Voir
+                    </a>
+                    {% if card is defined and card is not null %}
+                        {% if deal not in card.deals %}
+                            <a href="{{ path('deal_add_card', {'deal': deal.id, 'card': card.id }) }}"
+                               class="btn btn-success btn-sm">
+                                Ajouter
+                            </a>
+                        {% elseif deal in card.deals %}
+                            <a href="{{ path('deal_display_user') }}" class="btn btn-sm btn-info">
+                                Déjà dans mes deals
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Aucune offre</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

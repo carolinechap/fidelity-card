@@ -1,0 +1,94 @@
+deal:
+  name:
+    blank: Le nom ne doit pas être vide
+  startdate:
+    valid: La date de début n'est pas valide
+  enddate:
+    valid: La date de fin n'est pas valide
+  description:
+    max: La description ne peut pas dépasser {{ limit }} caractères.
+    min: La description doit être au minimun de {{ limit }} caractères.
+  cost_point:
+    type: Le type de la valeur n'est pas valide
+    positive: La valeur du point ne peut pas être négative
+    min: La valeur du point ne peut pas être inférieur à {{ limit }}
+    max: La valeur du point ne peut pas être supérieur à {{ limit }}
+activity:
+  fidelitypoint:
+    positive: Les points de fidélités ne doivent pas être négatif
+    type: Les points de fidélités ne sont pas valide
+  gamename:
+    blank: Le nom de l'activité ne peut pas être vide
+    maxlength: Le nom de l'activité ne peut pas dépasser {{ limit }} caractères
+cardActivity:
+  personalscore:
+    positive: Le nombre de point ne doit pas être négatif
+    type: La valeur {{ value }} n'est pas valide
+  isthewinner:
+    type: La valeur {{ value }} n'est pas valide
+  gamedate:
+    valid: La date de l'activité n'est pas valide
+    lessthan: La date ne peut pas être supérieure à aujourd'hui
+card:
+  number:
+    not_valid: Le numéro de carte n'est pas valide
+  status:
+    blank: Le status ne peut pas être vide
+    check_sum:
+      blank: Le check sum ne peut pas être vide
+      type: Le check sum n'est pas valide
+    customer_code:
+      maxlength: Le code client ne peut pas dépasser {{ limit }} caractères
+    fidelity_point:
+      positiveozero: Le nombre de points ne doit pas être négatif
+      type: Les points de fidélité ne sont pas valides
+    personal_score:
+      positiveozero: Le nombre de points ne doit pas être négatif
+      type: Le points ne sont pas valides
+store:
+  center_code:
+    blank: Le numéro du centre ne peut pas être vide
+    positiveorzero: Le numéro du centre ne doit pas être négatif
+    type : La valeur {{ value }} n'est pas valide
+  street_number:
+    blank: Le numéro de la rue ne peut pas être vide
+    positiveorzero: Le numéro de la rue ne doit pas être négatif
+    type: Le numéro de la rue {{ value }} n'est pas numéro valide.
+  street_name:
+    blank: Le nom de la rue ne peut pas être vide
+    max: Le nom de la rue ne peut pas dépasser {{ limit }} caractères
+  zip_code:
+    blank: Le code postal ne peut pas être vide
+    max: Le code postal ne peut pas dépasser {{ limit }} caractères
+  city:
+    blank: La ville ne peut pas être vide
+    max: La ville ne peut pas dépasser {{ limit }} caractères
+  country:
+    blank: Le pays ne peut pas être vide
+    max: Le pays ne peut pas dépasser {{ limit }} caractères
+  name:
+    blank: Le nom du centre ne peut pas être vide
+    max: Le nom du store ne peut pas dépasser {{ limit }} caractères
+user:
+  email:
+    blank: L'email ne peut pas être vide
+    message: L'email {{ value }} n'est pas valide.
+  password:
+    blank: Le mot de passe est obligatoire
+    min: Le mot de passe doit avoir {{ limit }} caractères
+    max: Le mot de passe ne doit pas dépasser {{ limit }} caractères
+  street_number:
+    positive: Le numéro de la rue doit être un entier positif
+    type : Le numéro de la rue {{ value }} n'est pas numéro valide.
+  street_name:
+    max: Le nom de la rue ne peut pas dépasser {{ limit }} caractères
+  zip_code:
+    max: Le code postal ne peut pas dépasser {{ limit }} caractères
+  city:
+    max: La ville ne peut pas dépasser {{ limit }} caractères
+  country:
+    max: Le pays ne peut pas dépasser {{ limit }} caractères
+  lastname:
+    max: Le nom ne peut pas dépasser {{ limit }} caractères
+  firstname:
+    max: le prénom ne peut pas dépasse {{ limit }} caractères

@@ -1,0 +1,33 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~api~app.js",
+        "/build/vendors~app.js",
+        "/build/app.js"
+      ],
+      "css": [
+        "/build/vendors~app.css",
+        "/build/app.css"
+      ]
+    },
+    "api": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~api~app.js",
+        "/build/vendors~api.js",
+        "/build/api.js"
+      ]
+    },
+    "error": {
+      "js": [
+        "/build/runtime.js",
+        "/build/error.js"
+      ],
+      "css": [
+        "/build/error.css"
+      ]
+    }
+  }
+}

@@ -1,3 +1,11 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
+
+admin:
+    resource: ../../src/Controller/Admin
+    type: annotation
+
+crud:
+    resource: ../../src/Controller/SuperAdmin/
+    type: annotation

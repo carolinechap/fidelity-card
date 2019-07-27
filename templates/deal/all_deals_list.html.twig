@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offres{% endblock %}
+
+{% block body %}
+    <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Les offres</h1>
+            <a href="{{ path('home') }}"
+               class="btn btn-outline-primary mb-3">
+                Retour sur mon profil
+            </a>
+        </div>
+        <div>
+            {# le customer n'a pas de carte rattachée #}
+            {% if cards is empty %}
+                <div class="alert alert-warning">Pas de carte rattachée</div>
+                <a href="{{ path('home') }}" class="btn btn-outline-primary mb-3">
+                    Rattacher une carte
+                </a>
+            {% else %}
+                {# il faut choisir d'abord une carte pour rattacher un deal #}
+                <h2>Choisir une carte</h2>
+                {% include'deal/_choice_card.html.twig' %}
+            {% endif %}
+
+            {% if card is defined and card is not null %}
+                <div class="alert alert-secondary text-center m-1">
+                    Carte n°<br>{{ card.code }}
+                    <br><b>{% if card.fidelityPoint == 0 %} 0 {% else %}{{ card.fidelityPoint }} {% endif %}points</b>
+                </div>
+            {% endif %}
+            <p><a class="btn btn-secondary m-2" href="{{ path('deal_display_user') }}">Voir tous mes deals</a></p>
+        </div>
+        {% include'deal/_tab_deals.html.twig' %}
+    </div>
+{% endblock %}

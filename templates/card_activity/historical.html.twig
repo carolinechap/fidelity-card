@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Cartes de fidélité{% endblock %}
+
+    {% block body %}
+        <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Mes points</h1>
+            </div>
+            <div class="table-responsive table-hover">
+                <table class="table table-striped table-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-center">Numéro de la carte</th>
+                        <th scope="col" class="text-center">Total du score personnel</th>
+                        <th scope="col" class="text-center">Total des points de fidélité</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for card in cards %}
+                        <tr>
+                            <td scope="row" class="text-center">{{ card.getCode }}</td>
+                            <td scope="row" class="text-center">{{ card.personalScore }}</td>
+                            <td scope="row" class="text-center">{{ card.fidelityPoint }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="container container-admin ml-sm-auto col-md-7 col-lg-7 px-md-2 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Mon historique de jeu</h1>
+            </div>
+            <div class="table-responsive table-hover">
+                <table class="table table-striped table-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-center">Date du jeu</th>
+                        <th scope="col" class="text-center">Nom du jeu</th>
+                        <th scope="col" class="text-center">Résultat du jeu</th>
+                        <th scope="col" class="text-center">Score personnel par jeu</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for act in activities %}
+                        <tr>
+                            <td scope="row" class="text-center">{{ act.gameDate  | date('d/m/Y') }}</td>
+                            <td scope="row" class="text-center">{{ act.activity.gameName }}</td>
+                            <td scope="row"
+                                class="text-center">{% if act.isTheWinner == 1 %} Match gagné {% else %} Match perdu {% endif %}</td>
+                            <td scope="row" class="text-center">{{ act.personalScore }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11" class="text-center">Il n'y a pas de données</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    {% endblock %}
